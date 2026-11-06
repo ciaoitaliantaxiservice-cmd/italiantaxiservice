@@ -1,0 +1,39 @@
+---
+import type { GetStaticPaths } from 'astro';
+import Base from '../../../layouts/Base.astro';
+import CityStubBody from '../../../components/sections/CityStubBody.astro';
+import { alternatesFor } from '../../../data/seo';
+import { routes, ui } from '../../../data/i18n';
+import { cities, cityPath, type City } from '../../../data/cities';
+
+const lang = 'it' as const;
+
+export const getStaticPaths: GetStaticPaths = () =>
+  cities.map((city) => ({ params: { city: city.slug.it }, props: { city } }));
+
+const { city } = Astro.props as { city: City };
+
+const path = cityPath(city, lang);
+const name = city.name[lang];
+
+const crumbs = [
+  { name: ui[lang].home, path: routes.home[lang] },
+  { name: ui[lang].locations, path: routes.locations[lang] },
+  { name, path },
+];
+---
+
+{/* noindex finché la pagina non ha tratte, tempi e tariffe reali. */}
+<Base
+  lang={lang}
+  title={`Transfer Privati a ${name} con Autista`}
+  description={`Servizio con autista a ${name} e dintorni. Indicate la tratta e inviamo un preventivo a tariffa fissa. Tratte e tariffe dettagliate in arrivo.`}
+  path={path}
+  alternates={alternatesFor({ en: cityPath(city, 'en'), it: path })}
+  altPaths={{ en: cityPath(city, 'en'), it: path }}
+  current="locations"
+  crumbs={crumbs}
+  noindex
+>
+  <CityStubBody lang={lang} city={city} />
+</Base>

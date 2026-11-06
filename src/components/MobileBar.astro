@@ -1,0 +1,28 @@
+---
+import Icon from './Icon.astro';
+import { routes, ui, type Lang } from '../data/i18n';
+import { telHref, whatsappHref } from '../data/site.mjs';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const l = ui[lang];
+---
+
+{/* Hidden at >=48rem by CSS. body has bottom padding so nothing sits under it. */}
+<nav class="mobile-bar" aria-label={l.mobileActions}>
+  <a class="mobile-bar__item" href={telHref}>
+    <Icon name="phone" />
+    <span>{l.callUs}</span>
+  </a>
+  <a class="mobile-bar__item" href={whatsappHref(lang)} rel="noopener">
+    <Icon name="whatsapp" />
+    <span>{l.whatsapp}</span>
+  </a>
+  <a class="mobile-bar__item mobile-bar__item--cta" href={`${routes.contact[lang]}#quote-form`}>
+    <Icon name="quote" />
+    <span>{l.quote}</span>
+  </a>
+</nav>

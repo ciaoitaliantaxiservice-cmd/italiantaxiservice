@@ -1,0 +1,96 @@
+---
+import '../styles/fonts.css';
+import '../styles/global.css';
+import '../styles/components.css';
+
+import Logo from '../components/Logo.astro';
+import { routes, LANGS, htmlLang, langNames } from '../data/i18n';
+import { absolute } from '../data/seo';
+import { site } from '../data/site.mjs';
+
+/**
+ * Language gate at `/`.
+ *
+ * A static build cannot issue a real 302, so this page detects the browser
+ * language and redirects client-side, with both languages as plain links for
+ * anyone without JavaScript (and for crawlers).
+ *
+ * It is `noindex, follow`: there is nothing here to rank, and the two real
+ * homepages are what should appear in results. The hreflang set below still
+ * points crawlers at both of them.
+ *
+ * [[PREFER A SERVER-SIDE 302 IF YOUR HOST SUPPORTS IT]] — a redirect rule on
+ * `/` keyed off Accept-Language avoids the client-side hop entirely. See
+ * README, "Root redirect".
+ */
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Ciao Italian Taxi Service · Choose language</title>
+    <meta
+      name="description"
+      content="Private transfers and chauffeured rides across Italy. Continue in English or in Italian. Transfer privati e auto con autista in tutta Italia."
+    />
+    <meta name="robots" content="noindex, follow" />
+    <link rel="canonical" href={absolute('/')} />
+    {/* Deliberately NO hreflang alternates here. hreflang must be reciprocal,
+        and /en/ and /it/ point at each other with x-default on /en/ — adding
+        one-way links from this gate would make the whole cluster invalid.
+        Crawlers reach both homepages through the body links and the sitemap. */}
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <meta name="theme-color" content="#00693A" />
+
+    <script is:inline>
+      // Runs before paint, so the gate is not visible on the common path.
+      (function () {
+        try {
+          var langs = navigator.languages || [navigator.language || 'en'];
+          for (var i = 0; i < langs.length; i++) {
+            var tag = String(langs[i]).toLowerCase();
+            if (tag === 'it' || tag.indexOf('it-') === 0) {
+              window.location.replace('/it/');
+              return;
+            }
+            if (tag === 'en' || tag.indexOf('en-') === 0) {
+              window.location.replace('/en/');
+              return;
+            }
+          }
+          window.location.replace('/en/');
+        } catch (e) {
+          /* Leave the gate on screen and let the visitor choose. */
+        }
+      })();
+    </script>
+  </head>
+
+  <body>
+    <main class="gate">
+      <div class="gate__card">
+        <Logo />
+        <h1 style="font-size: var(--t-lg)">{site.brand}</h1>
+        <p>Private transfers and chauffeured rides across Italy.</p>
+        <p lang="it">Transfer privati e auto con autista in tutta Italia.</p>
+
+        <div class="gate__links">
+          {
+            LANGS.map((l) => (
+              <a
+                class={l === 'en' ? 'btn btn--secondary' : 'btn btn--outline'}
+                href={routes.home[l]}
+                hreflang={htmlLang[l]}
+                lang={htmlLang[l]}
+              >
+                {langNames[l]}
+              </a>
+            ))
+          }
+        </div>
+      </div>
+    </main>
+  </body>
+</html>

@@ -1,0 +1,92 @@
+---
+import CtaBand from '../CtaBand.astro';
+import Placeholders from '../Placeholders.astro';
+import { t } from '../../data/content';
+import { meta } from '../../data/seo';
+import { type Lang } from '../../data/i18n';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const c = t(lang).about;
+const h1 = meta.about[lang].h1;
+
+const portraitAlt =
+  lang === 'en'
+    ? 'Portrait placeholder: one of our drivers beside the car, in daylight, no sunglasses.'
+    : 'Segnaposto ritratto: uno dei nostri autisti accanto all’auto, di giorno, senza occhiali da sole.';
+---
+
+<section class="section">
+  <div class="wrap">
+    <div class="section__head">
+      <p class="eyebrow">{lang === 'en' ? 'About us' : 'Chi siamo'}</p>
+      <h1>{h1}</h1>
+    </div>
+
+    <div class="hero__grid">
+      <div class="prose">
+        <h2>{c.storyHeading}</h2>
+        {c.story.map((para) => <p style="margin-top: var(--s-4)"><Placeholders text={para} /></p>)}
+      </div>
+      <div class="media-placeholder">
+        <span>{portraitAlt}</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section section--tint" aria-labelledby="values-heading">
+  <div class="wrap">
+    <div class="section__head">
+      <p class="eyebrow">{lang === 'en' ? 'Values' : 'Valori'}</p>
+      <h2 id="values-heading">{c.valuesHeading}</h2>
+    </div>
+
+    <div class="grid grid--2">
+      {
+        c.values.map((value) => (
+          <article class="card">
+            <h3>{value.title}</h3>
+            <p>{value.body}</p>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<section class="section" aria-labelledby="trust-heading">
+  <div class="wrap">
+    <div class="contact-grid">
+      <div>
+        <div class="section__head">
+          <p class="eyebrow">{lang === 'en' ? 'Drivers' : 'Autisti'}</p>
+          <h2 id="trust-heading">{c.teamHeading}</h2>
+        </div>
+        <div class="prose">
+          {c.team.map((para) => <p style="margin-top: var(--s-4)"><Placeholders text={para} /></p>)}
+        </div>
+      </div>
+
+      <div>
+        <h2 style="font-size: var(--t-lg)">{c.trustHeading}</h2>
+        <dl class="spec-list" style="margin-top: var(--s-4)">
+          {
+            c.trust.map((row) => (
+              <div>
+                <dt>{row.label}</dt>
+                <dd><Placeholders text={row.value} /></dd>
+              </div>
+            ))
+          }
+        </dl>
+        <p class="note" style="margin-top: var(--s-4)">{c.trustNote}</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<CtaBand lang={lang} />

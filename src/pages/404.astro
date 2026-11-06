@@ -1,0 +1,64 @@
+---
+import '../styles/fonts.css';
+import '../styles/global.css';
+import '../styles/components.css';
+
+import Logo from '../components/Logo.astro';
+import { routes, LANGS, htmlLang, langNames, ui } from '../data/i18n';
+import { t } from '../data/content';
+
+/**
+ * Root 404, built to /404.html — the file most static hosts serve for ANY
+ * unknown path. Because we cannot know the visitor's language at that point,
+ * this page is deliberately bilingual and carries no single `lang`.
+ *
+ * Hosts that can route by path prefix should serve /en/404/ and /it/404/
+ * instead for /en/* and /it/* misses, and keep this as the catch-all.
+ * See README, "404 handling".
+ */
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Page Not Found · Pagina Non Trovata</title>
+    <meta
+      name="description"
+      content="That page does not exist. Choose a language to carry on. Questa pagina non esiste: scegliete una lingua per continuare."
+    />
+    <meta name="robots" content="noindex, follow" />
+    {/* No canonical and no hreflang here on purpose: this file is served for
+        arbitrary unknown URLs, so a canonical would claim /404.html is the
+        canonical version of whatever the visitor actually asked for. */}
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <meta name="theme-color" content="#00693A" />
+  </head>
+
+  <body>
+    <main class="gate">
+      <div class="gate__card">
+        <Logo />
+        <p class="eyebrow" style="justify-content: center">404</p>
+        <h1 style="font-size: var(--t-lg)">Page not found &middot; <span lang="it">Pagina non trovata</span></h1>
+
+        {
+          LANGS.map((lang) => (
+            <div lang={htmlLang[lang]} style="margin-top: var(--s-5)">
+              <h2 style="font-size: var(--t-md)">{t(lang).notFound.lead}</h2>
+              <div class="gate__links">
+                <a class="btn btn--secondary" href={routes.home[lang]}>
+                  {ui[lang].home} ({langNames[lang]})
+                </a>
+                <a class="btn btn--outline" href={routes.contact[lang]}>
+                  {ui[lang].contact}
+                </a>
+              </div>
+            </div>
+          ))
+        }
+      </div>
+    </main>
+  </body>
+</html>

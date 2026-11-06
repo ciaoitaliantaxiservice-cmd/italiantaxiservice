@@ -1,0 +1,32 @@
+---
+import { t } from '../../data/content';
+import { meta } from '../../data/seo';
+import { routes, navOrder, ui, type Lang } from '../../data/i18n';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const c = t(lang).notFound;
+const l = ui[lang];
+---
+
+<section class="section">
+  <div class="wrap wrap--narrow notfound">
+    <p class="eyebrow" style="justify-content: center">404</p>
+    <h1>{meta.notFound[lang].h1}</h1>
+    <p class="hero__lead" style="margin-inline: auto">{c.lead}</p>
+
+    <h2 style="font-size: var(--t-md); margin-top: var(--s-7)">{c.linksHeading}</h2>
+    <div class="notfound__links">
+      {
+        navOrder.map((key) => (
+          <a class="btn btn--outline" href={routes[key][lang]}>
+            {l[key]}
+          </a>
+        ))
+      }
+    </div>
+  </div>
+</section>

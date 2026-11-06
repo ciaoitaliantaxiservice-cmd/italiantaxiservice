@@ -1,0 +1,72 @@
+---
+import Placeholders from './Placeholders.astro';
+import { routes, navOrder, ui, otherLang, htmlLang, type Lang } from '../data/i18n';
+import { site, telHref, emailHref, whatsappHref } from '../data/site.mjs';
+import { cities, cityPath } from '../data/cities';
+
+interface Props {
+  lang: Lang;
+  altPaths: Record<Lang, string>;
+}
+
+const { lang, altPaths } = Astro.props;
+const l = ui[lang];
+const other = otherLang(lang);
+const year = new Date().getFullYear();
+
+const blurb =
+  lang === 'en'
+    ? 'Private transfers and chauffeured rides between Italian airports, cities and coastal towns.'
+    : 'Transfer privati e servizi con autista fra aeroporti, città e località costiere italiane.';
+---
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="site-footer__grid">
+      <div>
+        <h2>{site.brand}</h2>
+        <p class="site-footer__blurb">{blurb}</p>
+        <p class="site-footer__blurb">
+          <a href={altPaths[other]} hreflang={htmlLang[other]} lang={htmlLang[other]}>
+            {l.viewInItalian}
+          </a>
+        </p>
+      </div>
+
+      <div>
+        <h2>{l.quickLinks}</h2>
+        <ul>
+          {navOrder.map((key) => <li><a href={routes[key][lang]}>{l[key]}</a></li>)}
+          {
+            cities.slice(0, 3).map((city) => (
+              <li><a href={cityPath(city, lang)}>{city.name[lang]}</a></li>
+            ))
+          }
+        </ul>
+      </div>
+
+      <div>
+        <h2>{l.getInTouch}</h2>
+        <ul>
+          <li>
+            {l.phone}: <a href={telHref}><Placeholders text={site.phoneDisplay} /></a>
+          </li>
+          <li>
+            {l.whatsapp}:{' '}
+            <a href={whatsappHref(lang)} rel="noopener">
+              <Placeholders text={site.phoneDisplay} />
+            </a>
+          </li>
+          <li>
+            {l.email}: <a href={emailHref}><Placeholders text={site.email} /></a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="site-footer__legal">
+      <span>&copy; {year} <Placeholders text={site.legalName} />. {l.footerLegal}</span>
+      <span>{l.vat}: <Placeholders text={site.vatNumber} /></span>
+    </div>
+  </div>
+</footer>

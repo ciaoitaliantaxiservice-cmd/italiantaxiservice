@@ -1,0 +1,91 @@
+---
+import Logo from './Logo.astro';
+import LangSwitch from './LangSwitch.astro';
+import { routes, navOrder, ui, type Lang, type RouteKey } from '../data/i18n';
+
+interface Props {
+  lang: Lang;
+  current?: RouteKey;
+  /** Equivalent page in each language, for the EN/IT switch. */
+  altPaths: Record<Lang, string>;
+}
+
+const { lang, current, altPaths } = Astro.props;
+const l = ui[lang];
+---
+
+<header class="site-header">
+  <div class="wrap site-header__inner">
+    <a class="logo" href={routes.home[lang]}>
+      <Logo />
+      <span class="logo__text">
+        <span class="logo__name">Ciao</span>
+        <span class="logo__tag">Italian Taxi Service</span>
+      </span>
+    </a>
+
+    <nav class="site-nav" id="site-nav" aria-label={l.mainNav} data-open="false">
+      <ul class="site-nav__list">
+        {
+          navOrder.map((key) => (
+            <li>
+              <a href={routes[key][lang]} aria-current={key === current ? 'page' : undefined}>
+                {l[key]}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    <div class="header__actions">
+      <LangSwitch lang={lang} paths={altPaths} />
+
+      <a class="btn btn--primary header__cta" href={`${routes.contact[lang]}#quote-form`}>
+        {l.getQuote}
+      </a>
+
+      <button
+        class="nav-toggle"
+        type="button"
+        aria-controls="site-nav"
+        aria-expanded="false"
+        data-nav-toggle
+      >
+        <span class="nav-toggle__bars" aria-hidden="true">
+          <span></span><span></span><span></span>
+        </span>
+        <span>Menu</span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<script>
+  // Mobile nav. ~15 lines of JS rather than a checkbox hack, so the control
+  // is a real button with a correct aria-expanded state.
+  const toggle = document.querySelector<HTMLButtonElement>('[data-nav-toggle]');
+  const nav = document.getElementById('site-nav');
+
+  if (toggle && nav) {
+    const setOpen = (open: boolean) => {
+      nav.dataset.open = String(open);
+      toggle.setAttribute('aria-expanded', String(open));
+    };
+
+    toggle.addEventListener('click', () => {
+      setOpen(nav.dataset.open !== 'true');
+    });
+
+    nav.addEventListener('click', (e) => {
+      if ((e.target as HTMLElement).closest('a')) setOpen(false);
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && nav.dataset.open === 'true') {
+        setOpen(false);
+        toggle.focus();
+      }
+    });
+  }
+</script>

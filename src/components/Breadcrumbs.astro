@@ -1,0 +1,35 @@
+---
+import { ui, type Lang } from '../data/i18n';
+import type { Crumb } from '../data/schema';
+
+interface Props {
+  lang: Lang;
+  /** Includes the current page as the final item. */
+  crumbs: Crumb[];
+}
+
+const { lang, crumbs } = Astro.props;
+---
+
+{/* Visible breadcrumbs. The matching BreadcrumbList JSON-LD is emitted by the
+    Base layout from the same array, so the two can never drift apart. */}
+<nav class="breadcrumbs" aria-label={ui[lang].breadcrumb}>
+  <div class="wrap">
+    <ol>
+      {
+        crumbs.map((crumb, i) => {
+          const isLast = i === crumbs.length - 1;
+          return (
+            <li>
+              {isLast ? (
+                <span aria-current="page">{crumb.name}</span>
+              ) : (
+                <a href={crumb.path}>{crumb.name}</a>
+              )}
+            </li>
+          );
+        })
+      }
+    </ol>
+  </div>
+</nav>

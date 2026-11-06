@@ -1,0 +1,64 @@
+---
+import CtaBand from '../CtaBand.astro';
+import { t } from '../../data/content';
+import { meta } from '../../data/seo';
+import { type Lang } from '../../data/i18n';
+import { cities, cityPath } from '../../data/cities';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const c = t(lang).locations;
+const h1 = meta.locations[lang].h1;
+
+const thumbAlt = (name: string) =>
+  lang === 'en'
+    ? `Photo placeholder for ${name}: a street-level view with a waiting car.`
+    : `Segnaposto fotografico per ${name}: una veduta dalla strada con l’auto in attesa.`;
+---
+
+<section class="section">
+  <div class="wrap">
+    <div class="section__head">
+      <p class="eyebrow">{lang === 'en' ? 'Coverage' : 'Copertura'}</p>
+      <h1>{h1}</h1>
+      <p>{c.lead}</p>
+    </div>
+  </div>
+</section>
+
+<section class="section section--tint" aria-labelledby="cities-heading">
+  <div class="wrap">
+    <h2 id="cities-heading" class="visually-hidden">{c.gridHeading}</h2>
+
+    <div class="grid grid--3">
+      {
+        cities.map((city) => (
+          <article class="city-card">
+            <div class="city-card__thumb">
+              {/* [[REPLACE WITH A 16:9 CITY PHOTO, loading="lazy", decoding="async"]] */}
+              <span>{thumbAlt(city.name[lang])}</span>
+            </div>
+            <div class="city-card__body">
+              <h3>
+                <a href={cityPath(city, lang)}>{city.name[lang]}</a>
+              </h3>
+              <p class="city-card__gateways">{city.gateways[lang]}</p>
+              <p>{city.cardText[lang]}</p>
+              <p class="city-card__flag">{c.comingSoonLabel}</p>
+            </div>
+          </article>
+        ))
+      }
+    </div>
+
+    <div class="prose" style="margin-top: var(--s-7)">
+      <h2>{lang === 'en' ? 'Somewhere else in mind?' : 'Avete in mente un’altra destinazione?'}</h2>
+      <p style="margin-top: var(--s-3)">{c.secondary}</p>
+    </div>
+  </div>
+</section>
+
+<CtaBand lang={lang} heading={c.ctaHeading} body={c.ctaBody} />

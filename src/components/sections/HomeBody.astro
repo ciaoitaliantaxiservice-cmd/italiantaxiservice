@@ -1,0 +1,192 @@
+---
+import Icon from '../Icon.astro';
+import CtaBand from '../CtaBand.astro';
+import { t } from '../../data/content';
+import { meta } from '../../data/seo';
+import { routes, ui, type Lang } from '../../data/i18n';
+import { telHref } from '../../data/site.mjs';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const c = t(lang).home;
+const l = ui[lang];
+const h1 = meta.home[lang].h1;
+
+const labels =
+  lang === 'en'
+    ? { from: 'From', to: 'To', time: 'Typical time', price: 'From', services: 'Services', how: 'How it works', routes: 'Routes', why: 'Why us', faq: 'FAQ' }
+    : { from: 'Da', to: 'A', time: 'Tempo indicativo', price: 'Da', services: 'Servizi', how: 'Come funziona', routes: 'Tratte', why: 'Perché noi', faq: 'Domande' };
+
+const heroAlt =
+  lang === 'en'
+    ? 'Hero image placeholder: a dark saloon car waiting on a quiet Italian street, driver holding the rear door open.'
+    : 'Segnaposto immagine principale: una berlina scura in attesa in una via italiana tranquilla, con l’autista che tiene aperta la portiera posteriore.';
+---
+
+<!-- Hero -->
+<section class="hero">
+  <div class="wrap hero__grid">
+    <div>
+      <p class="eyebrow">{lang === 'en' ? 'Across Italy' : 'In tutta Italia'}</p>
+      <h1>{h1}</h1>
+      <p class="hero__lead">{c.heroLead}</p>
+
+      <div class="btn-row hero__actions">
+        <a class="btn btn--primary" href={`${routes.contact[lang]}#quote-form`}>
+          <Icon name="quote" />
+          {l.getQuote}
+        </a>
+        <a class="btn btn--outline" href={telHref}>
+          <Icon name="phone" />
+          {l.callUs}
+        </a>
+      </div>
+
+      <ul class="hero__trust">
+        {
+          c.heroTrust.map((item) => (
+            <li>
+              <Icon name="check" />
+              <span>{item}</span>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+
+    <div class="media-placeholder">
+      {/* [[REPLACE WITH HERO PHOTOGRAPHY — 4:3, served as <picture> with
+          width/height set and loading="eager" + fetchpriority="high"]] */}
+      <span>{heroAlt}</span>
+    </div>
+  </div>
+</section>
+
+<!-- Services -->
+<section class="section" aria-labelledby="services-heading">
+  <div class="wrap">
+    <div class="section__head">
+      <p class="eyebrow">{labels.services}</p>
+      <h2 id="services-heading">{c.servicesHeading}</h2>
+    </div>
+
+    <div class="grid grid--3">
+      {
+        c.services.map((service) => (
+          <article class="card">
+            <h3>{service.title}</h3>
+            <p>{service.body}</p>
+            <ul class="card__list">
+              {service.points.map((point) => <li><span>{point}</span></li>)}
+            </ul>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<!-- How it works -->
+<section class="section section--tint" aria-labelledby="how-heading">
+  <div class="wrap">
+    <div class="section__head">
+      <p class="eyebrow">{labels.how}</p>
+      <h2 id="how-heading">{c.howHeading}</h2>
+    </div>
+
+    <ol class="steps">
+      {
+        c.how.map((step) => (
+          <li>
+            <h3>{step.title}</h3>
+            <p>{step.body}</p>
+          </li>
+        ))
+      }
+    </ol>
+  </div>
+</section>
+
+<!-- Routes -->
+<section class="section" aria-labelledby="routes-heading">
+  <div class="wrap">
+    <div class="section__head">
+      <p class="eyebrow">{labels.routes}</p>
+      <h2 id="routes-heading">{c.routesHeading}</h2>
+      <p>{c.routesLead}</p>
+    </div>
+
+    <div class="routes__scroll">
+      <table class="routes">
+        <caption>{c.routesNote}</caption>
+        <thead>
+          <tr>
+            <th scope="col">{labels.from}</th>
+            <th scope="col">{labels.to}</th>
+            <th scope="col">{labels.time}</th>
+            <th scope="col">{labels.price}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {
+            c.routes.map((route) => (
+              <tr>
+                <th scope="row">{route.from}</th>
+                <td>{route.to}</td>
+                <td>{route.time}</td>
+                <td><span class="placeholder">{route.price}</span></td>
+              </tr>
+            ))
+          }
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- Why us -->
+<section class="section section--tint" aria-labelledby="why-heading">
+  <div class="wrap">
+    <div class="section__head">
+      <p class="eyebrow">{labels.why}</p>
+      <h2 id="why-heading">{c.whyHeading}</h2>
+    </div>
+
+    <div class="grid grid--4">
+      {
+        c.why.map((item) => (
+          <article class="card card--tint">
+            <h3>{item.title}</h3>
+            <p>{item.body}</p>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<!-- FAQ. Matches the FAQPage JSON-LD emitted by the page that renders this. -->
+<section class="section" aria-labelledby="faq-heading">
+  <div class="wrap">
+    <div class="section__head">
+      <p class="eyebrow">{labels.faq}</p>
+      <h2 id="faq-heading">{c.faqHeading}</h2>
+    </div>
+
+    <div class="faq">
+      {
+        c.faq.map((item) => (
+          <details>
+            <summary>{item.q}</summary>
+            <div><p>{item.a}</p></div>
+          </details>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<CtaBand lang={lang} />

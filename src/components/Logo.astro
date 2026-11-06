@@ -1,0 +1,28 @@
+---
+/**
+ * Placeholder brand mark.
+ *
+ * [[REPLACE WITH THE APPROVED LOGO FROM THE BRAND BOARD]] — drop the final
+ * SVG in here, keep the viewBox square, and keep `aria-hidden` as it is: the
+ * accessible name comes from the surrounding link text, so duplicating it here
+ * would make screen readers announce the brand twice.
+ *
+ * Red (#CD212A) is deliberately absent. It is reserved for the single main CTA.
+ */
+interface Props {
+  class?: string;
+}
+const { class: className } = Astro.props;
+---
+
+<svg class={className} viewBox="0 0 48 48" aria-hidden="true" focusable="false">
+  <rect width="48" height="48" rx="11" fill="#00693A"></rect>
+  <path
+    d="M33 15.6a12.2 12.2 0 1 0 0 16.8"
+    fill="none"
+    stroke="#FFFFFF"
+    stroke-width="4.6"
+    stroke-linecap="round"
+  ></path>
+  <circle cx="32.2" cy="24" r="3.1" fill="#008C45"></circle>
+</svg>

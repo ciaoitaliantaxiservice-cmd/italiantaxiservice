@@ -1,0 +1,22 @@
+---
+/**
+ * Renders a string, highlighting every [[PLACEHOLDER]] it contains so missing
+ * facts are impossible to miss in review and impossible to ship by accident.
+ *
+ * Splitting rather than using set:html keeps the copy escaped — the content
+ * files stay plain text and can never inject markup.
+ */
+interface Props {
+  text: string;
+}
+
+const { text } = Astro.props;
+
+const parts = text.split(/(\[\[[^\]]+\]\])/g).filter((part) => part !== '');
+---
+
+{
+  parts.map((part) =>
+    /^\[\[[^\]]+\]\]$/.test(part) ? <span class="placeholder">{part}</span> : <Fragment>{part}</Fragment>
+  )
+}

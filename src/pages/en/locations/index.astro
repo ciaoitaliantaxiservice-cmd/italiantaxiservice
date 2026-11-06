@@ -1,0 +1,27 @@
+---
+import Base from '../../../layouts/Base.astro';
+import LocationsBody from '../../../components/sections/LocationsBody.astro';
+import { meta, alternatesForRoute } from '../../../data/seo';
+import { routes, ui } from '../../../data/i18n';
+
+const lang = 'en' as const;
+const m = meta.locations[lang];
+
+const crumbs = [
+  { name: ui[lang].home, path: routes.home[lang] },
+  { name: ui[lang].locations, path: routes.locations[lang] },
+];
+---
+
+<Base
+  lang={lang}
+  title={m.title}
+  description={m.description}
+  path={routes.locations[lang]}
+  alternates={alternatesForRoute('locations')}
+  altPaths={routes.locations}
+  current="locations"
+  crumbs={crumbs}
+>
+  <LocationsBody lang={lang} />
+</Base>

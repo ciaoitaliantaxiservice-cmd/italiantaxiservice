@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-label="Ciao Italian Taxi Service">
+  <rect width="1200" height="630" fill="#F4F5F0"/>
+  <rect x="0" y="0" width="1200" height="10" fill="#008C45"/>
+  <rect x="0" y="620" width="400" height="10" fill="#008C45"/>
+  <rect x="400" y="620" width="400" height="10" fill="#FFFFFF"/>
+  <rect x="800" y="620" width="400" height="10" fill="#CD212A"/>
+  <g transform="translate(96 150)">
+    <rect width="104" height="104" rx="24" fill="#00693A"/>
+    <path d="M71.5 33.8a26.4 26.4 0 1 0 0 36.4" fill="none" stroke="#FFFFFF" stroke-width="10" stroke-linecap="round"/>
+    <circle cx="69.8" cy="52" r="6.7" fill="#008C45"/>
+  </g>
+  <text x="96" y="340" font-family="Georgia, 'Times New Roman', serif" font-size="78" fill="#00502C">Ciao Italian Taxi Service</text>
+  <text x="96" y="412" font-family="Helvetica, Arial, sans-serif" font-size="34" fill="#4A5A52">Private transfers and chauffeured rides across Italy</text>
+  <text x="96" y="462" font-family="Helvetica, Arial, sans-serif" font-size="34" fill="#4A5A52">Transfer privati e auto con autista in tutta Italia</text>
+</svg>

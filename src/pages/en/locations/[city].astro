@@ -1,0 +1,40 @@
+---
+import type { GetStaticPaths } from 'astro';
+import Base from '../../../layouts/Base.astro';
+import CityStubBody from '../../../components/sections/CityStubBody.astro';
+import { alternatesFor } from '../../../data/seo';
+import { routes, ui } from '../../../data/i18n';
+import { cities, cityPath, type City } from '../../../data/cities';
+
+const lang = 'en' as const;
+
+export const getStaticPaths: GetStaticPaths = () =>
+  cities.map((city) => ({ params: { city: city.slug.en }, props: { city } }));
+
+const { city } = Astro.props as { city: City };
+
+const path = cityPath(city, lang);
+const name = city.name[lang];
+
+const crumbs = [
+  { name: ui[lang].home, path: routes.home[lang] },
+  { name: ui[lang].locations, path: routes.locations[lang] },
+  { name, path },
+];
+---
+
+{/* noindex until this page has real routes, times and prices.
+    Controlled per-page here and in sitemap.xml via CITY_PAGES_INDEXABLE. */}
+<Base
+  lang={lang}
+  title={`${name} Private Transfers & Chauffeured Rides`}
+  description={`Chauffeured transfers in ${name} and the surrounding area. Tell us the route and we will send a fixed quote. Detailed routes and prices coming soon.`}
+  path={path}
+  alternates={alternatesFor({ en: path, it: cityPath(city, 'it') })}
+  altPaths={{ en: path, it: cityPath(city, 'it') }}
+  current="locations"
+  crumbs={crumbs}
+  noindex
+>
+  <CityStubBody lang={lang} city={city} />
+</Base>

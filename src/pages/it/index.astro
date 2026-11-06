@@ -1,0 +1,27 @@
+---
+import Base from '../../layouts/Base.astro';
+import HomeBody from '../../components/sections/HomeBody.astro';
+import { meta, alternatesForRoute } from '../../data/seo';
+import { routes } from '../../data/i18n';
+import { faqSchema } from '../../data/schema';
+import { t } from '../../data/content';
+
+const lang = 'it' as const;
+const m = meta.home[lang];
+
+// FAQPage solo qui: è l'unica pagina con domande frequenti reali.
+const faq = [faqSchema(t(lang).home.faq)];
+---
+
+<Base
+  lang={lang}
+  title={m.title}
+  description={m.description}
+  path={routes.home[lang]}
+  alternates={alternatesForRoute('home')}
+  altPaths={routes.home}
+  current="home"
+  extraSchema={faq}
+>
+  <HomeBody lang={lang} />
+</Base>

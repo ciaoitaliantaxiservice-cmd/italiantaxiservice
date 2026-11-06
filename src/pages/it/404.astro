@@ -1,0 +1,23 @@
+---
+import Base from '../../layouts/Base.astro';
+import NotFoundBody from '../../components/sections/NotFoundBody.astro';
+import { meta, alternatesForRoute } from '../../data/seo';
+import { routes } from '../../data/i18n';
+
+const lang = 'it' as const;
+const m = meta.notFound[lang];
+---
+
+{/* Corpo 404 in italiano. Per servirlo sui percorsi /it/* sconosciuti serve
+    una riga di configurazione dell'hosting — vedere README, "404 handling". */}
+<Base
+  lang={lang}
+  title={m.title}
+  description={m.description}
+  path={routes.notFound[lang]}
+  alternates={alternatesForRoute('notFound')}
+  altPaths={routes.notFound}
+  noindex
+>
+  <NotFoundBody lang={lang} />
+</Base>

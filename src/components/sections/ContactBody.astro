@@ -1,0 +1,111 @@
+---
+import Icon from '../Icon.astro';
+import QuoteForm from '../QuoteForm.astro';
+import Placeholders from '../Placeholders.astro';
+import { t } from '../../data/content';
+import { meta } from '../../data/seo';
+import { ui, type Lang } from '../../data/i18n';
+import { site, telHref, emailHref, whatsappHref } from '../../data/site.mjs';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const c = t(lang).contact;
+const l = ui[lang];
+const h1 = meta.contact[lang].h1;
+
+const methods = [
+  { icon: 'phone' as const, label: l.phone, value: site.phoneDisplay, href: telHref },
+  { icon: 'whatsapp' as const, label: l.whatsapp, value: site.phoneDisplay, href: whatsappHref(lang) },
+  { icon: 'mail' as const, label: l.email, value: site.email, href: emailHref },
+];
+
+const addressLines = [
+  site.address.street,
+  `${site.address.postalCode} ${site.address.city}`,
+  site.address.region,
+];
+---
+
+<section class="section">
+  <div class="wrap">
+    <div class="section__head">
+      <p class="eyebrow">{lang === 'en' ? 'Contact' : 'Contatti'}</p>
+      <h1>{h1}</h1>
+      <p>{c.lead}</p>
+    </div>
+
+    <div class="contact-grid">
+      <div>
+        <QuoteForm lang={lang} heading={c.formHeading} headingLevel={2} note={c.formNote} />
+      </div>
+
+      <div class="stack">
+        <div>
+          <h2 style="font-size: var(--t-lg)">{c.methodsHeading}</h2>
+          <ul class="method-list" style="margin-top: var(--s-4)">
+            {
+              methods.map((m) => (
+                <li>
+                  <a class="method" href={m.href} rel={m.icon === 'whatsapp' ? 'noopener' : undefined}>
+                    <Icon name={m.icon} />
+                    <span>
+                      <span class="method__label">{m.label}</span>
+                      <span class="method__value"><Placeholders text={m.value} /></span>
+                    </span>
+                  </a>
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+
+        <div class="card card--tint">
+          <h2 style="font-size: var(--t-md)">
+            <Icon name="clock" class="visually-hidden" />
+            {c.hoursHeading}
+          </h2>
+          <p style="margin-top: var(--s-2)"><Placeholders text={c.hoursBody} /></p>
+        </div>
+
+        <div class="card card--tint">
+          <h2 style="font-size: var(--t-md)">{c.responseHeading}</h2>
+          <p style="margin-top: var(--s-2)">{c.responseBody}</p>
+        </div>
+
+        <div>
+          <h2 style="font-size: var(--t-md)">{c.addressHeading}</h2>
+          <address style="margin-top: var(--s-2); font-style: normal" class="muted">
+            {site.legalName.includes('[[') ? <Placeholders text={site.legalName} /> : site.legalName}<br />
+            {
+              addressLines.map((line) => (
+                <Fragment><Placeholders text={line} /><br /></Fragment>
+              ))
+            }
+            {l.vat}: <Placeholders text={site.vatNumber} />
+          </address>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section section--tint" aria-labelledby="map-heading">
+  <div class="wrap">
+    <div class="section__head">
+      <p class="eyebrow">
+        <Icon name="pin" class="visually-hidden" />
+        {lang === 'en' ? 'Location' : 'Dove siamo'}
+      </p>
+      <h2 id="map-heading">{c.mapHeading}</h2>
+    </div>
+
+    {/* Map placeholder. A real embed is a third-party iframe and the single
+        heaviest thing on this page, so load it lazily and only here. */}
+    <div class="media-placeholder" style="aspect-ratio: 16 / 7">
+      <span><Placeholders text={c.mapNote} /></span>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,37 @@
+---
+import Icon from './Icon.astro';
+import { routes, ui, type Lang } from '../data/i18n';
+import { t } from '../data/content';
+import { telHref } from '../data/site.mjs';
+
+interface Props {
+  lang: Lang;
+  /** Override the default heading/body when a page needs its own wording. */
+  heading?: string;
+  body?: string;
+}
+
+const { lang, heading, body } = Astro.props;
+const l = ui[lang];
+const c = t(lang).cta;
+---
+
+<section class="cta-band">
+  <div class="wrap cta-band__inner">
+    <div>
+      <h2>{heading ?? c.heading}</h2>
+      <p>{body ?? c.body}</p>
+      <p class="note">{c.note}</p>
+    </div>
+    <div class="cta-band__actions">
+      <a class="btn btn--primary" href={`${routes.contact[lang]}#quote-form`}>
+        <Icon name="quote" />
+        {l.getQuote}
+      </a>
+      <a class="btn btn--on-dark" href={telHref}>
+        <Icon name="phone" />
+        {l.callUs}
+      </a>
+    </div>
+  </div>
+</section>
