@@ -1,7 +1,7 @@
 ---
 import Icon from './Icon.astro';
 import { routes, ui, type Lang } from '../data/i18n';
-import { telHref, whatsappHref } from '../data/site.mjs';
+import { whatsappHref, emailHref, newTab } from '../data/site.mjs';
 
 interface Props {
   lang: Lang;
@@ -11,18 +11,27 @@ const { lang } = Astro.props;
 const l = ui[lang];
 ---
 
-{/* Hidden at >=48rem by CSS. body has bottom padding so nothing sits under it. */}
+{/* Hidden at >=68rem by CSS, where the header shows its own quote button. body has bottom padding so nothing sits under it.
+    The concept gives the quote action the red and no icon, so it reads as the
+    one primary action rather than a third equal tab. */}
 <nav class="mobile-bar" aria-label={l.mobileActions}>
-  <a class="mobile-bar__item" href={telHref}>
-    <Icon name="phone" />
-    <span>{l.callUs}</span>
-  </a>
-  <a class="mobile-bar__item" href={whatsappHref(lang)} rel="noopener">
+  <a
+    class="mobile-bar__item mobile-bar__item--whatsapp"
+    href={whatsappHref(lang)}
+    {...newTab}
+  >
     <Icon name="whatsapp" />
     <span>{l.whatsapp}</span>
+    <span class="visually-hidden">{l.newTab}</span>
   </a>
-  <a class="mobile-bar__item mobile-bar__item--cta" href={`${routes.contact[lang]}#quote-form`}>
-    <Icon name="quote" />
-    <span>{l.quote}</span>
+  <a class="mobile-bar__item" href={emailHref}>
+    <Icon name="mail" />
+    <span>{l.email}</span>
+  </a>
+  <a
+    class="mobile-bar__item mobile-bar__item--cta"
+    href={`${routes.contact[lang]}#quote-form`}
+  >
+    {l.quote}
   </a>
 </nav>

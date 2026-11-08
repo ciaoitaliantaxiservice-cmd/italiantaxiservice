@@ -1,4 +1,5 @@
 ---
+import Tricolore from '../Tricolore.astro';
 import { t } from '../../data/content';
 import { meta } from '../../data/seo';
 import { routes, navOrder, ui, type Lang } from '../../data/i18n';
@@ -14,11 +15,14 @@ const l = ui[lang];
 
 <section class="section">
   <div class="wrap wrap--narrow notfound">
-    <p class="eyebrow" style="justify-content: center">404</p>
-    <h1>{meta.notFound[lang].h1}</h1>
-    <p class="hero__lead" style="margin-inline: auto">{c.lead}</p>
+    <p class="eyebrow" style="justify-content: center">
+      <Tricolore />
+      <span class="label">404</span>
+    </p>
+    <h1 style="margin-top: var(--s-4)">{meta.notFound[lang].h1}</h1>
+    <p class="lead" style="margin: var(--s-4) auto 0">{c.lead}</p>
 
-    <h2 style="font-size: var(--t-md); margin-top: var(--s-7)">{c.linksHeading}</h2>
+    <h2 style="margin-top: var(--s-14)">{c.linksHeading}</h2>
     <div class="notfound__links">
       {
         navOrder.map((key) => (

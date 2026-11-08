@@ -1,6 +1,8 @@
 // English page copy. Written independently of src/data/content/it.ts —
 // the two are not translations of each other and must not be merged.
 
+import type { IconName } from '../icons';
+
 export const en = {
   home: {
     heroLead:
@@ -15,18 +17,21 @@ export const en = {
     servicesHeading: 'Three ways people use us',
     services: [
       {
+        icon: 'plane' as IconName,
         title: 'Airport and port transfers',
         body:
           'We meet you in arrivals with a name board and carry the bags. If the flight slips, the pickup slides with it at no extra charge, because we watch the arrival board rather than the clock.',
         points: ['Meet-and-greet inside the terminal', 'Waiting time included', 'Cruise terminal drop-offs'],
       },
       {
+        icon: 'car' as IconName,
         title: 'City-to-city journeys',
         body:
           'Rome to Florence, Milan to the lakes, Naples down the coast. A direct run, door to door, with room to stop for lunch or a viewpoint if the mood takes you.',
         points: ['No changes, no platforms', 'Luggage never leaves the car', 'Stops you choose en route'],
       },
       {
+        icon: 'clock' as IconName,
         title: 'Private driver days',
         body:
           'The car and driver stay with you for the day. Useful for vineyards, hill towns and anywhere a return train would decide your schedule for you.',
@@ -67,18 +72,22 @@ export const en = {
     whyHeading: 'Why people come back',
     why: [
       {
+        icon: 'tag' as IconName,
         title: 'The price you were quoted',
         body: 'No meter, no surge, no surprise airport supplement at the end of the ride.',
       },
       {
+        icon: 'map-pin' as IconName,
         title: 'Drivers who live there',
         body: 'They know which gate your terminal actually uses and where a coach cannot turn around.',
       },
       {
+        icon: 'messages' as IconName,
         title: 'One thread, one person',
         body: 'Your booking stays with the same contact instead of restarting with every message.',
       },
       {
+        icon: 'car' as IconName,
         title: 'Vehicles sized to the road',
         body: 'A minivan is wrong for the Amalfi Coast in August. We will tell you that before you book it.',
       },
@@ -174,7 +183,7 @@ export const en = {
 
   contact: {
     lead:
-      'The form is the fastest route to a price, because it asks for the four things we need in order to quote. If you would rather talk it through, the phone and WhatsApp details below reach the same team.',
+      'The form is the fastest route to a price, because it asks for the four things we need in order to quote. If you would rather talk it through, the WhatsApp and email details below reach the same team.',
     formHeading: 'Request a quote',
     formNote:
       'We reply within [[RESPONSE TIME]] during office hours. Nothing is confirmed until you have a written quote from us.',

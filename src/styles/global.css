@@ -1,65 +1,109 @@
 /* ==========================================================================
    Ciao Italian Taxi Service — design tokens and base styles
    --------------------------------------------------------------------------
-   Colour roles are fixed by the brand concept and must not be reassigned:
-     --c-green-flag  #008C45  graphics, icons, rules, large display type only
-                              (4.34:1 on white — NOT valid for body text)
-     --c-green-deep  #00693A  body-weight text and primary buttons (6.81:1)
-     --c-red         #CD212A  the single main CTA per page (5.46:1 with white)
-     --c-off-white   #F4F5F0  page and section backgrounds
+   Every value here comes from the approved brand concept. Palette names are
+   the concept's own, kept so a design review can match them line for line.
+
+   Colour roles are fixed and must not be reassigned:
+     --c-verde-felce    #008C45  graphics, rules, icons, display type only
+                                 (4.34:1 on white — NOT valid for body text)
+     --c-verde-profondo #00693A  body-weight text, links, outline buttons (6.8:1)
+     --c-verde-chiaro   #5CC48C  accents on the dark greens (7.1:1 on Notte)
+     --c-rosso          #CD212A  the single main CTA per page (5.5:1 with white)
+     --c-bianco         #F4F5F0  section surfaces
+     --c-carbone        #1C1F1D  text (16.7:1 on white)
+     --c-notte          #0F2A1E  dark bands
+     --c-notte-deep     #0B2016  footer
+     --c-pietra         #5A605C  secondary text (5.9:1 on Bianco)
+
+   Corners are square throughout. The concept sets border-radius: 0 on fields
+   explicitly; only the app-icon tiles are rounded, and those live in
+   /public as static assets.
    ========================================================================== */
 
 :root {
-  /* Brand */
-  --c-green-flag: #008c45;
-  --c-green-deep: #00693a;
-  --c-green-darker: #00502c;
-  --c-red: #cd212a;
-  --c-red-dark: #a8161e;
-  --c-off-white: #f4f5f0;
-
-  /* Neutrals derived from the off-white, kept slightly green to match */
-  --c-ink: #14241c;
-  --c-ink-muted: #4a5a52;
+  /* Brand palette */
+  --c-verde-felce: #008c45;
+  --c-verde-profondo: #00693a;
+  --c-verde-chiaro: #5cc48c;
+  --c-rosso: #cd212a;
+  --c-rosso-shade: #9e1a21;
+  --c-rosso-fold: #6e1016;
+  --c-bianco: #f4f5f0;
   --c-white: #ffffff;
-  --c-border: #d9ddd4;
-  --c-border-strong: #b9c0b4;
-  --c-tint: #e9ede4;
+  --c-carbone: #1c1f1d;
+  --c-pietra: #5a605c;
+  --c-notte: #0f2a1e;
+  --c-notte-deep: #0b2016;
 
-  /* Type — DM Serif Display for display, Inter for everything else */
-  --font-display: 'DM Serif Display', 'Iowan Old Style', Georgia, 'Times New Roman', serif;
-  --font-body: 'Inter Variable', Inter, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  /* Lines and surfaces */
+  --c-border: #dadcd5;
+  /* The concept draws field borders in #B9BDB5, which is 1.9:1 on white and
+     fails WCAG 1.4.11 (3:1 for the boundary of a user interface component).
+     A field's border is the only thing that identifies it, so this is the
+     lightest value that clears 3:1 on both white (3.48) and Bianco (3.17).
+     Everything else about the field is exactly as drawn in the concept. */
+  --c-border-input: #868b84;
+  --c-border-dark: #23402f;
+  --c-text-dark-bg: #c9d3cc;
+  --c-placeholder: #ecede7;
 
-  /* Fluid type scale, 1.2 ratio at small sizes widening to 1.25 */
-  --t-xs: 0.8125rem;
-  --t-sm: 0.9375rem;
-  --t-base: 1.0625rem;
-  --t-md: clamp(1.125rem, 1.05rem + 0.35vw, 1.3125rem);
-  --t-lg: clamp(1.375rem, 1.25rem + 0.6vw, 1.75rem);
-  --t-xl: clamp(1.75rem, 1.45rem + 1.4vw, 2.5rem);
-  --t-2xl: clamp(2.125rem, 1.6rem + 2.4vw, 3.5rem);
+  /* Type. The two font stacks (--font-serif, --font-sans) are defined in
+     main.css @theme, so the Tailwind utilities font-serif / font-sans and
+     this CSS share one definition. */
 
-  /* 8px spacing grid (4px half-step for optical fixes only) */
+  /* Type scale, straight from the concept */
+  --t-hero: clamp(2.75rem, 5vw, 4.25rem); /* 44 -> 68 */
+  --t-h2: clamp(2.125rem, 3.4vw, 2.75rem); /* 34 -> 44 */
+  --t-h2-band: clamp(2.125rem, 3.6vw, 3rem); /* 34 -> 48 */
+  --t-h3: 1.75rem; /* 28 */
+  --t-lead: 1.125rem; /* 18 */
+  --t-base: 1rem; /* 16 */
+  --t-small: 0.875rem; /* 14 */
+  --t-fine: 0.8125rem; /* 13 */
+  --t-label: 0.75rem; /* 12 */
+  --t-micro: 0.625rem; /* 10 */
+
+  /* 8px spacing grid */
   --s-1: 0.25rem;
   --s-2: 0.5rem;
   --s-3: 0.75rem;
   --s-4: 1rem;
-  --s-5: 1.5rem;
-  --s-6: 2rem;
-  --s-7: 3rem;
-  --s-8: 4rem;
-  --s-9: 6rem;
+  --s-5: 1.25rem;
+  --s-6: 1.5rem;
+  --s-7: 1.75rem;
+  --s-8: 2rem;
+  --s-10: 2.5rem;
+  --s-12: 3rem;
+  --s-14: 3.5rem;
+  --s-16: 4rem;
+  --s-20: 5rem;
+  --s-22: 5.5rem;
 
-  --radius: 4px;
-  --radius-lg: 10px;
-  --shadow-sm: 0 1px 2px rgb(20 36 28 / 0.06), 0 2px 8px rgb(20 36 28 / 0.04);
-  --shadow-md: 0 2px 4px rgb(20 36 28 / 0.06), 0 12px 28px rgb(20 36 28 / 0.08);
+  /* Elevation (--shadow-card, --shadow-bar) is defined in main.css @theme,
+     for the same reason as the fonts. */
 
-  --wrap: 72rem;
+  --wrap: 80rem; /* 1280 */
   --wrap-narrow: 44rem;
+  --gutter: 1rem; /* 16 on mobile */
+
+  /* Interaction polish: one radius, one transition, one focus colour.
+     --radius: 0 restores the concept's square corners everywhere. */
+  --radius: 0.375rem; /* 6 */
+  --dur: 180ms;
+  --ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+
+  /* Every icon on the site is this size (see .icon below and Icon.astro). */
+  --icon-size: 1.5rem; /* 24, Lucide's native grid */
 
   /* Height of the sticky mobile action bar, so content can clear it */
   --mobile-bar-h: 4rem;
+}
+
+@media (min-width: 48rem) {
+  :root {
+    --gutter: 1.5rem; /* 24 from tablet up */
+  }
 }
 
 /* --------------------------------------------------------------------------
@@ -96,17 +140,18 @@ html {
 
 body {
   background: var(--c-white);
-  color: var(--c-ink);
-  font-family: var(--font-body);
+  color: var(--c-carbone);
+  font-family: var(--font-sans);
   font-size: var(--t-base);
-  line-height: 1.65;
+  line-height: 1.625; /* 26 on 16 */
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
   /* Clears the sticky mobile bar so the footer is never trapped beneath it */
   padding-bottom: var(--mobile-bar-h);
 }
 
-@media (min-width: 48rem) {
+/* Matches the breakpoint where the sticky bar hides (components.css). */
+@media (min-width: 68rem) {
   body {
     padding-bottom: 0;
   }
@@ -129,28 +174,50 @@ select {
   color: inherit;
 }
 
+/* --------------------------------------------------------------------------
+   Headings — Cormorant Garamond from 28px up, per the concept
+   -------------------------------------------------------------------------- */
+
 h1,
 h2,
 h3,
 h4 {
-  font-family: var(--font-display);
-  font-weight: 400;
-  line-height: 1.12;
-  letter-spacing: -0.015em;
+  font-family: var(--font-serif);
+  font-weight: 600;
+  line-height: 1.1;
   text-wrap: balance;
 }
 
 h1 {
-  font-size: var(--t-2xl);
+  font-size: var(--t-hero);
+  font-weight: 500;
+  line-height: 1.05;
+  letter-spacing: -0.01em;
 }
+
 h2 {
-  font-size: var(--t-xl);
+  font-size: var(--t-h2);
 }
+
 h3 {
-  font-size: var(--t-lg);
+  font-size: var(--t-h3);
+  line-height: 1.214; /* 34 on 28 */
 }
+
+/* An h2 drawn at the concept's h3 size, for sub-sections that sit at h2 in
+   the document outline (the outline is frozen from round 1) but read as
+   minor headings on the page. */
+.title-sm {
+  font-size: var(--t-h3);
+  line-height: 1.214;
+}
+
+/* Anything below 28px stays in Manrope, as the concept specifies. */
 h4 {
-  font-size: var(--t-md);
+  font-family: var(--font-sans);
+  font-size: var(--t-base);
+  font-weight: 600;
+  line-height: 1.625;
 }
 
 p {
@@ -158,19 +225,31 @@ p {
 }
 
 a {
-  color: var(--c-green-deep);
-  text-decoration-thickness: 1px;
-  text-underline-offset: 0.18em;
+  color: var(--c-verde-profondo);
+  text-underline-offset: 4px;
 }
 
 a:hover {
-  color: var(--c-green-darker);
+  color: var(--c-notte);
 }
 
 :focus-visible {
-  outline: 3px solid var(--c-green-deep);
+  outline: 3px solid var(--c-verde-felce);
   outline-offset: 2px;
-  border-radius: 2px;
+}
+
+/* On the dark bands the light green carries the ring (7.1:1 on Notte). */
+.utility-bar :focus-visible,
+.cta-band :focus-visible,
+.site-footer :focus-visible {
+  outline-color: var(--c-verde-chiaro);
+}
+
+/* One size for every icon, wherever it sits. Context rules only set colour. */
+.icon {
+  width: var(--icon-size);
+  height: var(--icon-size);
+  flex-shrink: 0;
 }
 
 /* --------------------------------------------------------------------------
@@ -181,13 +260,7 @@ a:hover {
   width: 100%;
   max-width: var(--wrap);
   margin-inline: auto;
-  padding-inline: var(--s-4);
-}
-
-@media (min-width: 48rem) {
-  .wrap {
-    padding-inline: var(--s-6);
-  }
+  padding-inline: var(--gutter);
 }
 
 .wrap--narrow {
@@ -195,47 +268,64 @@ a:hover {
 }
 
 .section {
-  padding-block: var(--s-7);
+  padding-block: var(--s-14);
 }
 
-@media (min-width: 48rem) {
+@media (min-width: 60rem) {
   .section {
-    padding-block: var(--s-9);
+    padding-block: var(--s-16) var(--s-20);
   }
 }
 
 .section--tint {
-  background: var(--c-off-white);
+  background: var(--c-bianco);
+  border-top: 1px solid var(--c-border);
+  border-bottom: 1px solid var(--c-border);
 }
 
 .section__head {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-3);
   max-width: 48rem;
-  margin-bottom: var(--s-6);
+  margin-bottom: var(--s-10);
 }
 
 .section__head > p {
-  margin-top: var(--s-3);
-  color: var(--c-ink-muted);
-  font-size: var(--t-md);
+  color: var(--c-pietra);
+  font-size: var(--t-lead);
+  line-height: 1.556;
 }
 
+/* The concept's uppercase label: 12/16, 700, .14em tracking. */
+.label {
+  font-family: var(--font-sans);
+  font-size: var(--t-label);
+  line-height: 1.333;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--c-pietra);
+}
+
+/* Eyebrow = tricolore rule + label, the concept's section opener. */
 .eyebrow {
   display: flex;
   align-items: center;
-  gap: var(--s-2);
-  margin-bottom: var(--s-3);
-  color: var(--c-green-deep);
-  font-size: var(--t-xs);
-  font-weight: 600;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
+  gap: var(--s-3);
+  color: var(--c-verde-profondo);
 }
 
-.eyebrow::before {
-  content: '';
-  width: var(--s-6);
-  height: 2px;
-  background: var(--c-green-flag);
+/* The eyebrow sets the colour so the label can be reused on any ground. */
+.eyebrow .label {
+  color: inherit;
+}
+
+.lead {
+  font-size: var(--t-lead);
+  line-height: 1.556;
+  color: var(--c-pietra);
+  max-width: 35rem;
 }
 
 .visually-hidden {
@@ -256,12 +346,11 @@ a:hover {
   left: var(--s-4);
   z-index: 200;
   padding: var(--s-3) var(--s-4);
-  background: var(--c-green-deep);
+  background: var(--c-verde-profondo);
   color: var(--c-white);
-  font-size: var(--t-sm);
-  font-weight: 600;
+  font-size: var(--t-small);
+  font-weight: 700;
   text-decoration: none;
-  border-radius: 0 0 var(--radius) var(--radius);
   transform: translateY(-110%);
 }
 
@@ -271,172 +360,29 @@ a:hover {
 }
 
 /* --------------------------------------------------------------------------
-   Buttons
-   -------------------------------------------------------------------------- */
-
-.btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: var(--s-2);
-  min-height: 48px;
-  padding: var(--s-3) var(--s-5);
-  border: 2px solid transparent;
-  border-radius: var(--radius);
-  font-size: var(--t-sm);
-  font-weight: 600;
-  letter-spacing: 0.01em;
-  text-align: center;
-  text-decoration: none;
-  cursor: pointer;
-  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
-}
-
-/* The single main call to action. Red is reserved for this and nothing else. */
-.btn--primary {
-  background: var(--c-red);
-  border-color: var(--c-red);
-  color: var(--c-white);
-}
-
-.btn--primary:hover {
-  background: var(--c-red-dark);
-  border-color: var(--c-red-dark);
-  color: var(--c-white);
-}
-
-.btn--secondary {
-  background: var(--c-green-deep);
-  border-color: var(--c-green-deep);
-  color: var(--c-white);
-}
-
-.btn--secondary:hover {
-  background: var(--c-green-darker);
-  border-color: var(--c-green-darker);
-  color: var(--c-white);
-}
-
-.btn--outline {
-  background: transparent;
-  border-color: var(--c-green-deep);
-  color: var(--c-green-deep);
-}
-
-.btn--outline:hover {
-  background: var(--c-green-deep);
-  color: var(--c-white);
-}
-
-.btn--on-dark {
-  background: var(--c-white);
-  border-color: var(--c-white);
-  color: var(--c-green-darker);
-}
-
-.btn--on-dark:hover {
-  background: var(--c-off-white);
-  border-color: var(--c-off-white);
-  color: var(--c-green-darker);
-}
-
-.btn-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--s-3);
-}
-
-/* --------------------------------------------------------------------------
-   Cards and generic grids
-   -------------------------------------------------------------------------- */
-
-.grid {
-  display: grid;
-  gap: var(--s-4);
-}
-
-@media (min-width: 40rem) {
-  .grid--2 {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-@media (min-width: 60rem) {
-  .grid--3 {
-    grid-template-columns: repeat(3, 1fr);
-  }
-  .grid--4 {
-    grid-template-columns: repeat(4, 1fr);
-  }
-}
-
-@media (min-width: 40rem) and (max-width: 59.999rem) {
-  .grid--3,
-  .grid--4 {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-.card {
-  display: flex;
-  flex-direction: column;
-  padding: var(--s-5);
-  background: var(--c-white);
-  border: 1px solid var(--c-border);
-  border-radius: var(--radius-lg);
-}
-
-.card--tint {
-  background: var(--c-off-white);
-  border-color: transparent;
-}
-
-.card h3 {
-  margin-bottom: var(--s-2);
-}
-
-.card p {
-  color: var(--c-ink-muted);
-}
-
-.card__list {
-  margin: var(--s-4) 0 0;
-  padding: 0;
-  list-style: none;
-  display: grid;
-  gap: var(--s-2);
-  font-size: var(--t-sm);
-}
-
-.card__list li {
-  display: grid;
-  grid-template-columns: 1.25rem 1fr;
-  gap: var(--s-2);
-  align-items: start;
-}
-
-.card__list li::before {
-  content: '';
-  width: 0.5rem;
-  height: 0.5rem;
-  margin-top: 0.5em;
-  background: var(--c-green-flag);
-  border-radius: 50%;
-}
-
-/* --------------------------------------------------------------------------
    Utilities
    -------------------------------------------------------------------------- */
 
 .muted {
-  color: var(--c-ink-muted);
+  color: var(--c-pietra);
 }
 
 .note {
-  font-size: var(--t-sm);
-  color: var(--c-ink-muted);
+  font-size: var(--t-fine);
+  line-height: 1.538;
+  color: var(--c-pietra);
 }
 
+.small {
+  font-size: var(--t-small);
+  line-height: 1.571;
+}
+
+/* Unfilled facts are highlighted so none can ship unnoticed.
+   The amber here is the ONE colour on the site that is deliberately outside
+   the concept palette: an editorial marker, not a design element. It has to
+   read as "this is not finished" rather than as brand colour, and every
+   element carrying it disappears once the real facts are filled in. */
 .placeholder {
   padding: 0 0.3em;
   background: #fff4cc;
@@ -444,17 +390,21 @@ a:hover {
   color: #5c4600;
   font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
   font-size: 0.9em;
-  white-space: nowrap;
+  /* Must wrap: some placeholders are a whole sentence, and a marker that
+     cannot break pushes its column past the viewport on a phone. */
+  overflow-wrap: anywhere;
 }
 
-.stack > * + * {
-  margin-top: var(--s-4);
-}
-
-.prose p + p {
-  margin-top: var(--s-4);
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-6);
 }
 
 .prose {
   max-width: 38rem;
+}
+
+.prose p + p {
+  margin-top: var(--s-4);
 }

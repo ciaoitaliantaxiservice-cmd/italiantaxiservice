@@ -1,8 +1,10 @@
 ---
+import Logo from './Logo.astro';
 import Placeholders from './Placeholders.astro';
+import Tricolore from './Tricolore.astro';
 import { routes, navOrder, ui, otherLang, htmlLang, type Lang } from '../data/i18n';
-import { site, telHref, emailHref, whatsappHref } from '../data/site.mjs';
 import { cities, cityPath } from '../data/cities';
+import { site, emailHref, whatsappHref, newTab } from '../data/site.mjs';
 
 interface Props {
   lang: Lang;
@@ -20,53 +22,60 @@ const blurb =
     : 'Transfer privati e servizi con autista fra aeroporti, città e località costiere italiane.';
 ---
 
+{/* Content, headings and links are exactly as in round 1 (copy and internal
+    linking are frozen); only the presentation follows the concept: the
+    tricolore cap, the reversed lockup, label-style column headings, and the
+    hairline legal bar. */}
 <footer class="site-footer">
-  <div class="wrap">
-    <div class="site-footer__grid">
-      <div>
-        <h2>{site.brand}</h2>
-        <p class="site-footer__blurb">{blurb}</p>
-        <p class="site-footer__blurb">
-          <a href={altPaths[other]} hreflang={htmlLang[other]} lang={htmlLang[other]}>
-            {l.viewInItalian}
+  {/* The page's one full-width tricolore, capping the footer. */}
+  <Tricolore variant="band" />
+
+  <div class="wrap site-footer__grid">
+    <div class="site-footer__brand">
+      {/* The concept's reversed lockup: Bianco tyre, Verde Chiaro wheel. */}
+      <div class="site-footer__lockup">
+        <Logo variant="icon" reversed />
+        <h2 class="site-footer__name">{site.brand}</h2>
+      </div>
+      <p>{blurb}</p>
+      <p>
+        <a href={altPaths[other]} hreflang={htmlLang[other]} lang={htmlLang[other]}>
+          {l.viewInItalian}
+        </a>
+      </p>
+    </div>
+
+    <div class="site-footer__col">
+      <h2 class="label">{l.quickLinks}</h2>
+      <ul>
+        {navOrder.map((key) => <li><a href={routes[key][lang]}>{l[key]}</a></li>)}
+        {
+          cities.slice(0, 3).map((city) => (
+            <li><a href={cityPath(city, lang)}>{city.name[lang]}</a></li>
+          ))
+        }
+      </ul>
+    </div>
+
+    <div class="site-footer__col">
+      <h2 class="label">{l.getInTouch}</h2>
+      <ul>
+        <li>
+          {l.whatsapp}:{' '}
+          <a href={whatsappHref(lang)} {...newTab}>
+            <Placeholders text={site.whatsappDisplay} />
+            <span class="visually-hidden">{l.newTab}</span>
           </a>
-        </p>
-      </div>
-
-      <div>
-        <h2>{l.quickLinks}</h2>
-        <ul>
-          {navOrder.map((key) => <li><a href={routes[key][lang]}>{l[key]}</a></li>)}
-          {
-            cities.slice(0, 3).map((city) => (
-              <li><a href={cityPath(city, lang)}>{city.name[lang]}</a></li>
-            ))
-          }
-        </ul>
-      </div>
-
-      <div>
-        <h2>{l.getInTouch}</h2>
-        <ul>
-          <li>
-            {l.phone}: <a href={telHref}><Placeholders text={site.phoneDisplay} /></a>
-          </li>
-          <li>
-            {l.whatsapp}:{' '}
-            <a href={whatsappHref(lang)} rel="noopener">
-              <Placeholders text={site.phoneDisplay} />
-            </a>
-          </li>
-          <li>
-            {l.email}: <a href={emailHref}><Placeholders text={site.email} /></a>
-          </li>
-        </ul>
-      </div>
+        </li>
+        <li>
+          {l.email}: <a href={emailHref}><Placeholders text={site.email} /></a>
+        </li>
+      </ul>
     </div>
+  </div>
 
-    <div class="site-footer__legal">
-      <span>&copy; {year} <Placeholders text={site.legalName} />. {l.footerLegal}</span>
-      <span>{l.vat}: <Placeholders text={site.vatNumber} /></span>
-    </div>
+  <div class="wrap site-footer__legal">
+    <span>&copy; {year} <Placeholders text={site.legalName} />. {l.footerLegal}</span>
+    <span>{l.vat}: <Placeholders text={site.vatNumber} /></span>
   </div>
 </footer>

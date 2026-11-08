@@ -1,4 +1,17 @@
+import type { ImageMetadata } from 'astro';
 import type { Lang } from './i18n';
+
+// Source photos live in src/assets, not public/, so the build serves resized
+// AVIF/WebP with explicit dimensions instead of the 2.5 MB originals.
+import romePhoto from '../assets/locations/rome.png';
+import milanPhoto from '../assets/locations/milan.png';
+import florencePhoto from '../assets/locations/florence.png';
+import naplesPhoto from '../assets/locations/naples.png';
+import amalfiPhoto from '../assets/locations/amalfi-coast.png';
+// src/assets/locations/venice.png is deliberately NOT used. It shows the car
+// parked on the Grand Canal promenade by the Salute, where no car can go, and
+// the Venice card beside it says road transfers end at Piazzale Roma or the
+// Tronchetto. To use it anyway, import it here and add a photo entry below.
 
 export interface City {
   id: string;
@@ -10,6 +23,12 @@ export interface City {
   gateways: Record<Lang, string>;
   /** Intro paragraph for the (noindex) city stub page. */
   stubIntro: Record<Lang, string>;
+  /** 16:9 card photo. Cities without one keep the hatched placeholder. */
+  photo?: {
+    src: ImageMetadata;
+    /** Describes what is in the frame, written separately per language. */
+    alt: Record<Lang, string>;
+  };
 }
 
 /**
@@ -32,6 +51,13 @@ export const cities: City[] = [
       en: 'Chauffeured cars across Rome and Lazio: airport pickups with flight tracking, port transfers, and private days out beyond the ring road.',
       it: 'Auto con autista a Roma e nel Lazio: ritiri in aeroporto con monitoraggio del volo, transfer dal porto e giornate private oltre il Grande Raccordo.',
     },
+    photo: {
+      src: romePhoto,
+      alt: {
+        en: 'A chauffeur in a dark suit opens the rear door of a black saloon on a cobbled street, the Colosseum glowing in evening light behind.',
+        it: 'Su una strada di sampietrini, l’autista in abito scuro apre la portiera posteriore di una berlina nera; alle spalle, il Colosseo nella luce del tramonto.',
+      },
+    },
   },
   {
     id: 'milan',
@@ -46,6 +72,13 @@ export const cities: City[] = [
       en: 'Business-paced transfers in and out of Milan, with discreet drivers who know which terminal door saves you ten minutes.',
       it: 'Transfer da e per Milano al ritmo del lavoro, con autisti discreti che sanno quale uscita del terminal fa guadagnare dieci minuti.',
     },
+    photo: {
+      src: milanPhoto,
+      alt: {
+        en: 'Outside the Galleria Vittorio Emanuele II, with the Duomo beyond, a chauffeur holds open the door of a black saloon for a passenger carrying a briefcase.',
+        it: 'Davanti alla Galleria Vittorio Emanuele II, con il Duomo sullo sfondo, l’autista tiene aperta la portiera della berlina nera per una passeggera con la valigetta.',
+      },
+    },
   },
   {
     id: 'florence',
@@ -59,6 +92,13 @@ export const cities: City[] = [
     stubIntro: {
       en: 'Florence is where most Tuscan itineraries begin. We cover station and airport runs, plus full days through Chianti, Siena and the Val d’Orcia.',
       it: 'Firenze è il punto di partenza di quasi ogni itinerario toscano. Copriamo stazione e aeroporto, oltre a giornate intere tra Chianti, Siena e Val d’Orcia.',
+    },
+    photo: {
+      src: florencePhoto,
+      alt: {
+        en: 'A black saloon waits in a narrow street of ochre houses and window boxes, with Brunelleschi’s dome and Giotto’s bell tower at the far end.',
+        it: 'Una berlina nera ferma in una via stretta tra case color ocra e fioriere ai davanzali; in fondo, la cupola del Brunelleschi e il campanile di Giotto.',
+      },
     },
   },
   {
@@ -88,6 +128,13 @@ export const cities: City[] = [
       en: 'Naples works best as a hub: airport, port and station in one tight triangle, with Pompeii and Vesuvius a short run away.',
       it: 'Napoli funziona bene come base: aeroporto, porto e stazione in un triangolo ristretto, con Pompei e il Vesuvio a breve distanza.',
     },
+    photo: {
+      src: naplesPhoto,
+      alt: {
+        en: 'A black saloon parked on the Naples waterfront under palm trees, with a ferry in the harbour and Vesuvius beyond.',
+        it: 'Una berlina nera sul lungomare di Napoli, all’ombra delle palme, con un traghetto in porto e il Vesuvio sullo sfondo.',
+      },
+    },
   },
   {
     id: 'amalfi-coast',
@@ -101,6 +148,13 @@ export const cities: City[] = [
     stubIntro: {
       en: 'Coastal driving here rewards patience and local knowledge: limited turning space, seasonal one-way schemes, and drop-offs that may end in steps.',
       it: 'Guidare in costiera premia pazienza e conoscenza locale: spazi di manovra ridotti, sensi unici stagionali e discese che a volte finiscono in scalinata.',
+    },
+    photo: {
+      src: amalfiPhoto,
+      alt: {
+        en: 'A black saloon on the coast road above Positano, between a lemon tree and bougainvillea, with the village stepping down the cliff to the sea.',
+        it: 'Una berlina nera sulla strada costiera sopra Positano, tra un limone e la bouganville, con il paese che scende a gradoni verso il mare.',
+      },
     },
   },
 ];

@@ -1,7 +1,8 @@
 ---
 import '../styles/fonts.css';
-import '../styles/global.css';
-import '../styles/components.css';
+// Tailwind + Flowbite entry; it imports global.css and components.css into
+// cascade layers. See the comment at the top of main.css.
+import '../styles/main.css';
 
 import Seo from '../components/Seo.astro';
 import Header from '../components/Header.astro';
@@ -80,25 +81,38 @@ const jsonLd = JSON.stringify(graph(nodes));
       ogImage={ogImage}
     />
 
-    {/* Both fonts are used above the fold, so both are worth preloading. */}
+    {/* All three faces render above the fold (hero headline, body, labels),
+        so all three are preloaded to keep the swap off the critical path. */}
     <link
       rel="preload"
-      href="/fonts/dm-serif-display-latin-400-normal.woff2"
+      href="/fonts/cormorant-garamond-latin-500.woff2"
       as="font"
       type="font/woff2"
       crossorigin
     />
     <link
       rel="preload"
-      href="/fonts/inter-latin-wght-normal.woff2"
+      href="/fonts/cormorant-garamond-latin-600.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="/fonts/manrope-latin-wght.woff2"
       as="font"
       type="font/woff2"
       crossorigin
     />
 
+    {/* Icon set from the concept. The SVG is the primary icon; the PNGs are
+        rasterised from the same artwork by `npm run icons`. */}
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-    <link rel="apple-touch-icon" href="/images/logo.svg" />
-    <meta name="theme-color" content="#00693A" />
+    <link rel="icon" href="/icons/icon-32.png" sizes="32x32" type="image/png" />
+    <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" sizes="180x180" />
+    <link rel="manifest" href="/site.webmanifest" />
+    {/* Matches the utility bar, which is what sits under the status bar. */}
+    <meta name="theme-color" content="#0F2A1E" />
 
     {/* One @graph per page: Organization, LocalBusiness, WebSite, plus
         BreadcrumbList and any page-specific node such as FAQPage. */}

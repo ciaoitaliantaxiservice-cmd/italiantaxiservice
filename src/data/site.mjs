@@ -22,10 +22,15 @@ export const site = {
   legalName: '[[REGISTERED COMPANY NAME]]',
   vatNumber: '[[VAT / P.IVA]]',
 
-  // E.164 for tel: and WhatsApp links. Keep both in sync.
-  phoneE164: '+390000000000',
-  phoneDisplay: '[[+39 000 000 0000]]',
-  whatsappE164: '390000000000',
+  // Booking runs through WhatsApp, email and the quote form only. The site
+  // takes no phone calls, so there is deliberately no phone number or tel:
+  // link anywhere, and no `telephone` in the JSON-LD.
+  //
+  // WhatsApp number in international format, digits only, no "+" or spaces,
+  // which is what https://wa.me/ expects. Example: 393331234567
+  whatsappNumber: '[[WHATSAPP_NUMBER]]',
+  // The same number as shown on the page. Example: +39 333 123 4567
+  whatsappDisplay: '[[WHATSAPP_NUMBER]]',
 
   email: '[[hello@example.com]]',
 
@@ -47,16 +52,16 @@ export const site = {
   hours: { opens: '00:00', closes: '23:59' },
 };
 
-/** `tel:` href. */
-export const telHref = `tel:${site.phoneE164}`;
-
 /** WhatsApp deep link with a language-appropriate prefilled message. */
 export function whatsappHref(lang) {
   const text =
     lang === 'it'
       ? 'Ciao! Vorrei un preventivo per un transfer privato.'
       : 'Hello! I would like a quote for a private transfer.';
-  return `https://wa.me/${site.whatsappE164}?text=${encodeURIComponent(text)}`;
+  return `https://wa.me/${site.whatsappNumber}?text=${encodeURIComponent(text)}`;
 }
+
+/** Attributes for every WhatsApp link: it opens in a new tab. */
+export const newTab = { target: '_blank', rel: 'noopener noreferrer' };
 
 export const emailHref = `mailto:${site.email}`;

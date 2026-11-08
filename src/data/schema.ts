@@ -1,4 +1,4 @@
-import { site, SITE_URL } from './site.mjs';
+import { site, SITE_URL, whatsappHref } from './site.mjs';
 import { routes, type Lang } from './i18n';
 import { absolute } from './seo';
 
@@ -15,12 +15,10 @@ import { absolute } from './seo';
  * fills itself in once src/data/site.mjs holds real values.
  */
 
-const DUMMY_PHONE = '+390000000000';
-
 function real(value: unknown): boolean {
   if (typeof value !== 'string') return false;
   const v = value.trim();
-  if (v === '' || v === DUMMY_PHONE) return false;
+  if (v === '') return false;
   return !v.includes('[[');
 }
 
@@ -45,6 +43,36 @@ function postalAddress() {
   return Object.keys(parts).length > 2 ? parts : undefined;
 }
 
+/**
+ * How to book: WhatsApp and email. The site takes no calls and shows no phone
+ * number, so neither node carries `telephone`. Each point is only emitted
+ * once its value is real (not a [[placeholder]]).
+ */
+function contactPoints(lang: Lang) {
+  const availableLanguage = ['English', 'Italian'];
+  const points = [
+    real(site.whatsappNumber)
+      ? {
+          '@type': 'ContactPoint',
+          name: 'WhatsApp',
+          contactType: 'reservations',
+          url: whatsappHref(lang),
+          availableLanguage,
+        }
+      : undefined,
+    real(site.email)
+      ? {
+          '@type': 'ContactPoint',
+          name: 'Email',
+          contactType: 'reservations',
+          email: site.email,
+          availableLanguage,
+        }
+      : undefined,
+  ].filter(Boolean);
+  return points.length ? points : undefined;
+}
+
 function sameAs() {
   const urls = Object.values(site.social).filter(real);
   return urls.length ? urls : undefined;
@@ -65,8 +93,8 @@ export function organizationSchema(lang: Lang) {
     logo: absolute('/images/logo.svg'),
     description: descriptions[lang],
     vatID: real(site.vatNumber) ? site.vatNumber : undefined,
-    telephone: real(site.phoneE164) ? site.phoneE164 : undefined,
     email: real(site.email) ? site.email : undefined,
+    contactPoint: contactPoints(lang),
     address: postalAddress(),
     sameAs: sameAs(),
   });
@@ -84,9 +112,8 @@ export function localBusinessSchema(lang: Lang) {
     name: site.brand,
     parentOrganization: { '@id': ORG_ID },
     url: absolute(routes.home[lang]),
-    image: absolute('/images/og-default.svg'),
+    image: absolute('/images/og-default.png'),
     description: descriptions[lang],
-    telephone: real(site.phoneE164) ? site.phoneE164 : undefined,
     email: real(site.email) ? site.email : undefined,
     address: postalAddress(),
     geo,

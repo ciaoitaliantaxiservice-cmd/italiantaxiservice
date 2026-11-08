@@ -1,5 +1,8 @@
 ---
+import { Picture } from 'astro:assets';
 import CtaBand from '../CtaBand.astro';
+import Icon from '../Icon.astro';
+import Tricolore from '../Tricolore.astro';
 import { t } from '../../data/content';
 import { meta } from '../../data/seo';
 import { type Lang } from '../../data/i18n';
@@ -13,6 +16,12 @@ const { lang } = Astro.props;
 const c = t(lang).locations;
 const h1 = meta.locations[lang].h1;
 
+// Card image widths: one column on phones, two from 46rem, three from 67rem,
+// capped by the 80rem wrap. Lets the browser pick the smallest file that is
+// still sharp at the device's pixel ratio.
+const thumbSizes =
+  '(min-width: 80rem) 410px, (min-width: 67rem) calc((100vw - 3rem) / 3), (min-width: 46rem) calc((100vw - 3rem) / 2), calc(100vw - 2rem)';
+
 const thumbAlt = (name: string) =>
   lang === 'en'
     ? `Photo placeholder for ${name}: a street-level view with a waiting car.`
@@ -22,7 +31,10 @@ const thumbAlt = (name: string) =>
 <section class="section">
   <div class="wrap">
     <div class="section__head">
-      <p class="eyebrow">{lang === 'en' ? 'Coverage' : 'Copertura'}</p>
+      <p class="eyebrow">
+        <Tricolore />
+        <span class="label">{lang === 'en' ? 'Coverage' : 'Copertura'}</span>
+      </p>
       <h1>{h1}</h1>
       <p>{c.lead}</p>
     </div>
@@ -33,19 +45,44 @@ const thumbAlt = (name: string) =>
   <div class="wrap">
     <h2 id="cities-heading" class="visually-hidden">{c.gridHeading}</h2>
 
-    <div class="grid grid--3">
+    <div class="card-grid card-grid--wide">
       {
-        cities.map((city) => (
+        cities.map((city, i) => (
           <article class="city-card">
             <div class="city-card__thumb">
-              {/* [[REPLACE WITH A 16:9 CITY PHOTO, loading="lazy", decoding="async"]] */}
-              <span>{thumbAlt(city.name[lang])}</span>
+              {/* First row: eager but low priority. On desktop one of these is
+                  the LCP image, so it must be discovered at parse time, not after
+                  layout (measured: the lazy version failed Lighthouse's lazy-LCP
+                  check). On phones the LCP is the intro text, and low priority
+                  keeps these photos from competing with the fonts (measured:
+                  plain eager pushed mobile LCP from 1.5s to 2.1s). */}
+              {city.photo ? (
+                <Picture
+                  src={city.photo.src}
+                  alt={city.photo.alt[lang]}
+                  formats={['avif', 'webp']}
+                  fallbackFormat="jpg"
+                  widths={[360, 480, 720, 960, 1280]}
+                  sizes={thumbSizes}
+                  loading={i < 3 ? 'eager' : 'lazy'}
+                  fetchpriority={i < 3 ? 'low' : undefined}
+                  decoding="async"
+                />
+              ) : (
+                <>
+                  {/* [[REPLACE WITH A 16:9 CITY PHOTO in src/assets/locations/ and add it to src/data/cities.ts]] */}
+                  <span>{thumbAlt(city.name[lang])}</span>
+                </>
+              )}
             </div>
             <div class="city-card__body">
               <h3>
                 <a href={cityPath(city, lang)}>{city.name[lang]}</a>
               </h3>
-              <p class="city-card__gateways">{city.gateways[lang]}</p>
+              <p class="city-card__gateways">
+                <Icon name="map-pin" />
+                <span>{city.gateways[lang]}</span>
+              </p>
               <p>{city.cardText[lang]}</p>
               <p class="city-card__flag">{c.comingSoonLabel}</p>
             </div>
@@ -54,9 +91,13 @@ const thumbAlt = (name: string) =>
       }
     </div>
 
-    <div class="prose" style="margin-top: var(--s-7)">
-      <h2>{lang === 'en' ? 'Somewhere else in mind?' : 'Avete in mente un’altra destinazione?'}</h2>
-      <p style="margin-top: var(--s-3)">{c.secondary}</p>
+    <div class="prose" style="margin-top: var(--s-14)">
+      <h2>
+        {lang === 'en'
+          ? 'Somewhere else in mind?'
+          : 'Avete in mente un’altra destinazione?'}
+      </h2>
+      <p style="margin-top: var(--s-4)">{c.secondary}</p>
     </div>
   </div>
 </section>

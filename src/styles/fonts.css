@@ -1,35 +1,85 @@
 /* ==========================================================================
-   Self-hosted webfonts, latin subset only (~73 KB total, two files).
+   Brand fonts from the approved concept: Cormorant Garamond for headings
+   (28px and up) and Manrope for everything else.
    --------------------------------------------------------------------------
    Self-hosted rather than loaded from Google Fonts: no third-party connection
-   on the critical path, and both files can be preloaded from our own origin,
-   which is what keeps LCP down.
+   on the critical path, and all three files can be preloaded from our own
+   origin, which is what keeps LCP down and avoids a late font swap.
+
+   Three files, latin subset, 76 KB total:
+     cormorant-garamond-latin-500  display / hero headings
+     cormorant-garamond-latin-600  section and card headings
+     manrope-latin-wght            one variable file covering 400-800
+
+   The concept also uses Cormorant Garamond italic 500 for the green accent
+   word in the hero. That accent needs an <em> inside the headline copy, and
+   this round was explicitly not to touch copy, so the italic file is left
+   out. Add it back with `npm run fonts` if that accent is wanted later.
 
    The .woff2 files in /public/fonts/ are copies of the @fontsource packages
-   listed in devDependencies. Re-copy them with `npm run fonts` after a bump.
+   in devDependencies. Re-copy them with `npm run fonts` after a bump.
 
-   Italian needs à è é ì í ò ó ù ú, all of which sit inside the latin subset,
-   so latin-ext is deliberately not loaded.
+   Italian needs à è é ì í ò ó ù ú, all inside the latin subset, so latin-ext
+   is deliberately not loaded.
    ========================================================================== */
 
+/* Shared by every face below: the latin subset Google Fonts ships. */
 @font-face {
-  font-family: 'Inter Variable';
+  font-family: 'Cormorant Garamond';
   font-style: normal;
-  font-weight: 100 900;
+  font-weight: 500;
   font-display: swap;
-  src: url('/fonts/inter-latin-wght-normal.woff2') format('woff2-variations');
+  src: url('/fonts/cormorant-garamond-latin-500.woff2') format('woff2');
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
-    U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+2074, U+20AC, U+2122, U+2191,
+    U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191,
     U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 
 @font-face {
-  font-family: 'DM Serif Display';
+  font-family: 'Cormorant Garamond';
   font-style: normal;
-  font-weight: 400;
+  font-weight: 600;
   font-display: swap;
-  src: url('/fonts/dm-serif-display-latin-400-normal.woff2') format('woff2');
+  src: url('/fonts/cormorant-garamond-latin-600.woff2') format('woff2');
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
-    U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+2074, U+20AC, U+2122, U+2191,
+    U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191,
     U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'Manrope Variable';
+  font-style: normal;
+  font-weight: 400 800;
+  font-display: swap;
+  src: url('/fonts/manrope-latin-wght.woff2') format('woff2-variations');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
+    U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191,
+    U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+/* --------------------------------------------------------------------------
+   Metric-matched fallback for Cormorant Garamond.
+
+   Until the web font arrives, text is set in Georgia. Georgia is much wider
+   than Cormorant, at 600 especially (it has no 600, so Georgia Bold is used),
+   and a wordmark that wraps in Georgia but not in Cormorant moves everything
+   below it when the font swaps in: a layout shift. size-adjust scales Georgia
+   to Cormorant's measured width (ratios from the site's own copy), so lines
+   break in the same places in both. Manrope needs no fallback face: it is
+   within 2% of Segoe UI and Arial.
+   -------------------------------------------------------------------------- */
+@font-face {
+  font-family: 'Cormorant Garamond Fallback';
+  font-style: normal;
+  font-weight: 500;
+  src: local('Georgia');
+  size-adjust: 89.5%;
+}
+
+@font-face {
+  font-family: 'Cormorant Garamond Fallback';
+  font-style: normal;
+  font-weight: 600;
+  src: local('Georgia Bold'), local('Georgia-Bold');
+  size-adjust: 77.4%;
 }

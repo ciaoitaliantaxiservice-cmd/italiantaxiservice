@@ -12,6 +12,9 @@
  *   7. no noindex URL present in sitemap.xml, and every sitemap URL exists
  *   8. no "NCC" or licence wording anywhere in the rendered copy
  *   9. unique titles, descriptions and H1s across all indexable pages
+ *  10. booking is WhatsApp, email and the form only: no tel: links, no
+ *      "telephone" in JSON-LD, and every WhatsApp link opens in a new tab
+ *      with rel="noopener"
  *
  * Exits non-zero on any failure, so it can gate a deploy.
  */
@@ -186,6 +189,15 @@ for (const file of files) {
   }
   if (/\b(licensed|licence|license|licenza|autorizzazione)\b/i.test(visible)) {
     fail(name, 'rendered copy makes a licence/authorisation claim');
+  }
+
+  // ---- booking channels ----------------------------------------------------
+  if (/href="tel:/i.test(html)) fail(name, 'contains a tel: link (the site takes no calls)');
+  if (/"telephone"\s*:/.test(html)) fail(name, 'JSON-LD has a telephone (the site takes no calls)');
+  for (const m of html.matchAll(/<a\b[^>]*href="https:\/\/wa\.me[^"]*"[^>]*>/g)) {
+    if (!/target="_blank"/.test(m[0]) || !/rel="[^"]*noopener/.test(m[0])) {
+      fail(name, 'WhatsApp link without target="_blank" rel="noopener": ' + m[0].slice(0, 80));
+    }
   }
 
   pages.set(urlPath, { name, title, desc, h1, noindex, alts });

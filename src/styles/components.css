@@ -1,7 +1,102 @@
 /* ==========================================================================
-   Shared component styles. Loaded once from the Base layout, so every page
-   ships one stylesheet rather than per-component <style> blocks.
+   Shared component styles, matched to the approved concept. Loaded once from
+   the Base layout, so every page ships one stylesheet rather than
+   per-component <style> blocks.
+
+   Corners are square everywhere — the concept sets border-radius: 0 on form
+   fields explicitly and uses no radius on buttons, cards or bands.
    ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   Tricolore rule
+   The concept's note: used once per page, never as a stripe background.
+   The inline variant marks a section eyebrow; the band variant caps the
+   footer. The white stripe gets hairlines only on light grounds, otherwise
+   it disappears.
+   -------------------------------------------------------------------------- */
+
+.tricolore {
+  display: flex;
+  flex-shrink: 0;
+  width: 36px;
+  height: 3px;
+}
+
+.tricolore span {
+  flex: 1;
+}
+
+.tricolore span:nth-child(1) {
+  background: var(--c-verde-felce);
+}
+
+.tricolore span:nth-child(2) {
+  background: var(--c-bianco);
+  border-top: 1px solid var(--c-border);
+  border-bottom: 1px solid var(--c-border);
+}
+
+.tricolore span:nth-child(3) {
+  background: var(--c-rosso);
+}
+
+.tricolore--band {
+  width: 100%;
+  height: 3px;
+}
+
+.tricolore--band span:nth-child(2) {
+  border: 0;
+}
+
+/* --------------------------------------------------------------------------
+   Utility bar — the thin dark strip above the header
+   -------------------------------------------------------------------------- */
+
+.utility-bar {
+  background: var(--c-notte);
+  color: var(--c-bianco);
+  font-size: var(--t-fine);
+  line-height: 1.538;
+}
+
+.utility-bar__inner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-2) var(--s-6);
+  padding-block: var(--s-2);
+}
+
+.utility-bar__links {
+  display: flex;
+  align-items: center;
+  gap: var(--s-5);
+}
+
+.utility-bar a {
+  color: var(--c-bianco);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+/* Flex, so text in different fonts (the email can carry a monospace
+   placeholder) never shares one line box: its height then cannot change
+   when the web font swaps in, and nothing below moves. */
+.utility-bar__links a {
+  display: inline-flex;
+  align-items: center;
+}
+
+.utility-bar a:hover {
+  color: var(--c-white);
+  text-decoration: underline;
+}
+
+.utility-bar a.is-whatsapp {
+  color: var(--c-verde-chiaro);
+}
 
 /* --------------------------------------------------------------------------
    Header
@@ -17,52 +112,73 @@
 
 .site-header__inner {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
-  gap: var(--s-4);
-  min-height: 4.5rem;
+  justify-content: space-between;
+  gap: var(--s-4) var(--s-8);
+  padding-block: var(--s-4);
 }
 
 .logo {
-  display: inline-flex;
+  display: flex;
   align-items: center;
   gap: var(--s-3);
-  margin-right: auto;
-  color: var(--c-green-darker);
   text-decoration: none;
-  flex-shrink: 0;
+  color: var(--c-carbone);
+  min-width: 0;
 }
 
 .logo:hover {
-  color: var(--c-green-darker);
+  color: var(--c-carbone);
 }
 
 .logo svg {
-  width: 2.5rem;
-  height: 2.5rem;
+  width: 44px;
+  height: 44px;
   flex-shrink: 0;
 }
 
 .logo__text {
   display: flex;
   flex-direction: column;
-  line-height: 1.1;
+  min-width: 0;
 }
 
 .logo__name {
-  font-family: var(--font-display);
-  font-size: 1.25rem;
-  letter-spacing: -0.01em;
+  font-family: var(--font-serif);
+  font-size: 1.625rem; /* 26 */
+  line-height: 1.077; /* 28 */
+  font-weight: 600;
 }
 
 .logo__tag {
-  font-size: 0.6875rem;
-  font-weight: 600;
-  letter-spacing: 0.14em;
+  font-size: var(--t-micro);
+  line-height: 1.4;
+  font-weight: 700;
+  letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: var(--c-green-deep);
+  color: var(--c-pietra);
 }
 
-/* Nav: off-canvas panel below 48rem, inline row above it */
+@media (max-width: 24rem) {
+  .logo svg {
+    width: 36px;
+    height: 36px;
+  }
+
+  .logo__name {
+    font-size: 1.25rem; /* 20 */
+  }
+
+  .logo__tag {
+    letter-spacing: 0.1em;
+  }
+}
+
+/* Nav: off-canvas panel below 68rem, inline row above it.
+   68rem (1088px) is measured, not picked: it is the narrowest width at which
+   the concept's lockup, the nav and the header quote button sit on one row in
+   Italian, the longer of the two languages. At 56rem both languages wrapped. */
 
 .nav-toggle {
   display: inline-flex;
@@ -71,34 +187,29 @@
   min-height: 44px;
   padding: var(--s-2) var(--s-3);
   background: transparent;
-  border: 1px solid var(--c-border-strong);
-  border-radius: var(--radius);
-  color: var(--c-green-deep);
-  font-size: var(--t-sm);
-  font-weight: 600;
+  border: 1px solid var(--c-border);
+  color: var(--c-carbone);
+  font-size: var(--t-small);
+  font-weight: 700;
   cursor: pointer;
 }
 
-.nav-toggle__bars {
-  display: grid;
-  gap: 3px;
+/* Lucide menu / x, swapped by the button's own aria-expanded state, so the
+   icon can never disagree with what assistive tech is told. */
+.nav-toggle__close,
+.nav-toggle[aria-expanded='true'] .nav-toggle__open {
+  display: none;
 }
 
-.nav-toggle__bars span {
+.nav-toggle[aria-expanded='true'] .nav-toggle__close {
   display: block;
-  width: 1.125rem;
-  height: 2px;
-  background: currentColor;
 }
 
 .site-nav {
-  position: fixed;
-  inset: 4.5rem 0 auto 0;
   display: none;
-  padding: var(--s-4);
-  background: var(--c-white);
-  border-bottom: 1px solid var(--c-border);
-  box-shadow: var(--shadow-md);
+  flex-basis: 100%;
+  order: 3;
+  border-top: 1px solid var(--c-border);
 }
 
 .site-nav[data-open='true'] {
@@ -106,70 +217,80 @@
 }
 
 .site-nav__list {
-  display: grid;
-  gap: var(--s-1);
+  display: flex;
+  flex-direction: column;
+  gap: 0;
   margin: 0;
-  padding: 0;
+  padding: var(--s-2) 0;
   list-style: none;
+  font-size: 0.9375rem; /* 15 */
+  font-weight: 600;
 }
 
 .site-nav__list a {
   display: block;
-  padding: var(--s-3) var(--s-2);
-  border-radius: var(--radius);
-  color: var(--c-ink);
-  font-weight: 600;
+  padding: var(--s-3) 0;
+  color: var(--c-carbone);
   text-decoration: none;
 }
 
 .site-nav__list a:hover {
-  background: var(--c-off-white);
-  color: var(--c-green-darker);
+  color: var(--c-verde-profondo);
 }
 
 .site-nav__list a[aria-current='page'] {
-  color: var(--c-green-deep);
-  box-shadow: inset 3px 0 0 var(--c-green-flag);
+  box-shadow: inset 3px 0 0 var(--c-verde-felce);
+  padding-left: var(--s-3);
 }
 
 .header__actions {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
-  gap: var(--s-3);
+  justify-content: flex-end;
+  gap: var(--s-3) var(--s-4);
+  min-width: 0;
 }
 
-.header__cta {
+/* As in round 1: below the nav breakpoint the sticky bar carries the quote
+   action, so the header button would only duplicate it. Hiding it keeps the
+   phone header to two rows in both languages and stops the Italian label
+   ("Richiedi un preventivo") forcing a 320px page to scroll sideways.
+   Scoped to .site-header so it outranks .btn's display regardless of order. */
+.site-header .header__cta {
   display: none;
 }
 
-@media (min-width: 48rem) {
+@media (min-width: 68rem) {
   .nav-toggle {
     display: none;
   }
 
   .site-nav {
-    position: static;
     display: block;
-    padding: 0;
-    border: 0;
-    box-shadow: none;
-    background: transparent;
+    flex-basis: auto;
+    order: 0;
+    border-top: 0;
   }
 
   .site-nav__list {
-    display: flex;
-    gap: var(--s-2);
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: var(--s-1) var(--s-8);
+    padding: 0;
   }
 
   .site-nav__list a {
-    padding: var(--s-2) var(--s-3);
+    padding: var(--s-3) 0;
   }
 
   .site-nav__list a[aria-current='page'] {
-    box-shadow: inset 0 -3px 0 var(--c-green-flag);
+    box-shadow: none;
+    padding-left: 0;
+    border-bottom: 2px solid var(--c-verde-felce);
   }
 
-  .header__cta {
+  .site-header .header__cta {
     display: inline-flex;
   }
 }
@@ -178,32 +299,232 @@
 
 .lang-switch {
   display: inline-flex;
-  overflow: hidden;
-  border: 1px solid var(--c-border-strong);
-  border-radius: var(--radius);
-  font-size: var(--t-xs);
+  border: 1px solid var(--c-border);
+  font-size: var(--t-fine);
   font-weight: 700;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.08em;
 }
 
 .lang-switch__item {
-  padding: var(--s-2) var(--s-3);
-  min-height: 40px;
   display: inline-flex;
   align-items: center;
+  min-height: 40px;
+  padding: var(--s-2) var(--s-3);
+  color: var(--c-carbone);
   text-decoration: none;
-  color: var(--c-green-deep);
-  background: var(--c-white);
 }
 
 .lang-switch__item:hover {
-  background: var(--c-off-white);
-  color: var(--c-green-darker);
+  background: var(--c-bianco);
+  color: var(--c-carbone);
 }
 
 .lang-switch__item[aria-current='true'] {
-  background: var(--c-green-deep);
+  background: var(--c-carbone);
   color: var(--c-white);
+}
+
+/* --------------------------------------------------------------------------
+   Buttons
+   -------------------------------------------------------------------------- */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--s-2);
+  height: 52px;
+  padding: 0 var(--s-6);
+  border: 0;
+  font-family: var(--font-sans);
+  font-size: var(--t-base);
+  font-weight: 700;
+  line-height: 1;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color 0.15s ease, border-color 0.15s ease,
+    color 0.15s ease;
+}
+
+
+
+/* The single main call to action. Red is reserved for this and nothing else. */
+.btn--primary {
+  background: var(--c-rosso);
+  color: var(--c-white);
+  padding: 0 var(--s-7);
+}
+
+.btn--primary:hover {
+  background: var(--c-rosso-shade);
+  color: var(--c-white);
+}
+
+.btn--outline {
+  background: var(--c-white);
+  border: 1.5px solid var(--c-verde-profondo);
+  color: var(--c-verde-profondo);
+}
+
+.btn--outline:hover {
+  background: var(--c-verde-profondo);
+  color: var(--c-white);
+}
+
+/* On the dark green bands. */
+.btn--on-dark {
+  background: transparent;
+  border: 1.5px solid var(--c-bianco);
+  color: var(--c-white);
+}
+
+.btn--on-dark:hover {
+  background: var(--c-bianco);
+  color: var(--c-notte);
+}
+
+.btn--whatsapp-dark {
+  background: transparent;
+  border: 1.5px solid var(--c-verde-chiaro);
+  color: var(--c-verde-chiaro);
+}
+
+.btn--whatsapp-dark:hover {
+  background: var(--c-verde-chiaro);
+  color: var(--c-notte);
+}
+
+.btn--header {
+  height: 44px;
+  padding: 0 var(--s-5);
+  font-size: 0.9375rem;
+}
+
+.btn--lg {
+  height: 56px;
+  padding: 0 var(--s-8);
+  font-size: 1.0625rem; /* 17 */
+}
+
+.btn-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-3);
+  align-items: center;
+}
+
+.text-link {
+  font-size: var(--t-base);
+  font-weight: 600;
+  color: var(--c-verde-profondo);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+/* --------------------------------------------------------------------------
+   Hairline card grid
+   The concept separates cards with a 1px gap over the border colour rather
+   than per-card borders, so interior rules never double up.
+   -------------------------------------------------------------------------- */
+
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+  gap: 1px;
+  background: var(--c-border);
+  border: 1px solid var(--c-border);
+}
+
+.card-grid--wide {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr));
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-3);
+  padding: var(--s-6);
+  background: var(--c-white);
+}
+
+@media (min-width: 48rem) {
+  .card {
+    padding: var(--s-8);
+  }
+}
+
+/* The service icon sits on a round Bianco badge (40px), the way modern
+   feature cards present their icon, with the icon itself still 24px. */
+.card__icon {
+  box-sizing: content-box;
+  padding: var(--s-2);
+  border-radius: 50%;
+  background: var(--c-bianco);
+  box-shadow: inset 0 0 0 1px var(--c-border);
+  color: var(--c-verde-profondo);
+}
+
+.card h3 {
+  margin: 0;
+}
+
+.card p {
+  margin: 0;
+  color: var(--c-pietra);
+}
+
+.card__link {
+  font-weight: 600;
+  margin-top: auto;
+  text-decoration: none;
+}
+
+.card__link:hover {
+  text-decoration: underline;
+}
+
+.card__list {
+  margin: var(--s-2) 0 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: var(--s-2);
+  font-size: var(--t-small);
+  line-height: 1.571;
+  color: var(--c-pietra);
+}
+
+.card__list li {
+  display: grid;
+  grid-template-columns: var(--icon-size) minmax(0, 1fr);
+  gap: var(--s-2);
+  align-items: start;
+}
+
+/* Lucide check. The line box is 22px (14 x 1.571) and the icon 24px, so a
+   1px negative margin each side keeps a one-line item exactly 22px tall and
+   centres the tick on the first line. */
+.card__list .icon {
+  margin-block: -1px;
+  color: var(--c-verde-felce);
+}
+
+/* A standalone panel on a tinted ground. */
+.panel {
+  padding: var(--s-6);
+  background: var(--c-white);
+  border: 1px solid var(--c-border);
+}
+
+@media (min-width: 48rem) {
+  .panel {
+    padding: var(--s-7);
+  }
+}
+
+.panel--raised {
+  box-shadow: var(--shadow-card);
 }
 
 /* --------------------------------------------------------------------------
@@ -213,8 +534,8 @@
 .breadcrumbs {
   padding-block: var(--s-3);
   border-bottom: 1px solid var(--c-border);
-  background: var(--c-off-white);
-  font-size: var(--t-sm);
+  background: var(--c-bianco);
+  font-size: var(--t-small);
 }
 
 .breadcrumbs ol {
@@ -230,11 +551,11 @@
 .breadcrumbs li:not(:last-child)::after {
   content: '/';
   margin-left: var(--s-2);
-  color: var(--c-border-strong);
+  color: var(--c-border-input);
 }
 
 .breadcrumbs [aria-current='page'] {
-  color: var(--c-ink-muted);
+  color: var(--c-pietra);
 }
 
 /* --------------------------------------------------------------------------
@@ -242,62 +563,61 @@
    -------------------------------------------------------------------------- */
 
 .hero {
-  position: relative;
-  padding-block: var(--s-7) var(--s-7);
-  background: var(--c-off-white);
-  border-bottom: 1px solid var(--c-border);
-  overflow: hidden;
-}
-
-.hero::after {
-  content: '';
-  position: absolute;
-  inset-inline: 0;
-  bottom: 0;
-  height: 4px;
-  background: linear-gradient(
-    to right,
-    var(--c-green-flag) 0 33.333%,
-    var(--c-white) 33.333% 66.666%,
-    var(--c-red) 66.666% 100%
-  );
+  padding-block: var(--s-16) var(--s-20);
 }
 
 .hero__grid {
-  display: grid;
-  gap: var(--s-6);
-  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-12);
+  align-items: stretch;
 }
 
-@media (min-width: 60rem) {
-  .hero {
-    padding-block: var(--s-8) var(--s-8);
-  }
-  .hero__grid {
-    grid-template-columns: 1.1fr 0.9fr;
-    gap: var(--s-7);
-  }
+.hero__col {
+  flex: 1 1 32.5rem; /* 520 */
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-7);
 }
 
-.hero__lead {
-  margin-top: var(--s-4);
-  font-size: var(--t-md);
-  color: var(--c-ink-muted);
-  max-width: 34rem;
+.hero__media {
+  flex: 1 1 26.25rem; /* 420 */
+  min-height: 35rem; /* 560 */
+  margin: 0;
+  display: flex;
+  align-items: flex-end;
 }
 
-.hero__actions {
-  margin-top: var(--s-5);
+/* A hero photo fills the slot exactly as the placeholder did. The <img> is
+   taken out of flow, so the slot's size comes from CSS alone (no layout shift),
+   and cover crops the 3:2 photo to whatever shape the slot has. */
+.hero__photo {
+  position: relative;
+  display: block;
+  width: 100%;
+  min-height: 35rem; /* 560, the slot's height */
+  align-self: stretch;
+  background-color: var(--c-placeholder);
+}
+
+.hero__photo img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .hero__trust {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--s-2) var(--s-4);
-  margin: var(--s-5) 0 0;
+  gap: var(--s-2) var(--s-6);
+  margin: 0;
   padding: 0;
   list-style: none;
-  font-size: var(--t-sm);
+  font-size: var(--t-small);
+  line-height: 1.571;
   font-weight: 500;
 }
 
@@ -308,124 +628,203 @@
 }
 
 .hero__trust svg {
-  width: 1.125rem;
-  height: 1.125rem;
-  flex-shrink: 0;
-  color: var(--c-green-flag);
+  color: var(--c-verde-profondo);
 }
 
-/* Image placeholder frame — swap for a <picture> when photography lands */
+/* Photo placeholder frame — the concept's hatched swatch. */
 .media-placeholder {
   position: relative;
-  display: grid;
-  place-items: center;
-  aspect-ratio: 4 / 3;
-  padding: var(--s-5);
-  background:
-    repeating-linear-gradient(
-      45deg,
-      var(--c-tint) 0 10px,
-      transparent 10px 20px
-    ),
-    var(--c-white);
-  border: 1px solid var(--c-border-strong);
-  border-radius: var(--radius-lg);
-  text-align: center;
+  display: flex;
+  align-items: flex-end;
+  width: 100%;
+  min-height: 100%;
+  background-color: var(--c-placeholder);
+  background-image: repeating-linear-gradient(
+    135deg,
+    rgb(28 31 29 / 0.06) 0 1px,
+    transparent 1px 12px
+  );
 }
 
-.media-placeholder span {
-  font-size: var(--t-sm);
-  color: var(--c-ink-muted);
-  max-width: 22rem;
+.media-placeholder--block {
+  aspect-ratio: 4 / 3;
+  min-height: 0;
+}
+
+.media-placeholder figcaption,
+.media-placeholder > span {
+  margin: var(--s-5);
+  padding: var(--s-3) var(--s-4);
+  background: rgb(255 255 255 / 0.94);
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-1);
+  max-width: 22.5rem;
+  font-size: var(--t-small);
+  line-height: 1.571;
 }
 
 /* --------------------------------------------------------------------------
-   Steps
+   Trust strip
+   -------------------------------------------------------------------------- */
+
+.trust-strip {
+  background: var(--c-bianco);
+  border-top: 1px solid var(--c-border);
+  border-bottom: 1px solid var(--c-border);
+}
+
+/* The list is the .wrap container itself. Only the block margins are reset:
+   resetting all margins (as before) cancelled .wrap's margin-inline: auto and
+   pinned the group to the left edge on wide screens. */
+.trust-strip ul {
+  margin-block: 0;
+  padding-block: var(--s-10);
+  list-style: none;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--s-8);
+}
+
+/* Even columns: 2 on tablet, 4 on desktop, all the same width. */
+@media (min-width: 48rem) {
+  .trust-strip ul {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 64rem) {
+  .trust-strip ul {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+/* The icon (24px) is exactly one line of the heading (16px x 1.5), so with
+   both aligned to the start their tops coincide. */
+.trust-strip li {
+  display: flex;
+  gap: var(--s-4);
+  align-items: flex-start;
+}
+
+.trust-strip svg {
+  color: var(--c-verde-profondo);
+}
+
+/* An h3 in the outline, set in Manrope as the concept draws it (the serif
+   is only for headings of 28px and up). */
+.trust-strip__title {
+  font-family: var(--font-sans);
+  font-size: var(--t-base);
+  line-height: 1.5;
+  font-weight: 600;
+  text-wrap: wrap;
+}
+
+.trust-strip li p {
+  font-size: var(--t-small);
+  line-height: 1.571;
+  color: var(--c-pietra);
+}
+
+/* --------------------------------------------------------------------------
+   Numbered steps
    -------------------------------------------------------------------------- */
 
 .steps {
   counter-reset: step;
   display: grid;
-  gap: var(--s-5);
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
+  gap: var(--s-8);
   margin: 0;
   padding: 0;
   list-style: none;
 }
 
-@media (min-width: 60rem) {
-  .steps {
-    grid-template-columns: repeat(3, 1fr);
-    gap: var(--s-6);
-  }
-}
-
 .steps li {
   counter-increment: step;
-  padding-top: var(--s-4);
-  border-top: 3px solid var(--c-green-flag);
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-2);
 }
 
 .steps li::before {
   content: counter(step, decimal-leading-zero);
-  display: block;
-  margin-bottom: var(--s-2);
-  font-family: var(--font-display);
-  font-size: var(--t-lg);
-  color: var(--c-green-deep);
+  font-family: var(--font-serif);
+  font-size: 2.75rem; /* 44 */
+  line-height: 1;
+  font-weight: 500;
+  color: var(--c-verde-felce);
 }
 
 .steps h3 {
-  font-size: var(--t-md);
-  margin-bottom: var(--s-2);
+  font-family: var(--font-sans);
+  font-size: var(--t-base);
+  font-weight: 600;
+  line-height: 1.625;
 }
 
 .steps p {
-  color: var(--c-ink-muted);
-  font-size: var(--t-sm);
+  color: var(--c-pietra);
+  font-size: var(--t-small);
+  line-height: 1.571;
 }
 
 /* --------------------------------------------------------------------------
    Routes table
    -------------------------------------------------------------------------- */
 
+.routes__scroll {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  border: 1px solid var(--c-border);
+}
+
 .routes {
   width: 100%;
   border-collapse: collapse;
   text-align: left;
-  font-size: var(--t-sm);
+  font-size: var(--t-small);
+  background: var(--c-white);
 }
 
+/* A real <caption> names the table for screen readers; caption-side puts it
+   under the table, where the concept shows the note. */
 .routes caption {
+  caption-side: bottom;
   text-align: left;
-  padding-bottom: var(--s-3);
-  color: var(--c-ink-muted);
-  font-size: var(--t-sm);
+  padding: var(--s-3) 0;
+  color: var(--c-pietra);
+  font-size: var(--t-fine);
+  line-height: 1.538;
 }
 
 .routes th,
 .routes td {
-  padding: var(--s-3) var(--s-3);
+  padding: var(--s-4);
   border-bottom: 1px solid var(--c-border);
   vertical-align: top;
 }
 
+.routes tbody tr:last-child th,
+.routes tbody tr:last-child td {
+  border-bottom: 0;
+}
+
 .routes thead th {
-  border-bottom: 2px solid var(--c-green-flag);
-  font-size: var(--t-xs);
+  border-bottom: 1px solid var(--c-border);
+  background: var(--c-bianco);
+  font-size: var(--t-label);
+  line-height: 1.333;
   font-weight: 700;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--c-green-deep);
+  color: var(--c-pietra);
   white-space: nowrap;
 }
 
 .routes tbody th {
   font-weight: 600;
-}
-
-.routes__scroll {
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
 }
 
 /* --------------------------------------------------------------------------
@@ -445,12 +844,17 @@
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
-  gap: var(--s-4);
+  /* 4px, not 16: the 24px chevron is 12px wider than the old CSS marker, and
+     this keeps the question's text column exactly as wide as before, so no
+     question wraps differently. */
+  gap: var(--s-1);
   padding: var(--s-4) 0;
   cursor: pointer;
-  font-family: var(--font-display);
-  font-size: var(--t-md);
-  color: var(--c-green-darker);
+  font-family: var(--font-serif);
+  font-size: 1.375rem; /* 22 */
+  line-height: 1.273;
+  font-weight: 600;
+  color: var(--c-carbone);
   list-style: none;
 }
 
@@ -458,101 +862,132 @@
   display: none;
 }
 
-.faq summary::after {
-  content: '';
-  flex: 0 0 auto;
-  width: 0.875rem;
-  height: 0.875rem;
-  margin-top: 0.4em;
-  border-right: 2px solid var(--c-green-flag);
-  border-bottom: 2px solid var(--c-green-flag);
-  transform: rotate(45deg);
-  transition: transform 0.15s ease;
+/* Lucide chevron-down, turned up when the answer is open. The summary line
+   is 28px and the icon 24px: 2px down centres it on the first line. */
+.faq__chevron {
+  margin-top: 2px;
+  color: var(--c-verde-felce);
+  transition: transform var(--dur) var(--ease);
 }
 
-.faq details[open] summary::after {
-  transform: rotate(-135deg);
+.faq details[open] .faq__chevron {
+  transform: rotate(180deg);
 }
 
 .faq details > div {
   padding-bottom: var(--s-4);
   max-width: 40rem;
-  color: var(--c-ink-muted);
+  color: var(--c-pietra);
 }
 
 /* --------------------------------------------------------------------------
-   City card grid
+   City cards
    -------------------------------------------------------------------------- */
 
 .city-card {
   display: flex;
   flex-direction: column;
   background: var(--c-white);
-  border: 1px solid var(--c-border);
-  border-radius: var(--radius-lg);
-  overflow: hidden;
-  transition: border-color 0.15s ease, box-shadow 0.15s ease;
-}
-
-.city-card:hover {
-  border-color: var(--c-green-flag);
-  box-shadow: var(--shadow-md);
 }
 
 .city-card__thumb {
-  display: grid;
-  place-items: center;
   aspect-ratio: 16 / 9;
-  background:
-    repeating-linear-gradient(45deg, var(--c-tint) 0 8px, transparent 8px 16px),
-    var(--c-off-white);
+  display: flex;
+  align-items: flex-end;
+  background-color: var(--c-placeholder);
+  background-image: repeating-linear-gradient(
+    135deg,
+    rgb(28 31 29 / 0.06) 0 1px,
+    transparent 1px 12px
+  );
   border-bottom: 1px solid var(--c-border);
-  color: var(--c-ink-muted);
-  font-size: var(--t-xs);
-  text-align: center;
-  padding: var(--s-3);
+}
+
+/* A real photo fills the 16:9 frame the placeholder reserved, so swapping one
+   in causes no layout shift. */
+.city-card__thumb picture {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.city-card__thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.city-card__thumb span {
+  margin: var(--s-3);
+  padding: var(--s-2) var(--s-3);
+  background: rgb(255 255 255 / 0.94);
+  font-size: var(--t-fine);
+  line-height: 1.538;
+  color: var(--c-pietra);
 }
 
 .city-card__body {
   display: flex;
   flex-direction: column;
   flex: 1;
-  padding: var(--s-5);
+  gap: var(--s-3);
+  padding: var(--s-6);
+}
+
+@media (min-width: 48rem) {
+  .city-card__body {
+    padding: var(--s-8);
+  }
 }
 
 .city-card__body h3 {
-  margin-bottom: var(--s-2);
-  font-size: var(--t-lg);
+  margin: 0;
 }
 
 .city-card__body h3 a {
-  color: var(--c-green-darker);
+  color: var(--c-carbone);
   text-decoration: none;
 }
 
 .city-card__body h3 a:hover {
+  color: var(--c-verde-profondo);
   text-decoration: underline;
 }
 
 .city-card__gateways {
-  margin-bottom: var(--s-3);
-  font-size: var(--t-xs);
-  font-weight: 600;
-  letter-spacing: 0.04em;
-  color: var(--c-green-deep);
+  display: flex;
+  align-items: flex-start;
+  gap: var(--s-1);
+  font-size: var(--t-label);
+  line-height: 1.333;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--c-verde-profondo);
 }
 
 .city-card__body p {
-  color: var(--c-ink-muted);
-  font-size: var(--t-sm);
+  margin: 0;
+  color: var(--c-pietra);
+  font-size: var(--t-small);
+  line-height: 1.571;
+}
+
+/* Lucide map-pin. The line is 22px (.city-card__body p sets 14 x 1.571) and
+   the icon 24px: 1px of negative margin each side keeps it 22px. The pin's
+   outline starts 3px inside its box, so -3px inline lines it up with the
+   text column above and below. */
+.city-card__gateways .icon {
+  margin-block: -1px;
+  margin-inline-start: -3px;
+  color: var(--c-verde-felce);
 }
 
 .city-card__flag {
-  margin-top: var(--s-4);
+  margin-top: auto;
   padding-top: var(--s-3);
-  border-top: 1px dashed var(--c-border-strong);
-  font-size: var(--t-xs);
-  color: var(--c-ink-muted);
+  font-size: var(--t-fine);
+  color: var(--c-pietra);
 }
 
 /* --------------------------------------------------------------------------
@@ -560,54 +995,54 @@
    -------------------------------------------------------------------------- */
 
 .cta-band {
-  background: var(--c-green-darker);
-  color: var(--c-white);
+  background: var(--c-notte);
+  color: var(--c-bianco);
 }
 
 .cta-band__inner {
-  display: grid;
-  gap: var(--s-5);
-  padding-block: var(--s-7);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
   align-items: center;
+  gap: var(--s-8);
+  padding-block: var(--s-16);
 }
 
 @media (min-width: 60rem) {
   .cta-band__inner {
-    grid-template-columns: 1.4fr 1fr;
-    gap: var(--s-7);
-    padding-block: var(--s-8);
+    padding-block: var(--s-22);
   }
 }
 
+.cta-band__copy {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-3);
+  max-width: 38.75rem;
+}
+
 .cta-band h2 {
+  margin: 0;
+  font-size: var(--t-h2-band);
+  font-weight: 500;
   color: var(--c-white);
 }
 
 .cta-band p {
-  margin-top: var(--s-3);
-  color: #d4e4da;
+  margin: 0;
+  font-size: var(--t-lead);
+  line-height: 1.556;
+  color: var(--c-text-dark-bg);
 }
 
 .cta-band .note {
-  color: #a9c7b5;
+  color: var(--c-verde-chiaro);
 }
 
 .cta-band__actions {
-  display: grid;
+  display: flex;
+  flex-wrap: wrap;
   gap: var(--s-3);
-}
-
-@media (min-width: 30rem) {
-  .cta-band__actions {
-    grid-auto-flow: column;
-    grid-auto-columns: 1fr;
-  }
-}
-
-@media (min-width: 60rem) {
-  .cta-band__actions {
-    grid-auto-flow: row;
-  }
 }
 
 /* --------------------------------------------------------------------------
@@ -615,64 +1050,91 @@
    -------------------------------------------------------------------------- */
 
 .site-footer {
-  padding-block: var(--s-7) var(--s-5);
-  background: var(--c-off-white);
-  border-top: 4px solid var(--c-green-flag);
-  font-size: var(--t-sm);
+  background: var(--c-notte-deep);
+  color: var(--c-text-dark-bg);
+  font-size: var(--t-small);
+  line-height: 1.571;
 }
 
 .site-footer__grid {
   display: grid;
-  gap: var(--s-6);
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr));
+  gap: var(--s-10);
+  padding-block: var(--s-16) var(--s-8);
 }
 
-@media (min-width: 48rem) {
-  .site-footer__grid {
-    grid-template-columns: 1.4fr 1fr 1fr;
-  }
+.site-footer__brand {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-4);
 }
 
-.site-footer h2 {
-  margin-bottom: var(--s-3);
-  font-family: var(--font-body);
-  font-size: var(--t-xs);
-  font-weight: 700;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--c-green-deep);
+.site-footer__lockup {
+  display: flex;
+  align-items: center;
+  gap: var(--s-3);
+}
+
+.site-footer__lockup svg {
+  width: 44px;
+  height: 44px;
+  flex-shrink: 0;
+}
+
+.site-footer__name {
+  font-family: var(--font-serif);
+  font-size: 1.625rem;
+  line-height: 1.077;
+  font-weight: 600;
+  color: var(--c-white);
+}
+
+.site-footer__col {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-2);
+}
+
+.site-footer .label {
+  color: var(--c-verde-chiaro);
 }
 
 .site-footer ul {
-  display: grid;
-  gap: var(--s-2);
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-1);
   margin: 0;
   padding: 0;
   list-style: none;
 }
 
+.site-footer a,
+.site-footer__col strong {
+  color: var(--c-bianco);
+  font-weight: 400;
+  text-decoration: none;
+}
+
 .site-footer a {
-  color: var(--c-ink);
+  min-height: 2rem;
+  display: inline-flex;
+  align-items: center;
 }
 
 .site-footer a:hover {
-  color: var(--c-green-darker);
-}
-
-.site-footer__blurb {
-  margin-top: var(--s-3);
-  color: var(--c-ink-muted);
-  max-width: 28rem;
+  color: var(--c-white);
+  text-decoration: underline;
 }
 
 .site-footer__legal {
-  margin-top: var(--s-6);
-  padding-top: var(--s-4);
-  border-top: 1px solid var(--c-border-strong);
   display: flex;
   flex-wrap: wrap;
-  gap: var(--s-2) var(--s-4);
-  color: var(--c-ink-muted);
-  font-size: var(--t-xs);
+  justify-content: space-between;
+  gap: var(--s-2);
+  padding-block: var(--s-5) var(--s-8);
+  border-top: 1px solid var(--c-border-dark);
+  font-size: var(--t-fine);
+  line-height: 1.538;
 }
 
 /* --------------------------------------------------------------------------
@@ -684,10 +1146,10 @@
   inset: auto 0 0 0;
   z-index: 110;
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   background: var(--c-white);
   border-top: 1px solid var(--c-border);
-  box-shadow: 0 -2px 12px rgb(20 36 28 / 0.1);
+  box-shadow: var(--shadow-bar);
   padding-bottom: env(safe-area-inset-bottom);
 }
 
@@ -697,37 +1159,39 @@
   align-items: center;
   justify-content: center;
   gap: 2px;
-  min-height: var(--mobile-bar-h);
-  padding: var(--s-2);
-  color: var(--c-green-deep);
-  font-size: 0.75rem;
-  font-weight: 600;
+  height: var(--mobile-bar-h);
+  color: var(--c-carbone);
   text-decoration: none;
-  border-right: 1px solid var(--c-border);
+  font-size: var(--t-label);
+  font-weight: 700;
 }
 
-.mobile-bar__item:last-child {
-  border-right: 0;
+
+.mobile-bar__item--whatsapp {
+  color: var(--c-verde-profondo);
 }
 
-.mobile-bar__item svg {
-  width: 1.25rem;
-  height: 1.25rem;
+/* Hairline between the two plain items (WhatsApp | Email); the red quote
+   block needs no divider. */
+.mobile-bar__item + .mobile-bar__item:not(.mobile-bar__item--cta) {
+  border-left: 1px solid var(--c-border);
 }
 
 /* The quote action is the page's main CTA, so it carries the red. */
 .mobile-bar__item--cta {
-  background: var(--c-red);
+  background: var(--c-rosso);
   color: var(--c-white);
-  border-right: 0;
+  font-size: 0.9375rem; /* 15 */
 }
 
 .mobile-bar__item--cta:hover {
-  background: var(--c-red-dark);
+  background: var(--c-rosso-shade);
   color: var(--c-white);
 }
 
-@media (min-width: 48rem) {
+/* The sticky bar stays until the header can show its own quote button
+   (68rem), so there is never a width with no quote action on screen. */
+@media (min-width: 68rem) {
   .mobile-bar {
     display: none;
   }
@@ -738,80 +1202,178 @@
    -------------------------------------------------------------------------- */
 
 .form {
-  display: grid;
-  gap: var(--s-4);
-  padding: var(--s-5);
-  background: var(--c-off-white);
+  /* Rows below respond to the form's own width, not the screen's: the form is
+     358px on a phone, 705px on a tablet, 520px on a small laptop (beside the
+     contact details) and 676px on desktop. */
+  container: quote-form / inline-size;
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-5);
+  padding: var(--s-6);
+  background: var(--c-white);
   border: 1px solid var(--c-border);
-  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
 }
 
 @media (min-width: 48rem) {
   .form {
-    padding: var(--s-6);
+    padding: var(--s-7);
   }
 }
 
-.form__row {
-  display: grid;
+.form__head {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: baseline;
   gap: var(--s-4);
 }
 
-@media (min-width: 36rem) {
-  .form__row--2 {
-    grid-template-columns: repeat(2, 1fr);
+.form__head h2,
+.form__head h3 {
+  margin: 0;
+  font-size: var(--t-h3);
+  line-height: 1.214;
+  font-weight: 600;
+}
+
+/*
+ * Rows of fields. Every field in a row spans three shared row tracks, via
+ * subgrid: label | control | message. A label that wraps to two lines makes
+ * that track taller for the whole row, so every input in the row starts on
+ * the same line, and still does when an error appears under one of them.
+ *
+ * One column on phones, with the same 20px between fields as everywhere else
+ * in the form.
+ *
+ * Spacing: a subgrid cannot opt out of its parent's row-gap, which would sit
+ * between a field's own label, control and message tracks and make every row
+ * taller. So the row has no row-gap. Each field instead ends with 20px of
+ * padding, which separates fields that stack (phones, or the date row at two
+ * columns), and the row's -20px bottom margin cancels the last line's padding,
+ * so the form's own 20px gap between rows is exactly what it was.
+ */
+.form__row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  column-gap: var(--s-4);
+  row-gap: 0;
+  margin-bottom: calc(-1 * var(--s-5));
+}
+
+.form__row > .field {
+  display: grid;
+  grid-row: span 3;
+  grid-template-rows: subgrid;
+  /* A grid item will not shrink below its content by default, and a date
+     input's natural width is wider than a 142px column. Both of these let the
+     field and its control take exactly their column's width. */
+  grid-template-columns: minmax(0, 1fr);
+  min-width: 0;
+  row-gap: 0;
+  padding-bottom: var(--s-5);
+}
+
+.form__row > .field > input,
+.form__row > .field > select {
+  min-width: 0;
+}
+
+/* Spacing inside a field without gaps, so an empty (hidden) message track
+   adds no height. A one-line label sits at the bottom of its track, right
+   above its input, when a neighbour's label wraps. */
+.form__row > .field > label {
+  align-self: end;
+  padding-bottom: var(--s-2);
+}
+
+.form__row > .field > .field__error,
+.form__row > .field > .field__hint {
+  margin-top: var(--s-2);
+}
+
+@container quote-form (min-width: 28rem) {
+  .form__row--2,
+  .form__row--3 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@container quote-form (min-width: 38rem) {
+  .form__row--3 {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 }
 
 .field {
-  display: grid;
+  display: flex;
+  flex-direction: column;
   gap: var(--s-2);
 }
 
 .field > label {
-  font-size: var(--t-sm);
-  font-weight: 600;
+  font-family: var(--font-sans);
+  font-size: var(--t-label);
+  line-height: 1.333;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--c-pietra);
 }
 
 .field__hint {
-  font-size: var(--t-xs);
+  font-size: var(--t-fine);
+  line-height: 1.538;
   font-weight: 400;
-  color: var(--c-ink-muted);
+  letter-spacing: normal;
+  text-transform: none;
+  color: var(--c-pietra);
 }
 
 .field input,
 .field select,
 .field textarea {
   width: 100%;
-  min-height: 48px;
-  padding: var(--s-3);
+  height: 52px;
+  padding: 0 var(--s-4);
   background: var(--c-white);
-  border: 1px solid var(--c-border-strong);
-  border-radius: var(--radius);
+  border: 1px solid var(--c-border-input);
+  border-radius: 0;
+  font-family: var(--font-sans);
   font-size: var(--t-base);
+  font-weight: 500;
+  color: var(--c-carbone);
 }
 
 .field textarea {
+  height: auto;
   min-height: 7rem;
+  padding: var(--s-3) var(--s-4);
   resize: vertical;
+}
+
+.field input::placeholder,
+.field textarea::placeholder {
+  color: var(--c-pietra);
 }
 
 .field input:focus-visible,
 .field select:focus-visible,
 .field textarea:focus-visible {
-  border-color: var(--c-green-deep);
+  border-color: var(--c-verde-profondo);
 }
 
 .field [aria-invalid='true'] {
-  border-color: var(--c-red);
+  border-color: var(--c-rosso);
   border-width: 2px;
 }
 
 .field__error {
   display: none;
-  font-size: var(--t-sm);
+  font-size: var(--t-small);
+  line-height: 1.571;
   font-weight: 500;
-  color: #a8161e;
+  color: var(--c-rosso);
 }
 
 .field__error[data-visible='true'] {
@@ -819,6 +1381,7 @@
 }
 
 .field--check {
+  display: grid;
   grid-template-columns: auto 1fr;
   align-items: start;
   gap: var(--s-3);
@@ -827,14 +1390,19 @@
 .field--check input {
   width: 1.375rem;
   height: 1.375rem;
-  min-height: 0;
+  padding: 0;
   margin-top: 0.15em;
-  accent-color: var(--c-green-deep);
+  accent-color: var(--c-verde-profondo);
 }
 
 .field--check label {
+  font-family: var(--font-sans);
+  font-size: var(--t-small);
+  line-height: 1.571;
   font-weight: 400;
-  font-size: var(--t-sm);
+  letter-spacing: normal;
+  text-transform: none;
+  color: var(--c-carbone);
 }
 
 .field--check .field__error {
@@ -843,9 +1411,9 @@
 
 .form__status {
   padding: var(--s-4);
-  border-radius: var(--radius);
   border-left: 4px solid;
-  font-size: var(--t-sm);
+  font-size: var(--t-small);
+  line-height: 1.571;
 }
 
 .form__status[hidden] {
@@ -853,9 +1421,9 @@
 }
 
 .form__status--error {
-  background: #fdecec;
-  border-color: var(--c-red);
-  color: #7d1016;
+  background: var(--c-bianco);
+  border-color: var(--c-rosso);
+  color: var(--c-carbone);
 }
 
 .form__status--error ul {
@@ -864,77 +1432,76 @@
 }
 
 .form__status--error a {
-  color: #7d1016;
+  color: var(--c-rosso);
 }
 
 .form__status--info {
-  background: #fff8e1;
-  border-color: #b08900;
-  color: #5c4600;
+  background: var(--c-bianco);
+  border-color: var(--c-pietra);
+  color: var(--c-carbone);
 }
 
 .form__status--success {
-  background: #e6f3ec;
-  border-color: var(--c-green-flag);
-  color: var(--c-green-darker);
+  background: var(--c-bianco);
+  border-color: var(--c-verde-felce);
+  color: var(--c-notte);
 }
 
 /* --------------------------------------------------------------------------
-   Contact methods / definition lists
+   Contact methods / spec lists
    -------------------------------------------------------------------------- */
 
 .contact-grid {
   display: grid;
-  gap: var(--s-6);
+  gap: var(--s-12);
   align-items: start;
 }
 
 @media (min-width: 60rem) {
   .contact-grid {
     grid-template-columns: 1.15fr 0.85fr;
-    gap: var(--s-7);
+    gap: var(--s-14);
   }
 }
 
 .method-list {
   display: grid;
-  gap: var(--s-3);
+  gap: 1px;
   margin: 0;
   padding: 0;
   list-style: none;
+  background: var(--c-border);
+  border: 1px solid var(--c-border);
 }
 
 .method {
   display: grid;
-  grid-template-columns: 2.5rem 1fr;
+  grid-template-columns: 2rem 1fr;
   gap: var(--s-3);
   align-items: center;
   padding: var(--s-4);
   background: var(--c-white);
-  border: 1px solid var(--c-border);
-  border-radius: var(--radius-lg);
   text-decoration: none;
-  color: var(--c-ink);
+  color: var(--c-carbone);
 }
 
 .method:hover {
-  border-color: var(--c-green-flag);
-  color: var(--c-ink);
+  background: var(--c-bianco);
+  color: var(--c-carbone);
 }
 
 .method svg {
-  width: 1.5rem;
-  height: 1.5rem;
-  color: var(--c-green-flag);
+  color: var(--c-verde-profondo);
 }
 
 .method__label {
   display: block;
-  font-size: var(--t-xs);
+  font-size: var(--t-label);
+  line-height: 1.333;
   font-weight: 700;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--c-green-deep);
+  color: var(--c-pietra);
 }
 
 .method__value {
@@ -956,8 +1523,8 @@
 }
 
 .spec-list dt {
-  color: var(--c-ink-muted);
-  font-size: var(--t-sm);
+  color: var(--c-pietra);
+  font-size: var(--t-small);
 }
 
 .spec-list dd {
@@ -976,34 +1543,33 @@
   min-height: 100vh;
   min-height: 100dvh;
   padding: var(--s-5);
-  background: var(--c-off-white);
+  background: var(--c-bianco);
   text-align: center;
 }
 
 .gate__card {
   max-width: 30rem;
-  padding: var(--s-6);
+  padding: var(--s-8);
   background: var(--c-white);
   border: 1px solid var(--c-border);
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-sm);
+  box-shadow: var(--shadow-card);
 }
 
-.gate__card svg {
-  width: 3.5rem;
-  height: 3.5rem;
-  margin: 0 auto var(--s-4);
+.gate__card > svg {
+  width: 4.5rem;
+  height: 4.5rem;
+  margin: 0 auto var(--s-5);
 }
 
 .gate__card p {
   margin-top: var(--s-3);
-  color: var(--c-ink-muted);
+  color: var(--c-pietra);
 }
 
 .gate__links {
   display: grid;
   gap: var(--s-3);
-  margin-top: var(--s-5);
+  margin-top: var(--s-6);
 }
 
 @media (min-width: 26rem) {
@@ -1014,7 +1580,7 @@
 }
 
 .notfound {
-  padding-block: var(--s-8);
+  padding-block: var(--s-16);
   text-align: center;
 }
 
@@ -1022,6 +1588,222 @@
   display: grid;
   gap: var(--s-3);
   max-width: 24rem;
-  margin: var(--s-6) auto 0;
+  margin: var(--s-10) auto 0;
   text-align: left;
+}
+
+/* ==========================================================================
+   Interaction polish
+   One radius (--radius), one transition (--dur, --ease) and one focus ring
+   (global.css). Nothing in this section changes an element's size or
+   position: only colour, border colour, shadow, radius, and transform,
+   which never moves layout.
+   ========================================================================== */
+
+/* Buttons: lift on hover, press on click. */
+.btn {
+  border-radius: var(--radius);
+  transition:
+    background-color var(--dur) var(--ease),
+    border-color var(--dur) var(--ease),
+    color var(--dur) var(--ease),
+    box-shadow var(--dur) var(--ease),
+    transform var(--dur) var(--ease);
+}
+
+.btn:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-btn);
+}
+
+.btn:active {
+  transform: translateY(0);
+  box-shadow: none;
+}
+
+/* Fields. Focus doubles the border to 2px with an inset shadow, so the box
+   never grows; the outline ring from global.css sits outside it. */
+.field input,
+.field select,
+.field textarea {
+  border-radius: var(--radius);
+  transition:
+    border-color var(--dur) var(--ease),
+    box-shadow var(--dur) var(--ease);
+}
+
+.field input:not([type='checkbox']):not([aria-invalid='true']):hover,
+.field select:not([aria-invalid='true']):hover,
+.field textarea:not([aria-invalid='true']):hover {
+  border-color: var(--c-pietra);
+}
+
+.field input:focus-visible,
+.field select:focus-visible,
+.field textarea:focus-visible {
+  border-color: var(--c-verde-profondo);
+  box-shadow: inset 0 0 0 1px var(--c-verde-profondo);
+}
+
+/* Select: Lucide chevron-down in place of the native arrow, at the same
+   24px / 1.5 stroke as every other icon. */
+.field select {
+  appearance: none;
+  /* 34px: room for the 24px chevron (its glyph has ~6px of space each side,
+     so the visible gap to the text stays ~8px) without clipping the longest
+     option ("Trasferimento aeroporto o porto", 241px) at desktop width. */
+  padding-right: calc(var(--s-2) + var(--icon-size) + 2px);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%235A605C' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right var(--s-2) center;
+  background-size: var(--icon-size);
+  cursor: pointer;
+}
+
+/* Date and time: Lucide calendar and clock in place of the browser's picker
+   glyph (Chromium, Edge, Safari; Firefox keeps its own). */
+.field input[type='date'],
+.field input[type='time'] {
+  padding-inline: var(--s-3) var(--s-2);
+}
+
+.field input[type='date']::-webkit-calendar-picker-indicator,
+.field input[type='time']::-webkit-calendar-picker-indicator {
+  width: var(--icon-size);
+  height: var(--icon-size);
+  padding: 0;
+  opacity: 1;
+  cursor: pointer;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2300693A' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M8 2v3'/%3E%3Cpath d='M16 2v3'/%3E%3Crect x='3' y='3' width='18' height='18' rx='2'/%3E%3Cpath d='M3 9h18'/%3E%3C/svg%3E") center / var(--icon-size) no-repeat;
+}
+
+.field input[type='time']::-webkit-calendar-picker-indicator {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2300693A' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='10'/%3E%3Cpath d='M12 6v6l4 2'/%3E%3C/svg%3E");
+}
+
+/* Cards and panels: one radius, a soft resting shadow. */
+.card-grid {
+  border-radius: var(--radius);
+  overflow: hidden; /* clips the cards' square corners; their links sit well inside the padding */
+  box-shadow: var(--shadow-soft);
+}
+
+.panel {
+  border-radius: var(--radius);
+}
+
+.panel:not(.panel--raised) {
+  box-shadow: var(--shadow-soft);
+}
+
+.form {
+  border-radius: var(--radius);
+}
+
+.form__status {
+  border-radius: var(--radius);
+}
+
+/* City cards hold a link, so they respond to hover: a lift shadow and a slow
+   photo zoom inside its frame. In a hairline grid a translate would open a
+   seam, so the lift is shadow only. Service cards have no link and stay still. */
+.city-card {
+  position: relative;
+  transition: box-shadow var(--dur) var(--ease);
+}
+
+.city-card:hover,
+.city-card:focus-within {
+  z-index: 1;
+  box-shadow: var(--shadow-lift);
+}
+
+.city-card__thumb {
+  overflow: hidden;
+}
+
+.city-card__thumb img {
+  transition: transform var(--dur) var(--ease);
+}
+
+.city-card:hover .city-card__thumb img {
+  transform: scale(1.03);
+}
+
+/* Contact methods are link cards. The list is not overflow: hidden (that
+   would clip each link's focus ring), so the end items take the radius. */
+.method-list {
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-soft);
+}
+
+.method-list > li:first-child > .method {
+  border-radius: calc(var(--radius) - 1px) calc(var(--radius) - 1px) 0 0;
+}
+
+.method-list > li:last-child > .method {
+  border-radius: 0 0 calc(var(--radius) - 1px) calc(var(--radius) - 1px);
+}
+
+.method {
+  transition: background-color var(--dur) var(--ease);
+}
+
+/* Language switch and menu button. As above, the switch is not clipped, so
+   the end items take the radius and keep their focus rings. */
+.lang-switch {
+  border-radius: var(--radius);
+}
+
+.lang-switch__item {
+  transition: background-color var(--dur) var(--ease), color var(--dur) var(--ease);
+}
+
+.lang-switch__item:first-child {
+  border-radius: calc(var(--radius) - 1px) 0 0 calc(var(--radius) - 1px);
+}
+
+.lang-switch__item:last-child {
+  border-radius: 0 calc(var(--radius) - 1px) calc(var(--radius) - 1px) 0;
+}
+
+.nav-toggle {
+  border-radius: var(--radius);
+  transition: background-color var(--dur) var(--ease);
+}
+
+.nav-toggle:hover {
+  background: var(--c-bianco);
+}
+
+/* Links: colour changes ease rather than snap. */
+.site-nav__list a,
+.text-link,
+.city-card__body h3 a,
+.utility-bar a,
+.site-footer a,
+.breadcrumbs a {
+  transition: color var(--dur) var(--ease), border-color var(--dur) var(--ease);
+}
+
+/* Sticky bar: a pressed state for touch. */
+.mobile-bar__item {
+  transition: background-color var(--dur) var(--ease);
+}
+
+.mobile-bar__item:not(.mobile-bar__item--cta):active {
+  background: var(--c-bianco);
+}
+
+.mobile-bar__item--cta:active {
+  background: var(--c-rosso-shade);
+}
+
+/* No movement for people who have asked for less of it. */
+@media (prefers-reduced-motion: reduce) {
+  .btn:hover,
+  .btn:active,
+  .city-card:hover .city-card__thumb img {
+    transform: none;
+  }
 }

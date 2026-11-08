@@ -1,86 +1,63 @@
 ---
 /**
- * Inline SVG icons. Inlined rather than sprited so they cost no extra request
- * and inherit `currentColor`. Decorative by default (aria-hidden); pass a
- * `title` only when the icon is the sole label for a control.
+ * Every icon on the site, from Lucide (https://lucide.dev).
+ *
+ * Rendered at build time as inline SVG: no icon font, no client JavaScript,
+ * and only the icons mapped below are imported (one module each).
+ *
+ * One size and one stroke width across the site: 24px, Lucide's native grid,
+ * at a 1.5 stroke, the concept's line weight. The size is set by the .icon
+ * class (--icon-size in global.css), never per context. Colour is
+ * currentColor, so an icon takes the brand colour of the text it sits in.
+ *
+ * Decorative: Lucide marks the SVG aria-hidden, because every icon on the site
+ * sits next to a text label that already says what it means.
  */
-export type IconName = 'check' | 'phone' | 'whatsapp' | 'mail' | 'quote' | 'pin' | 'clock' | 'car';
+import Check from '@lucide/astro/icons/check';
+import Tag from '@lucide/astro/icons/tag';
+import MapPin from '@lucide/astro/icons/map-pin';
+import Car from '@lucide/astro/icons/car';
+import Clock from '@lucide/astro/icons/clock';
+import Plane from '@lucide/astro/icons/plane';
+import ShieldCheck from '@lucide/astro/icons/shield-check';
+import MessagesSquare from '@lucide/astro/icons/messages-square';
+import Mail from '@lucide/astro/icons/mail';
+// Lucide ships no brand logos; message-circle is its chat glyph and keeps the
+// same stroke style as every other icon, which a filled brand mark would not.
+import MessageCircle from '@lucide/astro/icons/message-circle';
+import Menu from '@lucide/astro/icons/menu';
+import X from '@lucide/astro/icons/x';
+import ChevronDown from '@lucide/astro/icons/chevron-down';
+import type { IconName } from '../data/icons';
 
 interface Props {
   name: IconName;
-  title?: string;
   class?: string;
 }
 
-const { name, title, class: className } = Astro.props;
-const labelled = Boolean(title);
+const ICONS = {
+  check: Check,
+  tag: Tag,
+  'map-pin': MapPin,
+  car: Car,
+  clock: Clock,
+  plane: Plane,
+  'shield-check': ShieldCheck,
+  messages: MessagesSquare,
+  mail: Mail,
+  whatsapp: MessageCircle,
+  menu: Menu,
+  close: X,
+  'chevron-down': ChevronDown,
+} satisfies Record<IconName, unknown>;
+
+const { name, class: className } = Astro.props;
+const Lucide = ICONS[name];
 ---
 
-<svg
-  class={className}
-  viewBox="0 0 24 24"
-  fill="none"
-  stroke="currentColor"
-  stroke-width="1.75"
-  stroke-linecap="round"
-  stroke-linejoin="round"
-  role={labelled ? 'img' : undefined}
-  aria-hidden={labelled ? undefined : 'true'}
+<Lucide
+  size={24}
+  stroke-width={1.5}
+  class={['icon', className].filter(Boolean).join(' ')}
   focusable="false"
->
-  {title && <title>{title}</title>}
-  {name === 'check' && <path d="M20 6 9 17l-5-5" />}
-  {
-    name === 'phone' && (
-      <path d="M6.6 3h-.9A2.7 2.7 0 0 0 3 5.7C3 14.1 9.9 21 18.3 21A2.7 2.7 0 0 0 21 18.3v-.9a1.5 1.5 0 0 0-1.2-1.47l-3.2-.64a1.5 1.5 0 0 0-1.57.72l-.6 1a12.3 12.3 0 0 1-5.37-5.37l1-.6a1.5 1.5 0 0 0 .72-1.57l-.64-3.2A1.5 1.5 0 0 0 8.67 3Z" />
-    )
-  }
-  {
-    name === 'whatsapp' && (
-      <>
-        <path d="M21 11.5a8.5 8.5 0 0 1-12.6 7.43L3.5 20.5l1.6-4.78A8.5 8.5 0 1 1 21 11.5Z" />
-        <path d="M8.9 8.3c-.3.7-.1 1.7.6 2.8a8 8 0 0 0 3 2.9c1.1.6 2 .7 2.6.3l.5-.4-1.5-1.3-.9.5a6 6 0 0 1-2.2-2.2l.5-.9L10.2 8l-.7.1Z" />
-      </>
-    )
-  }
-  {
-    name === 'mail' && (
-      <>
-        <rect x="2.5" y="4.5" width="19" height="15" rx="2" />
-        <path d="m3 6.5 9 6 9-6" />
-      </>
-    )
-  }
-  {
-    name === 'quote' && (
-      <>
-        <rect x="3.5" y="4.5" width="17" height="16" rx="2" />
-        <path d="M8 3v3M16 3v3M3.5 10h17M8 14h5M8 17h3" />
-      </>
-    )
-  }
-  {
-    name === 'pin' && (
-      <>
-        <path d="M20 10.5c0 5.5-8 11-8 11s-8-5.5-8-11a8 8 0 0 1 16 0Z" />
-        <circle cx="12" cy="10.5" r="2.75" />
-      </>
-    )
-  }
-  {
-    name === 'clock' && (
-      <>
-        <circle cx="12" cy="12" r="9" />
-        <path d="M12 7.5V12l3 2" />
-      </>
-    )
-  }
-  {
-    name === 'car' && (
-      <>
-        <path d="M3 13.5 4.8 8a2 2 0 0 1 1.9-1.4h10.6A2 2 0 0 1 19.2 8L21 13.5v4a1 1 0 0 1-1 1h-1.5a1 1 0 0 1-1-1v-.75h-11v.75a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1Z" />
-        <path d="M3 13.5h18M7 16h.01M17 16h.01" />
-      </>
-    )
-  }
-</svg>
+/>

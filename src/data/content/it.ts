@@ -6,6 +6,8 @@
 // NOTA REDAZIONALE: non usare mai la sigla "NCC" né la parola "licenza" in
 // questi testi. Si parla di "transfer privati" e "auto con autista".
 
+import type { IconName } from '../icons';
+
 export const it = {
   home: {
     heroLead:
@@ -20,18 +22,21 @@ export const it = {
     servicesHeading: 'I servizi più richiesti',
     services: [
       {
+        icon: 'plane' as IconName,
         title: 'Trasferimenti aeroportuali e portuali',
         body:
           'Vi aspettiamo in arrivi con il cartello nominativo e ci occupiamo dei bagagli. Se il volo slitta, slitta anche il ritiro: seguiamo il numero del volo, non l’orologio.',
         points: ['Accoglienza dentro il terminal', 'Attesa inclusa', 'Imbarchi e porti crociere'],
       },
       {
+        icon: 'car' as IconName,
         title: 'Trasferte di lavoro',
         body:
           'Per chi si muove fra sedi, fiere e appuntamenti nella stessa giornata. L’autista resta a disposizione fra una tappa e l’altra e il riepilogo delle corse arriva a fine mese.',
         points: ['Auto a disposizione a ore', 'Riepilogo mensile', 'Fattura elettronica'],
       },
       {
+        icon: 'map-pin' as IconName,
         title: 'Eventi e occasioni',
         body:
           'Matrimoni, cerimonie e cene fuori città, quando serve coordinare più vetture e più orari senza che nessuno debba mettersi a guidare al ritorno.',
@@ -72,18 +77,22 @@ export const it = {
     whyHeading: 'Perché ci richiamano',
     why: [
       {
+        icon: 'tag' as IconName,
         title: 'La cifra resta quella',
         body: 'Nessun tassametro, nessuna maggiorazione dell’ultimo momento, nessun supplemento aeroportuale scoperto a fine corsa.',
       },
       {
+        icon: 'map-pin' as IconName,
         title: 'Autisti che vivono lì',
         body: 'Sanno da quale uscita del terminal si guadagna tempo e in quali vicoli un van semplicemente non entra.',
       },
       {
+        icon: 'messages' as IconName,
         title: 'Un solo referente',
         body: 'La prenotazione resta alla stessa persona: non serve rispiegare tutto da capo a ogni messaggio.',
       },
       {
+        icon: 'shield-check' as IconName,
         title: 'Documenti in ordine',
         body: 'Fattura elettronica, riepiloghi per la contabilità e condizioni messe per scritto prima della conferma.',
       },
@@ -179,7 +188,7 @@ export const it = {
 
   contact: {
     lead:
-      'Il modulo è la via più rapida per avere una cifra, perché chiede i quattro dati che ci servono per fare il preventivo. Se preferite parlarne a voce, telefono e WhatsApp qui sotto arrivano alle stesse persone.',
+      'Il modulo è la via più rapida per avere una cifra, perché chiede i quattro dati che ci servono per fare il preventivo. Se preferite parlarne direttamente, WhatsApp ed email qui sotto arrivano alle stesse persone.',
     formHeading: 'Richiedi un preventivo',
     formNote:
       'Rispondiamo entro [[TEMPO DI RISPOSTA]] negli orari d’ufficio. Niente è confermato finché non avete un preventivo scritto da noi.',

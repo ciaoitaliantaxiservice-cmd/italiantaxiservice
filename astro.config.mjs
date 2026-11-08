@@ -1,4 +1,5 @@
 import { defineConfig } from 'astro/config';
+import tailwindcss from '@tailwindcss/vite';
 import { SITE_URL } from './src/data/site.mjs';
 
 // NOTE: `site` drives canonicals, hreflang and sitemap.xml.
@@ -9,4 +10,7 @@ export default defineConfig({
   build: { format: 'directory' },
   compressHTML: true,
   devToolbar: { enabled: false },
+  // Tailwind CSS v4 via its Vite plugin, which is what `astro add tailwind`
+  // sets up for Tailwind 4. The entry stylesheet is src/styles/main.css.
+  vite: { plugins: [tailwindcss()] },
 });

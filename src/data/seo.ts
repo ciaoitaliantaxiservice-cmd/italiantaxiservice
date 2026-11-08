@@ -63,13 +63,13 @@ export const meta: Record<RouteKey, MetaByLang> = {
     en: {
       title: 'Contact Us & Request a Transfer Quote | Ciao',
       description:
-        'Tell us your route, date and passenger count and we will send a fixed quote. Reach us by phone, WhatsApp or email, seven days a week.',
+        'Tell us your route, date and passenger count and we will send a fixed quote. Reach us on WhatsApp or by email, seven days a week.',
       h1: 'Request a quote or ask us anything',
     },
     it: {
       title: 'Contatti e Preventivo Transfer | Ciao Italian Taxi',
       description:
-        'Indicate tratta, data e numero di passeggeri: inviamo un preventivo a tariffa fissa. Ci trovate al telefono, su WhatsApp o via email, tutti i giorni.',
+        'Indicate tratta, data e numero di passeggeri: inviamo un preventivo a tariffa fissa. Ci trovate su WhatsApp o via email, tutti i giorni.',
       h1: 'Chiedete un preventivo o scriveteci',
     },
   },

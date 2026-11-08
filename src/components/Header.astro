@@ -2,6 +2,9 @@
 import Logo from './Logo.astro';
 import LangSwitch from './LangSwitch.astro';
 import { routes, navOrder, ui, type Lang, type RouteKey } from '../data/i18n';
+import Placeholders from './Placeholders.astro';
+import Icon from './Icon.astro';
+import { site, whatsappHref, emailHref, newTab } from '../data/site.mjs';
 
 interface Props {
   lang: Lang;
@@ -14,13 +17,28 @@ const { lang, current, altPaths } = Astro.props;
 const l = ui[lang];
 ---
 
+{/* Utility bar — the thin dark strip above the header in the concept. */}
+<div class="utility-bar">
+  <div class="wrap utility-bar__inner">
+    <span>{l.utilityNote}</span>
+    <div class="utility-bar__links">
+      <a href={whatsappHref(lang)} class="is-whatsapp" {...newTab}>
+        {l.whatsapp}
+        <span class="visually-hidden">{l.newTab}</span>
+      </a>
+      <a href={emailHref}><Placeholders text={site.email} /></a>
+    </div>
+  </div>
+</div>
+
 <header class="site-header">
   <div class="wrap site-header__inner">
     <a class="logo" href={routes.home[lang]}>
-      <Logo />
+      {/* Icon form: the concept drops the ribbon below 120px. */}
+      <Logo variant="icon" />
       <span class="logo__text">
-        <span class="logo__name">Ciao</span>
-        <span class="logo__tag">Italian Taxi Service</span>
+        <span class="logo__name">{site.brand}</span>
+        <span class="logo__tag">{l.lockupTag}</span>
       </span>
     </a>
 
@@ -41,7 +59,7 @@ const l = ui[lang];
     <div class="header__actions">
       <LangSwitch lang={lang} paths={altPaths} />
 
-      <a class="btn btn--primary header__cta" href={`${routes.contact[lang]}#quote-form`}>
+      <a class="btn btn--primary btn--header header__cta" href={`${routes.contact[lang]}#quote-form`}>
         {l.getQuote}
       </a>
 
@@ -52,9 +70,8 @@ const l = ui[lang];
         aria-expanded="false"
         data-nav-toggle
       >
-        <span class="nav-toggle__bars" aria-hidden="true">
-          <span></span><span></span><span></span>
-        </span>
+        <Icon name="menu" class="nav-toggle__open" />
+        <Icon name="close" class="nav-toggle__close" />
         <span>Menu</span>
       </button>
     </div>

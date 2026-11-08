@@ -1,6 +1,9 @@
 ---
+import HeroPhoto from '../HeroPhoto.astro';
+import portraitPhoto from '../../assets/about/portrait.png';
 import CtaBand from '../CtaBand.astro';
 import Placeholders from '../Placeholders.astro';
+import Tricolore from '../Tricolore.astro';
 import { t } from '../../data/content';
 import { meta } from '../../data/seo';
 import { type Lang } from '../../data/i18n';
@@ -15,25 +18,34 @@ const h1 = meta.about[lang].h1;
 
 const portraitAlt =
   lang === 'en'
-    ? 'Portrait placeholder: one of our drivers beside the car, in daylight, no sunglasses.'
-    : 'Segnaposto ritratto: uno dei nostri autisti accanto all’auto, di giorno, senza occhiali da sole.';
+    ? 'A woman in a dark blazer and green silk scarf stands beside a black saloon on a sunlit street of ochre buildings.'
+    : 'Una donna in blazer scuro e foulard di seta verde, in piedi accanto a una berlina nera in una via assolata tra palazzi color ocra.';
 ---
 
 <section class="section">
   <div class="wrap">
     <div class="section__head">
-      <p class="eyebrow">{lang === 'en' ? 'About us' : 'Chi siamo'}</p>
+      <p class="eyebrow">
+        <Tricolore />
+        <span class="label">{lang === 'en' ? 'About us' : 'Chi siamo'}</span>
+      </p>
       <h1>{h1}</h1>
     </div>
 
     <div class="hero__grid">
-      <div class="prose">
+      <div class="hero__col prose">
         <h2>{c.storyHeading}</h2>
-        {c.story.map((para) => <p style="margin-top: var(--s-4)"><Placeholders text={para} /></p>)}
+        {
+          c.story.map((para) => (
+            <p>
+              <Placeholders text={para} />
+            </p>
+          ))
+        }
       </div>
-      <div class="media-placeholder">
-        <span>{portraitAlt}</span>
-      </div>
+      <figure class="hero__media">
+        <HeroPhoto src={portraitPhoto} alt={portraitAlt} position="47% 30%" />
+      </figure>
     </div>
   </div>
 </section>
@@ -41,11 +53,13 @@ const portraitAlt =
 <section class="section section--tint" aria-labelledby="values-heading">
   <div class="wrap">
     <div class="section__head">
-      <p class="eyebrow">{lang === 'en' ? 'Values' : 'Valori'}</p>
+      <p class="eyebrow">
+        <span class="label">{lang === 'en' ? 'Values' : 'Valori'}</span>
+      </p>
       <h2 id="values-heading">{c.valuesHeading}</h2>
     </div>
 
-    <div class="grid grid--2">
+    <div class="card-grid card-grid--wide">
       {
         c.values.map((value) => (
           <article class="card">
@@ -59,32 +73,40 @@ const portraitAlt =
 </section>
 
 <section class="section" aria-labelledby="trust-heading">
-  <div class="wrap">
-    <div class="contact-grid">
-      <div>
-        <div class="section__head">
-          <p class="eyebrow">{lang === 'en' ? 'Drivers' : 'Autisti'}</p>
-          <h2 id="trust-heading">{c.teamHeading}</h2>
-        </div>
-        <div class="prose">
-          {c.team.map((para) => <p style="margin-top: var(--s-4)"><Placeholders text={para} /></p>)}
-        </div>
+  <div class="wrap contact-grid">
+    <div>
+      <div class="section__head">
+        <p class="eyebrow">
+          <span class="label">{lang === 'en' ? 'Drivers' : 'Autisti'}</span>
+        </p>
+        <h2 id="trust-heading">{c.teamHeading}</h2>
       </div>
+      <div class="prose">
+        {
+          c.team.map((para) => (
+            <p>
+              <Placeholders text={para} />
+            </p>
+          ))
+        }
+      </div>
+    </div>
 
-      <div>
-        <h2 style="font-size: var(--t-lg)">{c.trustHeading}</h2>
-        <dl class="spec-list" style="margin-top: var(--s-4)">
-          {
-            c.trust.map((row) => (
-              <div>
-                <dt>{row.label}</dt>
-                <dd><Placeholders text={row.value} /></dd>
-              </div>
-            ))
-          }
-        </dl>
-        <p class="note" style="margin-top: var(--s-4)">{c.trustNote}</p>
-      </div>
+    <div class="panel">
+      <h2 class="title-sm">{c.trustHeading}</h2>
+      <dl class="spec-list" style="margin-top: var(--s-4)">
+        {
+          c.trust.map((row) => (
+            <div>
+              <dt>{row.label}</dt>
+              <dd>
+                <Placeholders text={row.value} />
+              </dd>
+            </div>
+          ))
+        }
+      </dl>
+      <p class="note" style="margin-top: var(--s-4)">{c.trustNote}</p>
     </div>
   </div>
 </section>

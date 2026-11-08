@@ -2,7 +2,7 @@
 import Icon from './Icon.astro';
 import { routes, ui, type Lang } from '../data/i18n';
 import { t } from '../data/content';
-import { telHref } from '../data/site.mjs';
+import { whatsappHref, emailHref, newTab } from '../data/site.mjs';
 
 interface Props {
   lang: Lang;
@@ -18,19 +18,24 @@ const c = t(lang).cta;
 
 <section class="cta-band">
   <div class="wrap cta-band__inner">
-    <div>
+    <div class="cta-band__copy">
       <h2>{heading ?? c.heading}</h2>
       <p>{body ?? c.body}</p>
       <p class="note">{c.note}</p>
     </div>
     <div class="cta-band__actions">
-      <a class="btn btn--primary" href={`${routes.contact[lang]}#quote-form`}>
-        <Icon name="quote" />
+      <a class="btn btn--primary btn--lg" href={`${routes.contact[lang]}#quote-form`}>
+        <Icon name="tag" />
         {l.getQuote}
       </a>
-      <a class="btn btn--on-dark" href={telHref}>
-        <Icon name="phone" />
-        {l.callUs}
+      <a class="btn btn--whatsapp-dark btn--lg" href={whatsappHref(lang)} {...newTab}>
+        <Icon name="whatsapp" />
+        {l.whatsapp}
+        <span class="visually-hidden">{l.newTab}</span>
+      </a>
+      <a class="btn btn--on-dark btn--lg" href={emailHref}>
+        <Icon name="mail" />
+        {l.email}
       </a>
     </div>
   </div>

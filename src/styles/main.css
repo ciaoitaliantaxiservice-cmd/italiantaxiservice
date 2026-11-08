@@ -1,0 +1,121 @@
+/*
+ * Stylesheet entry: Tailwind CSS v4 + Flowbite, set up so the existing design
+ * renders exactly as before. Imported once, from src/layouts/Base.astro.
+ *
+ * Cascade layers, lowest first:
+ *   theme       Tailwind's theme variables
+ *   base        global.css: tokens, reset, typography. It stands in for
+ *               Tailwind's Preflight, which is deliberately NOT imported: it
+ *               would reset headings, lists and form controls this design
+ *               already styles.
+ *   components  components.css: every component on the site
+ *   utilities   Tailwind utilities. Highest layer, so a utility class on an
+ *               element overrides component CSS, as Tailwind users expect.
+ */
+@layer theme, base, components, utilities;
+
+@import 'tailwindcss/theme.css' layer(theme);
+@import './global.css' layer(base);
+@import './components.css' layer(components);
+/* source('../') limits class-name scanning to src/, so words in README.md or
+   KEYWORD-MAP.md never turn into CSS. Unused utilities are never emitted. */
+@import 'tailwindcss/utilities.css' layer(utilities) source('../');
+/* Never scan the stylesheets themselves: CSS property names (border, outline,
+   transform, filter…) would otherwise be read as class names and emitted as
+   unused utilities. */
+@source not './';
+
+/*
+ * Flowbite. Only the plugin parts that are inert until used are enabled:
+ *   forms: false      Its base styles restyle every input and select (own
+ *                     chevron, gray borders, blue focus ring). The site's
+ *                     fields are styled in components.css.
+ *   charts, datatables, wysiwyg: false
+ *                     Base CSS for components the site does not use.
+ * Tooltips stay on. Flowbite's theme file is deliberately not imported: it
+ * sets the sans font to Inter and brand colours to blue. Its semantic colour
+ * names are mapped to the brand palette below instead.
+ *
+ * No Flowbite JavaScript is loaded anywhere: no page uses an interactive
+ * Flowbite component yet. When one does, see README → Tailwind and Flowbite.
+ */
+@plugin 'flowbite/plugin' {
+  forms: false;
+  charts: false;
+  datatables: false;
+  wysiwyg: false;
+}
+
+/* Tailwind's default palette, fonts, radii and shadows are removed, so a
+   utility can only ever produce a brand value. */
+@theme {
+  --color-*: initial;
+  --font-*: initial;
+  --radius-*: initial;
+  --shadow-*: initial;
+  --inset-shadow-*: initial;
+  --drop-shadow-*: initial;
+  --text-shadow-*: initial;
+
+  /* --spacing stays at Tailwind's default 0.25rem: the site's own grid
+     (--s-1 … --s-22 in global.css) is built on the same 4px step, so p-2 is
+     --s-2 (8px), p-6 is --s-6 (24px) and so on. */
+
+  /* Fonts and elevation are defined here rather than in global.css because
+     Tailwind's names for them (font-serif, shadow-card…) are the names the
+     site's CSS already uses. One definition serves both. */
+  --font-serif: 'Cormorant Garamond', 'Cormorant Garamond Fallback', Georgia, 'Times New Roman', serif;
+  --font-sans: 'Manrope Variable', Manrope, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --shadow-card: 0 1px 0 var(--c-border), 0 24px 48px -32px rgb(15 42 30 / 0.35);
+  --shadow-bar: 0 -8px 24px -16px rgb(15 42 30 / 0.4);
+  /* Polish. All in Notte (#0F2A1E) at low opacity: no new colour. */
+  --shadow-soft: 0 1px 2px rgb(15 42 30 / 0.06), 0 12px 32px -24px rgb(15 42 30 / 0.28);
+  --shadow-lift: 0 1px 2px rgb(15 42 30 / 0.08), 0 20px 40px -24px rgb(15 42 30 / 0.42);
+  --shadow-btn: 0 8px 18px -10px rgb(15 42 30 / 0.5);
+
+  /* Breakpoints: Tailwind's md (48rem) is already the site's tablet step. */
+  --breakpoint-nav: 68rem; /* full desktop header, see components.css */
+}
+
+/* Every brand value is owned by :root in global.css. These point at it, so
+   bg-verde-profondo, font-serif or shadow-card resolve to the same variables
+   the component CSS uses, and a value is only ever changed in one place. */
+@theme inline {
+  --color-verde-felce: var(--c-verde-felce);
+  --color-verde-profondo: var(--c-verde-profondo);
+  --color-verde-chiaro: var(--c-verde-chiaro);
+  --color-rosso: var(--c-rosso);
+  --color-rosso-shade: var(--c-rosso-shade);
+  --color-rosso-fold: var(--c-rosso-fold);
+  --color-bianco: var(--c-bianco);
+  --color-white: var(--c-white);
+  --color-carbone: var(--c-carbone);
+  --color-pietra: var(--c-pietra);
+  --color-notte: var(--c-notte);
+  --color-notte-deep: var(--c-notte-deep);
+  --color-line: var(--c-border);
+  --color-line-input: var(--c-border-input);
+  --color-line-dark: var(--c-border-dark);
+  --color-on-dark: var(--c-text-dark-bg);
+  --color-placeholder: var(--c-placeholder);
+
+  /* Flowbite's semantic colour names, pointed at the brand. Any other
+     Flowbite token a future component needs must be mapped here too, to a
+     brand colour, never by importing Flowbite's theme. */
+  --color-brand: var(--c-verde-profondo);
+  --color-brand-strong: var(--c-notte);
+  --color-fg-brand: var(--c-verde-profondo);
+  --color-heading: var(--c-carbone);
+  --color-body: var(--c-carbone);
+  --color-body-subtle: var(--c-pietra);
+  --color-danger: var(--c-rosso);
+  --color-fg-danger: var(--c-rosso);
+  --color-success: var(--c-verde-felce);
+  --color-neutral-primary: var(--c-white);
+  --color-neutral-secondary: var(--c-bianco);
+  --color-default: var(--c-border);
+
+  /* One radius (global.css --radius). base is Flowbite's name for it. */
+  --radius-ui: var(--radius);
+  --radius-base: var(--radius);
+}

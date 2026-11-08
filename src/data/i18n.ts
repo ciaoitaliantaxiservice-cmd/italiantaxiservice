@@ -36,18 +36,28 @@ export const ui = {
     about: 'About',
     contact: 'Contact',
     getQuote: 'Get a quote',
-    callUs: 'Call',
     whatsapp: 'WhatsApp',
+    /** Hero WhatsApp button. Contains the visible label (WCAG 2.5.3). */
+    whatsappAria: 'Chat with us on WhatsApp (opens in a new tab)',
+    /** Screen-reader suffix on any other link that opens a new tab. */
+    newTab: '(opens in a new tab)',
     quote: 'Quote',
     switchLanguage: 'Switch language',
     viewInItalian: 'Leggi in italiano',
     footerLegal: 'All rights reserved.',
     vat: 'VAT',
     email: 'Email',
-    phone: 'Phone',
     quickLinks: 'Quick links',
     getInTouch: 'Get in touch',
     mobileActions: 'Quick actions',
+    /**
+     * Lockup tagline under the wordmark. The concept reads
+     * "Taxi · NCC · Transfers", but NCC is a licence category and the brief
+     * rules out licence claims, so this is the neutral equivalent.
+     */
+    lockupTag: 'Private transfers · Italia',
+    /** Utility bar. Deliberately states no opening hours. */
+    utilityNote: 'Airport, city and coast transfers across Italy',
   },
   it: {
     skipToContent: 'Vai al contenuto principale',
@@ -58,18 +68,20 @@ export const ui = {
     about: 'Chi siamo',
     contact: 'Contatti',
     getQuote: 'Richiedi un preventivo',
-    callUs: 'Chiama',
     whatsapp: 'WhatsApp',
+    whatsappAria: 'Scrivici su WhatsApp (si apre in una nuova scheda)',
+    newTab: '(si apre in una nuova scheda)',
     quote: 'Preventivo',
     switchLanguage: 'Cambia lingua',
     viewInItalian: 'Read in English',
     footerLegal: 'Tutti i diritti riservati.',
     vat: 'P. IVA',
     email: 'Email',
-    phone: 'Telefono',
     quickLinks: 'Link utili',
     getInTouch: 'Scrivici',
     mobileActions: 'Azioni rapide',
+    lockupTag: 'Transfer privati · Italia',
+    utilityNote: 'Transfer per aeroporti, città e costa in tutta Italia',
   },
 } as const;
 
