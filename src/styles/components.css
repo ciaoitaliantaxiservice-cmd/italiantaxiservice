@@ -60,42 +60,46 @@
   line-height: 1.538;
 }
 
+/* Phones: one centred column, the note and then the email action.
+   From 48rem: note left, action right. */
 .utility-bar__inner {
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
   align-items: center;
-  justify-content: space-between;
-  gap: var(--s-2) var(--s-6);
+  justify-content: center;
+  gap: var(--s-1);
   padding-block: var(--s-2);
+  text-align: center;
 }
 
-.utility-bar__links {
-  display: flex;
+@media (min-width: 48rem) {
+  .utility-bar__inner {
+    flex-direction: row;
+    justify-content: space-between;
+    gap: var(--s-2) var(--s-6);
+    text-align: left;
+  }
+}
+
+/* "Email us": a small outline pill on the dark strip, a mailto: link. */
+.utility-bar__email {
+  display: inline-flex;
   align-items: center;
-  gap: var(--s-5);
-}
-
-.utility-bar a {
+  gap: var(--s-2);
+  padding: 1px var(--s-3) 1px var(--s-2);
+  border: 1px solid rgb(244 245 240 / 0.5);
+  border-radius: 999px;
   color: var(--c-bianco);
   font-weight: 600;
   text-decoration: none;
+  transition: background-color var(--dur) var(--ease), color var(--dur) var(--ease);
 }
 
-/* Flex, so text in different fonts (the email can carry a monospace
-   placeholder) never shares one line box: its height then cannot change
-   when the web font swaps in, and nothing below moves. */
-.utility-bar__links a {
-  display: inline-flex;
-  align-items: center;
-}
-
-.utility-bar a:hover {
-  color: var(--c-white);
-  text-decoration: underline;
-}
-
-.utility-bar a.is-whatsapp {
-  color: var(--c-verde-chiaro);
+/* Doubled class so it outranks the generic .utility-bar a:hover. */
+.utility-bar a.utility-bar__email:hover {
+  background: var(--c-bianco);
+  color: var(--c-notte);
+  text-decoration: none;
 }
 
 /* --------------------------------------------------------------------------
@@ -110,13 +114,20 @@
   border-bottom: 1px solid var(--c-border);
 }
 
+/* Below 68rem: one row, the logo left and the Menu button right. */
 .site-header__inner {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   align-items: center;
   justify-content: space-between;
-  gap: var(--s-4) var(--s-8);
+  gap: var(--s-3) var(--s-8);
   padding-block: var(--s-4);
+}
+
+@media (min-width: 68rem) {
+  .site-header__inner {
+    flex-wrap: wrap;
+  }
 }
 
 .logo {
@@ -132,9 +143,12 @@
   color: var(--c-carbone);
 }
 
+/* The plain-ribbon mark, 64px wide (the brief's 64-80px header size).
+   height: auto keeps the SVG's own 230:183 ratio from its width and height
+   attributes, so the box is reserved before the SVG paints. */
 .logo svg {
-  width: 44px;
-  height: 44px;
+  width: 64px;
+  height: auto;
   flex-shrink: 0;
 }
 
@@ -160,27 +174,73 @@
   color: var(--c-pietra);
 }
 
-@media (max-width: 24rem) {
+/* Phones: the lockup shares one row with Menu, so it steps down until the
+   wordmark fits on one line beside the button (measured in both languages
+   at 320, 360, 375, 390 and 414px). */
+@media (max-width: 47.99rem) {
+  .logo {
+    gap: var(--s-2);
+  }
+
   .logo svg {
-    width: 36px;
-    height: 36px;
+    width: 52px;
   }
 
   .logo__name {
     font-size: 1.25rem; /* 20 */
+    white-space: nowrap;
   }
 
   .logo__tag {
     letter-spacing: 0.1em;
+    white-space: nowrap;
+  }
+
+  .nav-toggle {
+    gap: 6px;
+    padding: var(--s-2) 10px;
   }
 }
 
-/* Nav: off-canvas panel below 68rem, inline row above it.
-   68rem (1088px) is measured, not picked: it is the narrowest width at which
-   the concept's lockup, the nav and the header quote button sit on one row in
-   Italian, the longer of the two languages. At 56rem both languages wrapped. */
+@media (max-width: 24rem) {
+  .logo svg {
+    width: 44px;
+  }
 
-.nav-toggle {
+  .logo__name {
+    font-size: 1.125rem; /* 18 */
+  }
+
+  .logo__tag {
+    font-size: 0.5625rem; /* 9 */
+    letter-spacing: 0.06em;
+  }
+}
+
+/* Under 360px the Menu button drops its word and keeps the icon; the word
+   stays for screen readers. */
+@media (max-width: 22.49rem) {
+  .nav-toggle {
+    padding: var(--s-2);
+  }
+
+  .nav-toggle__label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+}
+
+/* Nav: a full-screen menu below 68rem, the inline row from 68rem.
+   68rem (1088px) is measured, not picked: it is the narrowest width at which
+   the lockup, the nav and the header quote button sit on one row in Italian,
+   the longer of the two languages. */
+
+.nav-toggle,
+.nav-close {
   display: inline-flex;
   align-items: center;
   gap: var(--s-2);
@@ -192,28 +252,43 @@
   font-size: var(--t-small);
   font-weight: 700;
   cursor: pointer;
-}
-
-/* Lucide menu / x, swapped by the button's own aria-expanded state, so the
-   icon can never disagree with what assistive tech is told. */
-.nav-toggle__close,
-.nav-toggle[aria-expanded='true'] .nav-toggle__open {
-  display: none;
-}
-
-.nav-toggle[aria-expanded='true'] .nav-toggle__close {
-  display: block;
+  flex: none;
 }
 
 .site-nav {
   display: none;
-  flex-basis: 100%;
-  order: 3;
-  border-top: 1px solid var(--c-border);
 }
 
+/* The open menu covers the whole screen, utility bar and sticky bar
+   included, and scrolls on its own if it is taller than the screen. */
 .site-nav[data-open='true'] {
-  display: block;
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  padding: env(safe-area-inset-top) var(--gutter) calc(var(--s-8) + env(safe-area-inset-bottom));
+  background: var(--c-white);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+/* The page behind neither scrolls nor shows its sticky bar. */
+html.nav-open {
+  overflow: hidden;
+}
+
+html.nav-open .mobile-bar {
+  display: none;
+}
+
+.site-nav__top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-4);
+  padding-block: var(--s-4);
+  border-bottom: 1px solid var(--c-border);
 }
 
 .site-nav__list {
@@ -223,13 +298,14 @@
   margin: 0;
   padding: var(--s-2) 0;
   list-style: none;
-  font-size: 0.9375rem; /* 15 */
+  font-size: 1.25rem; /* 20, big tap targets in the full-screen menu */
   font-weight: 600;
 }
 
 .site-nav__list a {
   display: block;
-  padding: var(--s-3) 0;
+  padding: var(--s-4) 0;
+  border-bottom: 1px solid var(--c-border);
   color: var(--c-carbone);
   text-decoration: none;
 }
@@ -240,7 +316,17 @@
 
 .site-nav__list a[aria-current='page'] {
   box-shadow: inset 3px 0 0 var(--c-verde-felce);
-  padding-left: var(--s-3);
+  padding-left: var(--s-4);
+}
+
+.site-nav__actions {
+  display: grid;
+  gap: var(--s-3);
+  margin-top: var(--s-6);
+}
+
+.site-nav__actions .btn {
+  justify-content: center;
 }
 
 .header__actions {
@@ -250,13 +336,13 @@
   justify-content: flex-end;
   gap: var(--s-3) var(--s-4);
   min-width: 0;
+  flex: none;
 }
 
-/* As in round 1: below the nav breakpoint the sticky bar carries the quote
-   action, so the header button would only duplicate it. Hiding it keeps the
-   phone header to two rows in both languages and stops the Italian label
-   ("Richiedi un preventivo") forcing a 320px page to scroll sideways.
-   Scoped to .site-header so it outranks .btn's display regardless of order. */
+/* Below 68rem the language switch lives in the full-screen menu, and the
+   sticky bar carries the quote action, so the header row is just the logo
+   and Menu. Scoped to .site-header so it outranks .btn's display. */
+.header__lang,
 .site-header .header__cta {
   display: none;
 }
@@ -266,11 +352,18 @@
     display: none;
   }
 
-  .site-nav {
+  .site-nav,
+  .site-nav[data-open='true'] {
     display: block;
-    flex-basis: auto;
-    order: 0;
-    border-top: 0;
+    position: static;
+    padding: 0;
+    background: none;
+    overflow: visible;
+  }
+
+  .site-nav__top,
+  .site-nav__actions {
+    display: none;
   }
 
   .site-nav__list {
@@ -278,16 +371,22 @@
     flex-wrap: wrap;
     gap: var(--s-1) var(--s-8);
     padding: 0;
+    font-size: 0.9375rem; /* 15 */
   }
 
   .site-nav__list a {
     padding: var(--s-3) 0;
+    border-bottom: 0;
   }
 
   .site-nav__list a[aria-current='page'] {
     box-shadow: none;
     padding-left: 0;
     border-bottom: 2px solid var(--c-verde-felce);
+  }
+
+  .header__lang {
+    display: block;
   }
 
   .site-header .header__cta {
@@ -372,6 +471,22 @@
   color: var(--c-white);
 }
 
+/* Solid green: the filled partner to .btn--outline, for a preferred choice
+   that is not the page's one red CTA (the gate's "English", the 404's "Home").
+   Same 1.5px border as the outline button, so the pair match in size.
+   White on Verde Profondo is 6.8:1. */
+.btn--secondary {
+  background: var(--c-verde-profondo);
+  border: 1.5px solid var(--c-verde-profondo);
+  color: var(--c-white);
+}
+
+.btn--secondary:hover {
+  background: var(--c-notte);
+  border-color: var(--c-notte);
+  color: var(--c-white);
+}
+
 /* On the dark green bands. */
 .btn--on-dark {
   background: transparent;
@@ -381,17 +496,6 @@
 
 .btn--on-dark:hover {
   background: var(--c-bianco);
-  color: var(--c-notte);
-}
-
-.btn--whatsapp-dark {
-  background: transparent;
-  border: 1.5px solid var(--c-verde-chiaro);
-  color: var(--c-verde-chiaro);
-}
-
-.btn--whatsapp-dark:hover {
-  background: var(--c-verde-chiaro);
   color: var(--c-notte);
 }
 
@@ -1069,16 +1173,19 @@
   gap: var(--s-4);
 }
 
+/* The lettered emblem stacks above the name: at 160px it is too wide to sit
+   beside a 26px wordmark in the footer column. */
 .site-footer__lockup {
   display: flex;
-  align-items: center;
-  gap: var(--s-3);
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--s-4);
 }
 
-.site-footer__lockup svg {
-  width: 44px;
-  height: 44px;
-  flex-shrink: 0;
+.site-footer__lockup img {
+  display: block;
+  width: 160px;
+  height: auto;
 }
 
 .site-footer__name {
@@ -1146,7 +1253,7 @@
   inset: auto 0 0 0;
   z-index: 110;
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   background: var(--c-white);
   border-top: 1px solid var(--c-border);
   box-shadow: var(--shadow-bar);
@@ -1164,18 +1271,12 @@
   text-decoration: none;
   font-size: var(--t-label);
   font-weight: 700;
+  /* Long labels ("Richiedi un preventivo") wrap centred, never ragged. */
+  text-align: center;
+  line-height: 1.25;
+  padding-inline: var(--s-2);
 }
 
-
-.mobile-bar__item--whatsapp {
-  color: var(--c-verde-profondo);
-}
-
-/* Hairline between the two plain items (WhatsApp | Email); the red quote
-   block needs no divider. */
-.mobile-bar__item + .mobile-bar__item:not(.mobile-bar__item--cta) {
-  border-left: 1px solid var(--c-border);
-}
 
 /* The quote action is the page's main CTA, so it carries the red. */
 .mobile-bar__item--cta {
@@ -1555,9 +1656,10 @@
   box-shadow: var(--shadow-card);
 }
 
-.gate__card > svg {
-  width: 4.5rem;
-  height: 4.5rem;
+.gate__card > img {
+  display: block;
+  width: 160px;
+  height: auto;
   margin: 0 auto var(--s-5);
 }
 
@@ -1767,12 +1869,14 @@
   border-radius: 0 calc(var(--radius) - 1px) calc(var(--radius) - 1px) 0;
 }
 
-.nav-toggle {
+.nav-toggle,
+.nav-close {
   border-radius: var(--radius);
   transition: background-color var(--dur) var(--ease);
 }
 
-.nav-toggle:hover {
+.nav-toggle:hover,
+.nav-close:hover {
   background: var(--c-bianco);
 }
 
@@ -1806,4 +1910,192 @@
   .city-card:hover .city-card__thumb img {
     transform: none;
   }
+}
+
+/* --------------------------------------------------------------------------
+   Coverage map (contact page)
+   A dark Notte band, as in the style reference: centred heading, then a
+   rounded full-width map with a white overlay card. Leaflet's own CSS is
+   loaded with the map; these rules only theme it.
+   -------------------------------------------------------------------------- */
+
+.coverage {
+  padding-block: var(--s-14);
+  background: var(--c-notte);
+  color: var(--c-text-dark-bg);
+}
+
+@media (min-width: 60rem) {
+  .coverage {
+    padding-block: var(--s-16) var(--s-20);
+  }
+}
+
+.coverage__head {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--s-3);
+  max-width: 48rem;
+  margin: 0 auto var(--s-10);
+  text-align: center;
+}
+
+.coverage__head .eyebrow {
+  color: var(--c-verde-chiaro);
+}
+
+.coverage__head h2 {
+  margin: 0;
+  color: var(--c-white);
+}
+
+.coverage__head > p {
+  margin: 0;
+  font-size: var(--t-lead);
+  line-height: 1.556;
+}
+
+.coverage__frame {
+  position: relative;
+  border-radius: calc(var(--radius) * 2);
+  overflow: hidden;
+  background: var(--c-white);
+  box-shadow: 0 18px 40px rgb(0 0 0 / 0.28);
+}
+
+/* Fixed heights, so the box is reserved before Leaflet arrives (no shift). */
+.coverage__map {
+  height: 27rem;
+  background:
+    repeating-linear-gradient(45deg, var(--c-bianco) 0 10px, #eceee7 10px 11px);
+}
+
+@media (min-width: 48rem) {
+  .coverage__map {
+    height: 32rem;
+  }
+}
+
+/* Leaflet's container font. (No CSS filter on the tiles: it made hairline
+   seams appear between them.) */
+.coverage__map.leaflet-container {
+  font-family: var(--font-sans);
+  background: #e7ecef;
+}
+
+/* The overlay card: in flow under the map on phones, floating top-left
+   over it from 48rem, as in the reference. */
+.coverage__card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--s-3);
+  padding: var(--s-6);
+  background: var(--c-white);
+  color: var(--c-carbone);
+}
+
+@media (min-width: 48rem) {
+  .coverage__card {
+    position: absolute;
+    top: var(--s-6);
+    left: var(--s-6);
+    z-index: 500; /* above Leaflet's panes (400) */
+    width: min(24rem, calc(100% - 2 * var(--s-6)));
+    border: 1px solid var(--c-border);
+    border-radius: calc(var(--radius) * 2);
+    box-shadow: var(--shadow-lift);
+  }
+}
+
+.coverage__card h3 {
+  margin: 0;
+  font-size: var(--t-h3);
+  line-height: 1.214;
+}
+
+.coverage__card p {
+  margin: 0;
+  color: var(--c-pietra);
+}
+
+.coverage__kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-2);
+  font-size: var(--t-label);
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  color: var(--c-verde-profondo) !important;
+}
+
+.coverage__card .btn {
+  margin-top: var(--s-2);
+}
+
+/* The text version of the map: for screen readers, and shown when
+   JavaScript is off (see the <noscript> rule in CoverageMap.astro). */
+.coverage__lists {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* Markers: the brand pin for cities (Verde Profondo, white ring), larger
+   and in Rosso for Rome. */
+.cov-pin span {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 3px solid var(--c-white);
+  border-radius: 50%;
+  background: var(--c-verde-profondo);
+  box-shadow: 0 1px 4px rgb(15 42 30 / 0.45);
+}
+
+.cov-pin--main span {
+  background: var(--c-rosso);
+}
+
+/* Airports: a quieter white disc with a Verde Profondo plane, so the city
+   pins lead. */
+.cov-air {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgb(15 42 30 / 0.35);
+  border-radius: 50%;
+  background: var(--c-white);
+  color: var(--c-verde-profondo);
+  box-shadow: 0 1px 3px rgb(15 42 30 / 0.3);
+}
+
+.cov-air .icon {
+  width: 13px;
+  height: 13px;
+  stroke-width: 2;
+}
+
+.leaflet-container .cov-tip {
+  padding: 4px 8px;
+  border: 0;
+  border-radius: var(--radius);
+  background: var(--c-notte);
+  color: var(--c-white);
+  font-family: var(--font-sans);
+  font-size: var(--t-fine);
+  font-weight: 600;
+  box-shadow: 0 2px 8px rgb(15 42 30 / 0.3);
+}
+
+.leaflet-container .cov-tip::before {
+  border-top-color: var(--c-notte);
+}
+
+.coverage .leaflet-bar a {
+  color: var(--c-carbone);
 }

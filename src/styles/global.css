@@ -16,9 +16,8 @@
      --c-notte-deep     #0B2016  footer
      --c-pietra         #5A605C  secondary text (5.9:1 on Bianco)
 
-   Corners are square throughout. The concept sets border-radius: 0 on fields
-   explicitly; only the app-icon tiles are rounded, and those live in
-   /public as static assets.
+   Corners use one radius, --radius (6px); set it to 0 for the concept's
+   square corners.
    ========================================================================== */
 
 :root {
@@ -241,8 +240,15 @@ a:hover {
 /* On the dark bands the light green carries the ring (7.1:1 on Notte). */
 .utility-bar :focus-visible,
 .cta-band :focus-visible,
+.coverage :focus-visible,
 .site-footer :focus-visible {
   outline-color: var(--c-verde-chiaro);
+}
+
+/* ...except on white cards inside a dark band. */
+.coverage .coverage__card :focus-visible,
+.coverage .leaflet-container :focus-visible {
+  outline-color: var(--c-verde-felce);
 }
 
 /* One size for every icon, wherever it sits. Context rules only set colour. */

@@ -1,0 +1,16 @@
+---
+/**
+ * Favicon, touch icon and manifest links, shared by every page's <head>
+ * (Base layout, the root language gate and the root 404). All the files are
+ * generated from the logo geometry by `npm run icons`.
+ *
+ * favicon.ico comes first with an explicit 32x32 size, so browsers that
+ * understand SVG icons still prefer favicon.svg (which also switches to a
+ * light ring in dark mode) and older ones fall back to the .ico.
+ */
+---
+
+<link rel="icon" href="/favicon.ico" sizes="32x32" />
+<link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+<link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />
+<link rel="manifest" href="/site.webmanifest" />

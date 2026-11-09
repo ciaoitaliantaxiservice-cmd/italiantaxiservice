@@ -12,8 +12,10 @@
  *   7. no noindex URL present in sitemap.xml, and every sitemap URL exists
  *   8. no "NCC" or licence wording anywhere in the rendered copy
  *   9. unique titles, descriptions and H1s across all indexable pages
- *  10. booking is WhatsApp, email and the form only: no tel: links, no
- *      "telephone" in JSON-LD, and every WhatsApp link opens in a new tab
+ *  10. requests come in through the form and email only: no tel: links, no
+ *      "telephone" in JSON-LD, and no WhatsApp link, button or text
+ *  11. images: every <img> has alt, width and height; none is PNG or JPG;
+ *      at most one per page loads eagerly (the hero), the rest are lazy
  *      with rel="noopener"
  *
  * Exits non-zero on any failure, so it can gate a deploy.
@@ -194,11 +196,22 @@ for (const file of files) {
   // ---- booking channels ----------------------------------------------------
   if (/href="tel:/i.test(html)) fail(name, 'contains a tel: link (the site takes no calls)');
   if (/"telephone"\s*:/.test(html)) fail(name, 'JSON-LD has a telephone (the site takes no calls)');
-  for (const m of html.matchAll(/<a\b[^>]*href="https:\/\/wa\.me[^"]*"[^>]*>/g)) {
-    if (!/target="_blank"/.test(m[0]) || !/rel="[^"]*noopener/.test(m[0])) {
-      fail(name, 'WhatsApp link without target="_blank" rel="noopener": ' + m[0].slice(0, 80));
-    }
+  if (/wa\.me|api\.whatsapp|whatsapp/i.test(html)) fail(name, 'mentions WhatsApp (removed from the site)');
+
+  // ---- images --------------------------------------------------------------
+  let eager = 0;
+  for (const m of html.matchAll(/<img\b[^>]*>/g)) {
+    const tag = m[0];
+    const src = (tag.match(/\ssrc="([^"]*)"/) || [])[1] || '';
+    if (!/\salt="/.test(tag)) fail(name, 'img without alt: ' + src);
+    if (!/\swidth="\d+"/.test(tag) || !/\sheight="\d+"/.test(tag)) fail(name, 'img without width/height: ' + src);
+    if (/\.(png|jpe?g)(\?|$)/i.test(src)) fail(name, 'img is PNG/JPG, not WebP: ' + src);
+    if (!/\sloading="lazy"/.test(tag)) eager++;
   }
+  for (const m of html.matchAll(/<source\b[^>]*srcset="([^"]*)"/g)) {
+    if (/\.(png|jpe?g)[\s?,]/i.test(m[1] + ' ')) fail(name, 'picture source is PNG/JPG: ' + m[1].slice(0, 60));
+  }
+  if (eager > 1) fail(name, `${eager} images load eagerly (only the hero may)`);
 
   pages.set(urlPath, { name, title, desc, h1, noindex, alts });
 }

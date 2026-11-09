@@ -2,7 +2,8 @@
 import '../styles/fonts.css';
 import '../styles/main.css';
 
-import Logo from '../components/Logo.astro';
+import LogoEmblem from '../components/LogoEmblem.astro';
+import HeadIcons from '../components/HeadIcons.astro';
 import { routes, LANGS, htmlLang, langNames, ui } from '../data/i18n';
 import { t } from '../data/content';
 
@@ -31,14 +32,14 @@ import { t } from '../data/content';
     {/* No canonical and no hreflang here on purpose: this file is served for
         arbitrary unknown URLs, so a canonical would claim /404.html is the
         canonical version of whatever the visitor actually asked for. */}
-    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <HeadIcons />
     <meta name="theme-color" content="#00693A" />
   </head>
 
   <body>
     <main class="gate">
       <div class="gate__card">
-        <Logo />
+        <LogoEmblem lang="en" />
         <p class="eyebrow" style="justify-content: center">404</p>
         <h1 style="font-size: var(--t-lg)">Page not found &middot; <span lang="it">Pagina non trovata</span></h1>
 

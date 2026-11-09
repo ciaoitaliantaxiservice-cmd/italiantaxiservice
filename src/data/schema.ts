@@ -1,4 +1,4 @@
-import { site, SITE_URL, whatsappHref } from './site.mjs';
+import { site, SITE_URL } from './site.mjs';
 import { routes, type Lang } from './i18n';
 import { absolute } from './seo';
 
@@ -27,6 +27,9 @@ function compact<T extends Record<string, unknown>>(obj: T): Partial<T> {
   return Object.fromEntries(Object.entries(obj).filter(([, v]) => v !== undefined)) as Partial<T>;
 }
 
+/** Open every day: requests are answered 24 hours a day, 7 days a week. */
+const DAYS = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+
 const ORG_ID = `${SITE_URL}/#organization`;
 const SITE_ID = `${SITE_URL}/#website`;
 
@@ -44,22 +47,14 @@ function postalAddress() {
 }
 
 /**
- * How to book: WhatsApp and email. The site takes no calls and shows no phone
- * number, so neither node carries `telephone`. Each point is only emitted
- * once its value is real (not a [[placeholder]]).
+ * How to book: the quote form and email. The site takes no calls and has no
+ * WhatsApp, so no node carries `telephone`. The email point is only emitted
+ * once the address is real (not a [[placeholder]]), and states that it is
+ * answered around the clock.
  */
-function contactPoints(lang: Lang) {
+function contactPoints() {
   const availableLanguage = ['English', 'Italian'];
   const points = [
-    real(site.whatsappNumber)
-      ? {
-          '@type': 'ContactPoint',
-          name: 'WhatsApp',
-          contactType: 'reservations',
-          url: whatsappHref(lang),
-          availableLanguage,
-        }
-      : undefined,
     real(site.email)
       ? {
           '@type': 'ContactPoint',
@@ -67,6 +62,12 @@ function contactPoints(lang: Lang) {
           contactType: 'reservations',
           email: site.email,
           availableLanguage,
+          hoursAvailable: {
+            '@type': 'OpeningHoursSpecification',
+            dayOfWeek: DAYS,
+            opens: site.hours.opens,
+            closes: site.hours.closes,
+          },
         }
       : undefined,
   ].filter(Boolean);
@@ -94,7 +95,7 @@ export function organizationSchema(lang: Lang) {
     description: descriptions[lang],
     vatID: real(site.vatNumber) ? site.vatNumber : undefined,
     email: real(site.email) ? site.email : undefined,
-    contactPoint: contactPoints(lang),
+    contactPoint: contactPoints(),
     address: postalAddress(),
     sameAs: sameAs(),
   });
@@ -120,15 +121,7 @@ export function localBusinessSchema(lang: Lang) {
     openingHoursSpecification: [
       {
         '@type': 'OpeningHoursSpecification',
-        dayOfWeek: [
-          'Monday',
-          'Tuesday',
-          'Wednesday',
-          'Thursday',
-          'Friday',
-          'Saturday',
-          'Sunday',
-        ],
+        dayOfWeek: DAYS,
         opens: site.hours.opens,
         closes: site.hours.closes,
       },

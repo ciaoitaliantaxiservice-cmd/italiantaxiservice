@@ -1,13 +1,14 @@
 ---
 import HeroPhoto from '../HeroPhoto.astro';
-import heroPhoto from '../../assets/home/hero.png';
+import heroPhoto from '../../assets/home/private-chauffeur-transfer-italy.webp';
+import { altFor } from '../../data/image-alt';
 import Icon from '../Icon.astro';
 import CtaBand from '../CtaBand.astro';
 import Tricolore from '../Tricolore.astro';
 import { t } from '../../data/content';
 import { meta } from '../../data/seo';
 import { routes, ui, type Lang } from '../../data/i18n';
-import { whatsappHref, newTab } from '../../data/site.mjs';
+import { emailHref } from '../../data/site.mjs';
 
 interface Props {
   lang: Lang;
@@ -45,10 +46,7 @@ const labels =
         faq: 'Domande',
       };
 
-const heroAlt =
-  lang === 'en'
-    ? 'A smiling chauffeur in a dark suit opens the rear door of a black saloon on a cobbled street of ochre houses with green shutters.'
-    : 'Su una via lastricata tra palazzi color ocra e persiane verdi, un autista sorridente in abito scuro apre la portiera posteriore di una berlina nera.';
+const heroAlt = altFor('private-chauffeur-transfer-italy', lang);
 ---
 
 <!-- Hero -->
@@ -67,14 +65,9 @@ const heroAlt =
           <Icon name="tag" />
           {l.getQuote}
         </a>
-        <a
-          class="btn btn--outline"
-          href={whatsappHref(lang)}
-          {...newTab}
-          aria-label={l.whatsappAria}
-        >
-          <Icon name="whatsapp" />
-          {l.whatsapp}
+        <a class="btn btn--outline" href={emailHref}>
+          <Icon name="mail" />
+          {l.emailUs}
         </a>
       </div>
 

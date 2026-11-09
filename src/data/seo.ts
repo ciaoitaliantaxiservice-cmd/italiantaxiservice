@@ -61,16 +61,16 @@ export const meta: Record<RouteKey, MetaByLang> = {
   },
   contact: {
     en: {
-      title: 'Contact Us & Request a Transfer Quote | Ciao',
+      title: 'Private Transfer Italy 24/7: Contact & Quote | Ciao',
       description:
-        'Tell us your route, date and passenger count and we will send a fixed quote. Reach us on WhatsApp or by email, seven days a week.',
-      h1: 'Request a quote or ask us anything',
+        'Book a private transfer in Italy 24 hours a day: Rome Fiumicino airport pickups, chauffeur service between cities and Naples to Amalfi Coast transfers.',
+      h1: 'Private transfer in Italy: get a quote 24/7',
     },
     it: {
-      title: 'Contatti e Preventivo Transfer | Ciao Italian Taxi',
+      title: 'Transfer privato Italia 24 ore: contatti | Ciao Taxi',
       description:
-        'Indicate tratta, data e numero di passeggeri: inviamo un preventivo a tariffa fissa. Ci trovate su WhatsApp o via email, tutti i giorni.',
-      h1: 'Chiedete un preventivo o scriveteci',
+        'Transfer privato in Italia 24 ore su 24: ritiri all’aeroporto di Fiumicino e Ciampino, servizio con autista e transfer da Napoli alla Costiera Amalfitana.',
+      h1: 'Transfer privato in Italia: preventivo 24 ore su 24',
     },
   },
   notFound: {

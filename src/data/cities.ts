@@ -1,17 +1,19 @@
 import type { ImageMetadata } from 'astro';
 import type { Lang } from './i18n';
 
-// Source photos live in src/assets, not public/, so the build serves resized
-// AVIF/WebP with explicit dimensions instead of the 2.5 MB originals.
-import romePhoto from '../assets/locations/rome.png';
-import milanPhoto from '../assets/locations/milan.png';
-import florencePhoto from '../assets/locations/florence.png';
-import naplesPhoto from '../assets/locations/naples.png';
-import amalfiPhoto from '../assets/locations/amalfi-coast.png';
-// src/assets/locations/venice.png is deliberately NOT used. It shows the car
-// parked on the Grand Canal promenade by the Salute, where no car can go, and
-// the Venice card beside it says road transfers end at Piazzale Roma or the
-// Tronchetto. To use it anyway, import it here and add a photo entry below.
+// Source photos live in src/assets as WebP with descriptive file names (the
+// names survive into the built URLs, e.g. /_astro/rome-private-transfer-
+// colosseum.HASH.webp). The build serves resized WebP with explicit width and
+// height. Alt text lives in content/image-alt-text.md, keyed by file name.
+import romePhoto from '../assets/locations/rome-private-transfer-colosseum.webp';
+import milanPhoto from '../assets/locations/milan-private-transfer-duomo-galleria.webp';
+import florencePhoto from '../assets/locations/florence-private-transfer-duomo.webp';
+import naplesPhoto from '../assets/locations/naples-private-transfer-vesuvius.webp';
+import amalfiPhoto from '../assets/locations/amalfi-coast-private-transfer-positano.webp';
+// Venice: the car at Piazzale Roma, where road transfers really do end, with
+// the Ponte della Costituzione behind. (The earlier photo, with the car on the
+// Grand Canal promenade where no car can go, was dropped.)
+import venicePhoto from '../assets/locations/venezia-transfer-piazzale-roma.webp';
 
 export interface City {
   id: string;
@@ -26,8 +28,8 @@ export interface City {
   /** 16:9 card photo. Cities without one keep the hatched placeholder. */
   photo?: {
     src: ImageMetadata;
-    /** Describes what is in the frame, written separately per language. */
-    alt: Record<Lang, string>;
+    /** Row key in content/image-alt-text.md (the file name, no extension). */
+    altKey: string;
   };
 }
 
@@ -53,10 +55,7 @@ export const cities: City[] = [
     },
     photo: {
       src: romePhoto,
-      alt: {
-        en: 'A chauffeur in a dark suit opens the rear door of a black saloon on a cobbled street, the Colosseum glowing in evening light behind.',
-        it: 'Su una strada di sampietrini, l’autista in abito scuro apre la portiera posteriore di una berlina nera; alle spalle, il Colosseo nella luce del tramonto.',
-      },
+      altKey: 'rome-private-transfer-colosseum',
     },
   },
   {
@@ -74,10 +73,7 @@ export const cities: City[] = [
     },
     photo: {
       src: milanPhoto,
-      alt: {
-        en: 'Outside the Galleria Vittorio Emanuele II, with the Duomo beyond, a chauffeur holds open the door of a black saloon for a passenger carrying a briefcase.',
-        it: 'Davanti alla Galleria Vittorio Emanuele II, con il Duomo sullo sfondo, l’autista tiene aperta la portiera della berlina nera per una passeggera con la valigetta.',
-      },
+      altKey: 'milan-private-transfer-duomo-galleria',
     },
   },
   {
@@ -95,10 +91,7 @@ export const cities: City[] = [
     },
     photo: {
       src: florencePhoto,
-      alt: {
-        en: 'A black saloon waits in a narrow street of ochre houses and window boxes, with Brunelleschi’s dome and Giotto’s bell tower at the far end.',
-        it: 'Una berlina nera ferma in una via stretta tra case color ocra e fioriere ai davanzali; in fondo, la cupola del Brunelleschi e il campanile di Giotto.',
-      },
+      altKey: 'florence-private-transfer-duomo',
     },
   },
   {
@@ -113,6 +106,10 @@ export const cities: City[] = [
     stubIntro: {
       en: 'Venice has no road access to the centre, so the handover point matters. We explain exactly where the car stops before you book.',
       it: 'A Venezia il centro non è raggiungibile in auto, quindi il punto di scambio conta. Spieghiamo dove si ferma l’auto già prima della prenotazione.',
+    },
+    photo: {
+      src: venicePhoto,
+      altKey: 'venezia-transfer-piazzale-roma',
     },
   },
   {
@@ -130,10 +127,7 @@ export const cities: City[] = [
     },
     photo: {
       src: naplesPhoto,
-      alt: {
-        en: 'A black saloon parked on the Naples waterfront under palm trees, with a ferry in the harbour and Vesuvius beyond.',
-        it: 'Una berlina nera sul lungomare di Napoli, all’ombra delle palme, con un traghetto in porto e il Vesuvio sullo sfondo.',
-      },
+      altKey: 'naples-private-transfer-vesuvius',
     },
   },
   {
@@ -151,10 +145,7 @@ export const cities: City[] = [
     },
     photo: {
       src: amalfiPhoto,
-      alt: {
-        en: 'A black saloon on the coast road above Positano, between a lemon tree and bougainvillea, with the village stepping down the cliff to the sea.',
-        it: 'Una berlina nera sulla strada costiera sopra Positano, tra un limone e la bouganville, con il paese che scende a gradoni verso il mare.',
-      },
+      altKey: 'amalfi-coast-private-transfer-positano',
     },
   },
 ];

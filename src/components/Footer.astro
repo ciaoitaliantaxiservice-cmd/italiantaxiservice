@@ -1,10 +1,10 @@
 ---
-import Logo from './Logo.astro';
+import LogoEmblem from './LogoEmblem.astro';
 import Placeholders from './Placeholders.astro';
 import Tricolore from './Tricolore.astro';
 import { routes, navOrder, ui, otherLang, htmlLang, type Lang } from '../data/i18n';
 import { cities, cityPath } from '../data/cities';
-import { site, emailHref, whatsappHref, newTab } from '../data/site.mjs';
+import { site, emailHref } from '../data/site.mjs';
 
 interface Props {
   lang: Lang;
@@ -32,9 +32,10 @@ const blurb =
 
   <div class="wrap site-footer__grid">
     <div class="site-footer__brand">
-      {/* The concept's reversed lockup: Bianco tyre, Verde Chiaro wheel. */}
+      {/* The full emblem, reversed for the dark ground: Bianco gear, Verde
+          Chiaro wheel, name on the ribbon (160px, above the 150px minimum). */}
       <div class="site-footer__lockup">
-        <Logo variant="icon" reversed />
+        <LogoEmblem lang={lang} reversed loading="lazy" />
         <h2 class="site-footer__name">{site.brand}</h2>
       </div>
       <p>{blurb}</p>
@@ -60,13 +61,6 @@ const blurb =
     <div class="site-footer__col">
       <h2 class="label">{l.getInTouch}</h2>
       <ul>
-        <li>
-          {l.whatsapp}:{' '}
-          <a href={whatsappHref(lang)} {...newTab}>
-            <Placeholders text={site.whatsappDisplay} />
-            <span class="visually-hidden">{l.newTab}</span>
-          </a>
-        </li>
         <li>
           {l.email}: <a href={emailHref}><Placeholders text={site.email} /></a>
         </li>

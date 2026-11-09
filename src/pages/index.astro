@@ -2,7 +2,8 @@
 import '../styles/fonts.css';
 import '../styles/main.css';
 
-import Logo from '../components/Logo.astro';
+import LogoEmblem from '../components/LogoEmblem.astro';
+import HeadIcons from '../components/HeadIcons.astro';
 import { routes, LANGS, htmlLang, langNames } from '../data/i18n';
 import { absolute } from '../data/seo';
 import { site } from '../data/site.mjs';
@@ -40,7 +41,7 @@ import { site } from '../data/site.mjs';
         and /en/ and /it/ point at each other with x-default on /en/ — adding
         one-way links from this gate would make the whole cluster invalid.
         Crawlers reach both homepages through the body links and the sitemap. */}
-    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <HeadIcons />
     <meta name="theme-color" content="#00693A" />
 
     <script is:inline>
@@ -70,7 +71,7 @@ import { site } from '../data/site.mjs';
   <body>
     <main class="gate">
       <div class="gate__card">
-        <Logo />
+        <LogoEmblem lang="en" />
         <h1 style="font-size: var(--t-lg)">{site.brand}</h1>
         <p>Private transfers and chauffeured rides across Italy.</p>
         <p lang="it">Transfer privati e auto con autista in tutta Italia.</p>

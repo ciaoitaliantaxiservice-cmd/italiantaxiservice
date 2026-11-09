@@ -31,8 +31,9 @@ const { src, alt, position = '50% 50%' } = Astro.props;
 <Picture
   src={src}
   alt={alt}
-  formats={['avif', 'webp']}
-  fallbackFormat="jpg"
+  formats={['webp']}
+  fallbackFormat="webp"
+  quality={80}
   widths={[840, 1024, 1260, 1536]}
   sizes="(min-width: 65rem) 840px, (min-width: 56.5rem) calc(100vw - 3rem), 840px"
   loading="eager"

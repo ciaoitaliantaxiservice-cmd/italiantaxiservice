@@ -1,6 +1,7 @@
 ---
 import HeroPhoto from '../HeroPhoto.astro';
-import portraitPhoto from '../../assets/about/portrait.png';
+import portraitPhoto from '../../assets/about/italian-chauffeur-service-portrait.webp';
+import { altFor } from '../../data/image-alt';
 import CtaBand from '../CtaBand.astro';
 import Placeholders from '../Placeholders.astro';
 import Tricolore from '../Tricolore.astro';
@@ -16,10 +17,7 @@ const { lang } = Astro.props;
 const c = t(lang).about;
 const h1 = meta.about[lang].h1;
 
-const portraitAlt =
-  lang === 'en'
-    ? 'A woman in a dark blazer and green silk scarf stands beside a black saloon on a sunlit street of ochre buildings.'
-    : 'Una donna in blazer scuro e foulard di seta verde, in piedi accanto a una berlina nera in una via assolata tra palazzi color ocra.';
+const portraitAlt = altFor('italian-chauffeur-service-portrait', lang);
 ---
 
 <section class="section">

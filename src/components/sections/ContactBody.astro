@@ -3,10 +3,11 @@ import Icon from '../Icon.astro';
 import QuoteForm from '../QuoteForm.astro';
 import Placeholders from '../Placeholders.astro';
 import Tricolore from '../Tricolore.astro';
+import CoverageMap from '../CoverageMap.astro';
 import { t } from '../../data/content';
 import { meta } from '../../data/seo';
 import { ui, type Lang } from '../../data/i18n';
-import { site, emailHref, whatsappHref, newTab } from '../../data/site.mjs';
+import { site, emailHref } from '../../data/site.mjs';
 
 interface Props {
   lang: Lang;
@@ -16,19 +17,6 @@ const { lang } = Astro.props;
 const c = t(lang).contact;
 const l = ui[lang];
 const h1 = meta.contact[lang].h1;
-
-// The form comes first on the page; these are the other two methods, in
-// the order WhatsApp, email.
-const methods = [
-  {
-    icon: 'whatsapp' as const,
-    label: l.whatsapp,
-    value: site.whatsappDisplay,
-    href: whatsappHref(lang),
-    external: true,
-  },
-  { icon: 'mail' as const, label: l.email, value: site.email, href: emailHref, external: false },
-];
 
 const addressLines = [
   site.address.street,
@@ -54,31 +42,29 @@ const addressLines = [
       </div>
 
       <div class="stack">
+        {/* Requests come in through the form or by email only. */}
         <div>
           <h2>{c.methodsHeading}</h2>
+          <p class="muted" style="margin-top: var(--s-2)">{c.methodsNote}</p>
           <ul class="method-list" style="margin-top: var(--s-4)">
-            {
-              methods.map((m) => (
-                <li>
-                  <a class="method" href={m.href} {...(m.external ? newTab : {})}>
-                    <Icon name={m.icon} />
-                    <span>
-                      <span class="method__label">{m.label}</span>
-                      <span class="method__value">
-                        <Placeholders text={m.value} />
-                      </span>
-                      {m.external && <span class="visually-hidden">{l.newTab}</span>}
-                    </span>
-                  </a>
-                </li>
-              ))
-            }
+            <li>
+              <a class="method" href={emailHref}>
+                <Icon name="mail" />
+                <span>
+                  <span class="method__label">{l.email}</span>
+                  <span class="method__value">
+                    <Placeholders text={site.email} />
+                  </span>
+                </span>
+              </a>
+            </li>
           </ul>
         </div>
 
         <div class="panel">
           <h2 class="title-sm">{c.hoursHeading}</h2>
-          <p style="margin-top: var(--s-2)"><Placeholders text={c.hoursBody} /></p>
+          <p style="margin-top: var(--s-2)">{c.hoursBody}</p>
+          <p class="muted" style="margin-top: var(--s-2)">{c.hoursMore}</p>
         </div>
 
         <div class="panel">
@@ -106,19 +92,4 @@ const addressLines = [
   </div>
 </section>
 
-<section class="section section--tint" aria-labelledby="map-heading">
-  <div class="wrap">
-    <div class="section__head">
-      <p class="eyebrow">
-        <span class="label">{lang === 'en' ? 'Location' : 'Dove siamo'}</span>
-      </p>
-      <h2 id="map-heading">{c.mapHeading}</h2>
-    </div>
-
-    {/* Map placeholder. A real embed is a third-party iframe and the single
-        heaviest thing on this page, so load it lazily and only here. */}
-    <div class="media-placeholder media-placeholder--block" style="aspect-ratio: 16 / 7">
-      <span><Placeholders text={c.mapNote} /></span>
-    </div>
-  </div>
-</section>
+<CoverageMap lang={lang} />

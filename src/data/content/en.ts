@@ -43,7 +43,7 @@ export const en = {
     how: [
       {
         title: 'Tell us the route',
-        body: 'Pickup, destination, date, time and how many of you there are. Thirty seconds on the form or a WhatsApp message.',
+        body: 'Pickup, destination, date, time and how many of you there are. Thirty seconds on the form or a short email.',
       },
       {
         title: 'We quote a fixed price',
@@ -183,27 +183,42 @@ export const en = {
 
   contact: {
     lead:
-      'The form is the fastest route to a price, because it asks for the four things we need in order to quote. If you would rather talk it through, the WhatsApp and email details below reach the same team.',
-    formHeading: 'Request a quote',
+      'Need a private transfer in Italy? Skip the airport taxi queue at Rome Fiumicino or Ciampino, book a chauffeur service between cities, or arrange your transfer from Naples to the Amalfi Coast. Send the form for one fixed price: we take requests 24 hours a day, 7 days a week.',
+    formHeading: 'Request a private transfer quote',
     formNote:
-      'We reply within [[RESPONSE TIME]] during office hours. Nothing is confirmed until you have a written quote from us.',
-    methodsHeading: 'Other ways to reach us',
-    hoursHeading: 'When we answer',
+      'We reply within [[RESPONSE TIME]], day or night. Nothing is confirmed until you have a written quote from us.',
+    methodsHeading: 'Prefer email?',
+    methodsNote:
+      'Write to us with your route, date and number of passengers. The same team answers the form and the inbox.',
+    hoursHeading: 'Open 24 hours, 7 days a week',
     hoursBody:
-      'Office hours: [[OPENING HOURS]]. Drivers on the road are reachable at any hour for journeys already booked.',
-    mapHeading: 'Where we are based',
-    mapNote:
-      'Map placeholder. [[EMBED A MAP OF THE REGISTERED OFFICE, OR REMOVE THIS SECTION IF THERE IS NO PUBLIC OFFICE]]',
+      'We take bookings and answer requests 24 hours a day, 7 days a week. Drivers on the road can be reached at any hour for journeys already booked.',
+    hoursMore:
+      'Looking for a 24 hour taxi in Italy for a dawn flight or a late train? Book the transfer ahead and the car is waiting when you arrive.',
     addressHeading: 'Registered address',
     responseHeading: 'Before you write',
     responseBody:
       'Including your flight or train number, the exact pickup address and the number of large suitcases gets you an accurate price first time instead of a round of questions.',
+    coverage: {
+      eyebrow: 'Coverage',
+      heading: 'Our coverage across Italy',
+      intro:
+        'Private transfers and chauffeur service from Rome to Milan, Florence, Venice, Naples and the Amalfi Coast, plus Bologna, Pisa, Turin and Verona, with pickups at every main airport.',
+      cardKicker: 'FCO · CIA',
+      cardTitle: 'Rome Fiumicino & Ciampino transfers',
+      cardBody:
+        'Skip the airport taxi rank at Rome Fiumicino: your driver waits in arrivals with a name board, tracks your flight and takes you straight to your door.',
+      cardCta: 'Get a quote',
+      mapLabel: 'Map of Italy showing the cities and airports we cover',
+      citiesLabel: 'Cities we cover',
+      airportsLabel: 'Airports we serve',
+    },
   },
 
   form: {
     name: 'Full name',
     email: 'Email address',
-    phone: 'Phone or WhatsApp number',
+    phone: 'Phone number',
     pickup: 'Pickup address, airport or station',
     dropoff: 'Destination',
     date: 'Date of travel',
@@ -237,7 +252,7 @@ export const en = {
       summary: 'Please fix the following before sending:',
     },
     unconfigured:
-      'This form is not connected to a mailbox yet. Please send these details by WhatsApp or email using the buttons above and we will reply the same way.',
+      'This form is not connected to a mailbox yet. Please send these details by email using the address on this page and we will reply the same way.',
     success: 'Thank you. Your request is with us and we will reply with a fixed quote.',
   },
 

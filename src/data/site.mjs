@@ -8,8 +8,8 @@ export const SITE_URL = 'https://www.ciaoitaliantaxiservice.com';
 
 /**
  * Where the quote form POSTs. Empty string = not wired up yet: the form still
- * validates, but on submit it shows a notice pointing at WhatsApp and email
- * instead of silently losing the enquiry.
+ * validates, but on submit it shows a notice pointing at email instead of
+ * silently losing the enquiry.
  *
  * [[SET THIS TO THE FORM ENDPOINT]] — e.g. a Formspree/Basin URL, a Netlify
  * function, or your own /api/quote handler.
@@ -22,16 +22,9 @@ export const site = {
   legalName: '[[REGISTERED COMPANY NAME]]',
   vatNumber: '[[VAT / P.IVA]]',
 
-  // Booking runs through WhatsApp, email and the quote form only. The site
-  // takes no phone calls, so there is deliberately no phone number or tel:
-  // link anywhere, and no `telephone` in the JSON-LD.
-  //
-  // WhatsApp number in international format, digits only, no "+" or spaces,
-  // which is what https://wa.me/ expects. Example: 393331234567
-  whatsappNumber: '[[WHATSAPP_NUMBER]]',
-  // The same number as shown on the page. Example: +39 333 123 4567
-  whatsappDisplay: '[[WHATSAPP_NUMBER]]',
-
+  // Requests come in through the quote form and email only. There is
+  // deliberately no phone number, tel: link or WhatsApp anywhere on the site,
+  // and no `telephone` in the JSON-LD (npm run verify enforces all three).
   email: '[[hello@example.com]]',
 
   address: {
@@ -48,20 +41,9 @@ export const site = {
   // Leave as empty strings until the profiles exist; empty entries are skipped.
   social: { facebook: '', instagram: '', tripadvisor: '' },
 
-  // Opening hours for LocalBusiness. 24/7 dispatch is the assumption; confirm.
+  // Opening hours for LocalBusiness: 24 hours, 7 days (bookings and requests
+  // are answered round the clock). 00:00-23:59 is schema.org's 24-hour form.
   hours: { opens: '00:00', closes: '23:59' },
 };
-
-/** WhatsApp deep link with a language-appropriate prefilled message. */
-export function whatsappHref(lang) {
-  const text =
-    lang === 'it'
-      ? 'Ciao! Vorrei un preventivo per un transfer privato.'
-      : 'Hello! I would like a quote for a private transfer.';
-  return `https://wa.me/${site.whatsappNumber}?text=${encodeURIComponent(text)}`;
-}
-
-/** Attributes for every WhatsApp link: it opens in a new tab. */
-export const newTab = { target: '_blank', rel: 'noopener noreferrer' };
 
 export const emailHref = `mailto:${site.email}`;

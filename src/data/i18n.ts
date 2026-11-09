@@ -36,11 +36,10 @@ export const ui = {
     about: 'About',
     contact: 'Contact',
     getQuote: 'Get a quote',
-    whatsapp: 'WhatsApp',
-    /** Hero WhatsApp button. Contains the visible label (WCAG 2.5.3). */
-    whatsappAria: 'Chat with us on WhatsApp (opens in a new tab)',
-    /** Screen-reader suffix on any other link that opens a new tab. */
-    newTab: '(opens in a new tab)',
+    /** Short email action: utility bar, hero, CTA band, sticky bar. */
+    emailUs: 'Email us',
+    menu: 'Menu',
+    closeMenu: 'Close',
     quote: 'Quote',
     switchLanguage: 'Switch language',
     viewInItalian: 'Leggi in italiano',
@@ -68,9 +67,9 @@ export const ui = {
     about: 'Chi siamo',
     contact: 'Contatti',
     getQuote: 'Richiedi un preventivo',
-    whatsapp: 'WhatsApp',
-    whatsappAria: 'Scrivici su WhatsApp (si apre in una nuova scheda)',
-    newTab: '(si apre in una nuova scheda)',
+    emailUs: 'Scrivici',
+    menu: 'Menu',
+    closeMenu: 'Chiudi',
     quote: 'Preventivo',
     switchLanguage: 'Cambia lingua',
     viewInItalian: 'Read in English',

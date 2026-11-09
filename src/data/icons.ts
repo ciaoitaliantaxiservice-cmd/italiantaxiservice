@@ -16,7 +16,6 @@ export type IconName =
   | 'shield-check' // reliability
   | 'messages' //     one contact for the whole booking
   | 'mail' //         email
-  | 'whatsapp' //    WhatsApp (Lucide message-circle)
   | 'menu' //         mobile menu button, closed
   | 'close' //        mobile menu button, open (Lucide x)
   | 'chevron-down'; // FAQ open/closed marker

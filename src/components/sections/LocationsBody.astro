@@ -2,6 +2,7 @@
 import { Picture } from 'astro:assets';
 import CtaBand from '../CtaBand.astro';
 import Icon from '../Icon.astro';
+import { altFor } from '../../data/image-alt';
 import Tricolore from '../Tricolore.astro';
 import { t } from '../../data/content';
 import { meta } from '../../data/seo';
@@ -47,25 +48,22 @@ const thumbAlt = (name: string) =>
 
     <div class="card-grid card-grid--wide">
       {
-        cities.map((city, i) => (
+        cities.map((city) => (
           <article class="city-card">
             <div class="city-card__thumb">
-              {/* First row: eager but low priority. On desktop one of these is
-                  the LCP image, so it must be discovered at parse time, not after
-                  layout (measured: the lazy version failed Lighthouse's lazy-LCP
-                  check). On phones the LCP is the intro text, and low priority
-                  keeps these photos from competing with the fonts (measured:
-                  plain eager pushed mobile LCP from 1.5s to 2.1s). */}
+              {/* Lazy, like every image except the page heroes. WebP only:
+                  every browser the site supports reads it. Width and height come
+                  from the source, so each card reserves its box. */}
               {city.photo ? (
                 <Picture
                   src={city.photo.src}
-                  alt={city.photo.alt[lang]}
-                  formats={['avif', 'webp']}
-                  fallbackFormat="jpg"
+                  alt={altFor(city.photo.altKey, lang)}
+                  formats={['webp']}
+                  fallbackFormat="webp"
+                  quality={80}
                   widths={[360, 480, 720, 960, 1280]}
                   sizes={thumbSizes}
-                  loading={i < 3 ? 'eager' : 'lazy'}
-                  fetchpriority={i < 3 ? 'low' : undefined}
+                  loading="lazy"
                   decoding="async"
                 />
               ) : (

@@ -16,7 +16,7 @@ npm run check      # Astro + TypeScript diagnostics
 npm run verify     # audit ./dist against the SEO invariants
 npm run audit      # build + verify in one go
 npm run fonts      # re-copy the three self-hosted woff2 files from @fontsource
-npm run icons      # regenerate favicon, app icons, logo.svg and the OG image
+npm run icons      # outline the logo lettering, then rebuild masters, icons, manifest and OG image
 ```
 
 ---
@@ -46,26 +46,42 @@ The Italian pages are built on `transfer privato`, `auto con autista` and
 property appears in JSON-LD. There is a redaction note at the top of
 `src/data/content/it.ts` for whoever edits the copy next.
 
-**3. Booking is WhatsApp, email and the quote form. There is no phone.**
-v1.2 removed every Call button, `tel:` link and phone number. Each
-place that offered a call now offers WhatsApp or email instead: the hero,
-the utility bar above the header, the dark CTA band, the sticky mobile bar
-(WhatsApp, Email, Quote), the contact page (form, then WhatsApp, then email)
-and the footer. JSON-LD carries no `telephone`; the Organization lists WhatsApp
-and email as `contactPoint`s. Every WhatsApp link opens in a new tab with
-`rel="noopener noreferrer"`. `npm run verify` fails the build on any `tel:` link,
-any `telephone` in JSON-LD, or a WhatsApp link that does not open safely in a
-new tab.
+**3. Requests come in through the quote form and email only. No phone, no
+WhatsApp.** v1.2 removed calls; v1.3 removed WhatsApp too. Every place that
+offers a way in now offers the form ("Get a quote") and "Email us", a
+`mailto:` link: the hero, the utility bar above the header, the dark CTA band,
+the full-screen mobile menu, the sticky mobile bar (Email us, Get a quote),
+the contact page (form, then email) and the footer. JSON-LD carries no
+`telephone` and no WhatsApp; the Organization's one `contactPoint` is email,
+answered 24/7. `npm run verify` fails the build on any `tel:` link, any
+`telephone` in JSON-LD, or the word WhatsApp or a `wa.me` link anywhere.
 
-Two pieces of copy said "phone" and had to change with it; everything else
-is word-for-word as before (checked by diffing the builds):
+The service runs **24 hours a day, 7 days a week**: the contact page says so
+("When we answer" is now "Open 24 hours, 7 days a week"), and
+`LocalBusiness.openingHoursSpecification` is Monday-Sunday 00:00-23:59,
+schema.org's form for 24 hours.
 
-| Where | Was | Now |
-|---|---|---|
-| Contact meta description (EN), and its OG/Twitter copies | Reach us **by phone, WhatsApp** or email | Reach us **on WhatsApp or by** email |
-| Contact meta description (IT), and its OG/Twitter copies | Ci trovate **al telefono, su WhatsApp** o via email | Ci trovate **su WhatsApp** o via email |
-| Contact intro (EN) | the **phone and WhatsApp** details below | the **WhatsApp and email** details below |
-| Contact intro (IT) | Se preferite parlarne **a voce, telefono e WhatsApp** qui sotto | Se preferite parlarne **direttamente, WhatsApp ed email** qui sotto |
+v1.3 copy and meta changes (everything else is word-for-word as before,
+checked by diffing the builds):
+
+| Where | Change |
+|---|---|
+| Contact page, both languages | Rewritten for search: title, description, H1, intro, form heading and note, the email and 24/7 panels, and the new coverage section. Targets "private transfer Italy", "airport taxi Rome Fiumicino", "chauffeur service Italy", "24 hour taxi Italy", "transfer Naples to Amalfi Coast" / "transfer privato", "taxi aeroporto Fiumicino", "servizio taxi 24 ore". |
+| Home, "How a booking goes", step 1 | "...or a WhatsApp message" is now "...or a short email" (IT: "...o con una breve email") |
+| Quote form, phone label | "Phone or WhatsApp number" is now "Phone number" (IT: "Telefono") |
+| Quote form, not-connected notice | points at email only |
+| Buttons | "Email us" / "Scrivici" replaces "WhatsApp" and the written-out address in the utility bar, hero, CTA band and sticky bar |
+
+**How the keywords are used.** "taxi", "24 hour taxi" and "taxi aeroporto
+Fiumicino" appear only as what a visitor searches for ("Skip the airport taxi
+queue at Rome Fiumicino...", "Looking for a 24 hour taxi in Italy...? Book the
+transfer ahead"), never as a description of the service, which stays "private
+transfer" and "chauffeur service". **"NCC Italia" was requested but is not on
+the site**: NCC is a licence category, the rule in point 2 bans it, and
+`npm run verify` stopped the build when it appeared. If the business holds an
+NCC licence, remove `NCC` from the verify script's banned words and add the
+prepared sentence to `contact.hoursMore` in `src/data/content/it.ts`:
+"Cercate un servizio taxi 24 ore o un NCC in Italia...".
 
 Copy that mentions phones but is not a way to book is unchanged, e.g. "drivers
 who answer their phones" on About.
@@ -92,21 +108,55 @@ who answer their phones" on About.
 | Motion | one 180ms ease-out transition for hover, focus and press; lifts and zooms switch off under `prefers-reduced-motion` | `--dur`, `--ease` |
 | Tricolore | one inline rule per eyebrow and one full-width cap on the footer; never a stripe background | `src/components/Tricolore.astro` |
 
-**Logo.** `src/components/Logo.astro` carries the concept's geometry exactly:
-16 tread teeth, the tyre, the rim, five spokes aligned with the star's points,
-the Stella d'Italia as the hub and the red ribbon. It has four forms: the full
-emblem, the icon (the concept drops the ribbon below 120px), and a reversed
-version of each for dark green, which the footer uses. `npm run icons`
-(`scripts/make-icons.mjs`) builds the static files from the same geometry,
-following the concept's simplification at small sizes:
+**Logo.** One geometry, `src/data/logo.mjs`, drives every rendering: 16 tread
+teeth and the tyre (the gear), the green rim, five spokes aligned with the
+star's points, the Stella d'Italia as the hub, and a red ribbon bowed upward
+across the lower teeth, with swallowtail tails, fine white rules and the full
+name, CIAO ITALIAN TAXI SERVICE, in Cormorant Garamond Bold along its curve.
+The name is never live text: `scripts/outline-logo-text.mjs` converts it (and
+the OG card's text) to outlines in `src/data/logo-outlines.json`, using the
+fonts' own kerning, so no file needs a font. Reversed (dark greens): the gear
+turns Bianco, the green Verde Chiaro; star and ribbon stay.
+
+Which reading where (the name stops reading below about 150px):
+
+| Size | Reading | Where on the site |
+|---|---|---|
+| 150px and up | emblem, name on the ribbon | footer (reversed, 160px), root language gate and root 404 (160px); `LogoEmblem.astro`, an `<img>` with fixed width/height |
+| header, 64px (52px on phones, 44px under 384px) | plain ribbon, no letters, inline SVG | `Logo.astro`, beside the live wordmark and tagline |
+| every icon, 16-512px | **the site icon**: full colour (black gear, green wheel and spokes, red star, plain ribbon), heavier strokes | the favicon (`favicon.svg` and all three `favicon.ico` sizes, on a white rounded tile so it stays visible on dark tab strips), the iPhone/iPad home-screen icon and the manifest icons (on white) |
+
+Since v1.3 there is one icon artwork everywhere, so the browser tab, the
+phone home screen and an installed app all show the same green icon. (v1.2
+used a simplified two-colour favicon that switched to a white ring in dark
+browser themes; it read as "white" and is gone.)
+
+Alt text: "Ciao Italian Taxi Service" (EN) and "Ciao Italian Taxi Service,
+logo" (IT), from `content/image-alt-text.md`. The header mark is `aria-hidden`: the link's
+visible wordmark already names it, and labelling the SVG too would make
+screen readers announce the name twice.
+
+`npm run icons` rebuilds everything below. `brand/` holds the masters and is
+not served; `public/` is what the site serves.
 
 | File | Artwork |
 |---|---|
-| `public/favicon.svg`, `public/icons/icon-32.png` | ring + star (the concept's 24px reading) |
-| `public/icons/apple-touch-icon.png` (180), `icon-192.png`, `icon-512.png` | wheel + spokes + star on white, no teeth |
-| `public/images/logo.svg` | full emblem; the `logo` in `Organization` JSON-LD |
-| `public/images/og-default.png` | 1200×630 Open Graph and Twitter card |
-| `public/site.webmanifest` | references the 192 and 512 icons |
+| `brand/logo-emblem.svg`, `logo-emblem-reversed.svg` | full emblem, name outlined |
+| `brand/logo-horizontal.svg`, `logo-horizontal-it.svg` | header lockup (mark, wordmark, tagline), all outlined |
+| `brand/logo-mark-plain.svg` | the mark with a plain ribbon |
+| `brand/logo-usage-sheet.png` / `.pdf` / `.html` | clear space (the ribbon's depth), minimum sizes, colour versions; HTML from `scripts/make-usage-sheet.mjs` |
+| `public/favicon.svg`, `public/favicon.ico` (16, 32, 48) | the site icon on a white rounded tile |
+| `public/icons/apple-touch-icon.png` (180), `icon-192.png`, `icon-512.png` | the site icon on white, padded |
+| `public/icons/icon-512-maskable.png` | the same inside the 80% safe zone |
+| `public/images/logo.svg` | full emblem; the `logo` in `Organization` JSON-LD (same URL as before) |
+| `public/images/logo-emblem-reversed.svg` | the footer emblem |
+| `public/images/og-default.png` | 1200×630 Open Graph and Twitter card, text outlined in the brand fonts |
+| `public/site.webmanifest` | 192, 512 and maskable icons; theme `#00693A`, background `#FFFFFF` |
+
+Every page's `<head>` links `favicon.ico`, `favicon.svg`, the touch icon and
+the manifest through `src/components/HeadIcons.astro`. The page
+`<meta name="theme-color">` stays `#0F2A1E` on the site (it tints the phone
+status bar over the dark utility bar), while the manifest uses `#00693A`.
 
 ### Where the build departs from the concept
 
@@ -125,7 +175,7 @@ Each of these is deliberate:
   or info styling. They are drawn as Bianco panels with a red, green or Pietra
   rule instead of introducing tinted backgrounds.
 - **Copy and outline are v1's.** The footer keeps v1's headings, labels,
-  "WhatsApp: / Email:" lines (the "Phone:" line went in v1.2) and the three city links. The concept's
+  "Email:" line (the "Phone:" line went in v1.2, "WhatsApp:" in v1.3) and the three city links. The concept's
   "Company / Contact / Language" columns are not used. Sub-section headings
   keep their v1 `<h2>` level and are drawn at the concept's h3 size
   (`.title-sm`).
@@ -141,7 +191,7 @@ Each of these is deliberate:
   concept's lockup is wider than v1's logo. Measured, the logo, nav and quote
   button only fit on one row from 1000px in English and 1088px in Italian, so
   at 896px both languages wrapped to a 143px header. Below 1088px the header is
-  logo, language switch and Menu, and the sticky Call / WhatsApp / Quote bar
+  logo and Menu (v1.3: the language switch moved into the full-screen menu), and the sticky Email us / Get a quote bar
   stays on screen. That bar used to disappear at 768px, which left tablets
   with no quote action in v1. Now one of the two is visible at every width.
   As in v1, the header quote button is never shown on phones, where the sticky
@@ -217,8 +267,7 @@ Flowbite's JavaScript adds at runtime are generated.
 `Icon.astro` from `@lucide/astro/icons/<lucide-name>` and add a name. The
 select chevron and the date and time picker icons are the Lucide
 `chevron-down`, `calendar` and `clock` as CSS data URIs, because the browser
-draws those controls itself. Lucide has no brand logos, so WhatsApp uses its
-`message-circle`, which keeps the same stroke style as every other icon.
+draws those controls itself. Map markers use the Lucide `plane` for airports.
 
 No indicator on the site is drawn in CSS any more: the mobile menu button
 shows Lucide `menu` and `x` (swapped by its own `aria-expanded`, so the icon
@@ -231,59 +280,104 @@ typography rather than an icon.
 
 ### Photography
 
-| Slot | Photo | Source |
+| Slot | Photo | Source (WebP) |
 |---|---|---|
-| Home hero | chauffeur opening the rear door of a black saloon | `src/assets/home/hero.png` |
-| About hero | woman in a dark blazer beside the car | `src/assets/about/portrait.png` |
-| Locations cards | Rome, Milan, Florence, Naples, Amalfi Coast | `src/assets/locations/*.png` |
-| Venice card | **placeholder kept on purpose**, see below | `src/assets/locations/venice.png` (unused) |
+| Home hero | chauffeur opening the rear door of a black saloon | `src/assets/home/private-chauffeur-transfer-italy.webp` |
+| About hero | woman in a dark blazer beside the car | `src/assets/about/italian-chauffeur-service-portrait.webp` |
+| Rome card | Colosseum | `src/assets/locations/rome-private-transfer-colosseum.webp` |
+| Milan card | Galleria and Duomo | `src/assets/locations/milan-private-transfer-duomo-galleria.webp` |
+| Florence card | Duomo and Giotto's tower | `src/assets/locations/florence-private-transfer-duomo.webp` |
+| Venice card | Piazzale Roma, Ponte della Costituzione | `src/assets/locations/venezia-transfer-piazzale-roma.webp` |
+| Naples card | waterfront and Vesuvius | `src/assets/locations/naples-private-transfer-vesuvius.webp` |
+| Amalfi Coast card | Positano | `src/assets/locations/amalfi-coast-private-transfer-positano.webp` |
 
-The sources are 2.3–3.0 MB PNGs. They live in `src/assets/`, not `public/`,
-because anything in `public/` is shipped untouched. `<Picture>` from
-`astro:assets` builds AVIF and WebP with a JPG fallback and explicit width and
-height. A visitor downloads one file per photo, sized to their screen: a
-desktop city card is about 15–65 KB and the home hero about 40–85 KB.
+Since v1.3 every source photo is WebP (converted from the 2.3–3.0 MB PNGs at
+quality 90, now 200–510 KB each) with a descriptive, keyword-bearing file name.
+The names survive into the built URLs, e.g.
+`/_astro/rome-private-transfer-colosseum.HASH.webp`. The sources live in
+`src/assets/`, not `public/`, because anything in `public/` is shipped
+untouched. `<Picture>` from `astro:assets` serves WebP only (no JPG or PNG
+fallback), resized per screen, with explicit width and height. The original
+PNG of the new Venice photo is kept in `brand/reference/photo-originals/`.
 
+Not WebP, on purpose: `public/images/og-default.png` (social networks' link
+previews do not all read WebP), the PNG app icons and `favicon.ico` (formats
+the platforms require), and the logo SVGs.
+
+- **Alt text** lives in one file, `content/image-alt-text.md`: one row per
+  image, English for `/en/` and Italian for `/it/`, written separately in each
+  language. The build reads it (`src/data/image-alt.ts`) and **fails** if any
+  image the site renders has no row or an empty cell. To change alt text, edit
+  that file and rebuild.
+- **Width, height and lazy loading.** Every `<img>` has `width` and `height`.
+  Every image is `loading="lazy"` except the page hero (home and About), which
+  is `eager` with `fetchpriority="low"` (measured: higher priority made the
+  photo compete with the fonts and pushed phone LCP from 1.4s to 2.1s). The
+  root language gate's logo is the one image on that page and counts as its
+  hero. `npm run verify` fails on any image without alt, width or height, any
+  PNG/JPG `<img>`, or more than one eager image on a page.
 - **No layout shift.** Every photo sits in a box whose size is set by CSS (the
   16:9 card frame, the 560px hero slot), so nothing moves when it arrives.
-  Measured CLS stays at 0.
 - **Hero crops.** The hero slot is always 560px tall, so a 3:2 photo is
   cropped to the slot's shape. `object-position` keeps the subject in frame:
-  21% horizontal on Home (the chauffeur stands left of centre), centred on
-  About. Checked at 390, 1024 and 1440px. If you swap a photo, check the crop
+  21% horizontal on Home, centred on About. If you swap a photo, check the crop
   on a phone.
-- **Loading** is measured, not guessed. Above-the-fold photos are
-  `loading="eager"` with `fetchpriority="low"`. On desktop they are the LCP
-  element, so they must be found at parse time. On phones they sit below the
-  fold and the LCP is the headline, and higher priority made them compete with
-  the fonts: `fetchpriority="high"` pushed phone LCP from 1.4s to 2.1s. Lower
-  city cards are lazy. The numbers are in `src/components/HeroPhoto.astro`
-  and `LocationsBody.astro`.
-- **Alt text** describes what is in the frame, written separately in each
-  language: `src/data/cities.ts` for the cards, and the section components for
-  the two heroes.
-- **To add or replace a city photo:** put a 16:9 image in
-  `src/assets/locations/` and give that city a `photo` entry (image import
-  plus alt text in both languages) in `src/data/cities.ts`.
+- **To add or replace a photo:** save it as WebP in `src/assets/...` with a
+  descriptive name (`city-private-transfer-landmark.webp`), import it where it
+  is used (`src/data/cities.ts` for city cards), and add a row for its file
+  name to `content/image-alt-text.md`.
 
 **Check these before launch:**
 
-- **Venice is deliberately not shown.** That photo has the car parked on the
-  Grand Canal promenade by the Salute, where no car can go, and the Venice card
-  right next to it says road transfers end at Piazzale Roma or the Tronchetto.
-  It would contradict the copy, and to an Italian visitor it would look like
-  the business does not know Venice. A Piazzale Roma handover shot would fit.
-  To use the current one anyway, see the note at the top of `src/data/cities.ts`.
 - **The About photo is presented as the team.** The page is "The people
   behind the wheel" and the slot's brief was "one of our drivers". If she is
   not actually one of your drivers, replace her before launch, because on a trust
   page that reads as a claim about who works for you. The alt text describes
   her without saying who she is.
-- **The fleet.** Florence, Venice, Naples and Amalfi show the Mercedes-Benz
-  badge clearly, and every photo shows the same car. Keep them only if that is
-  what you actually run.
+- **The fleet.** Every photo shows the same Mercedes-Benz saloon. Keep them
+  only if that is what you actually run.
 - **Generated or real.** The set looks generated rather than photographed. The
   concept's photo direction asks for "real photo, not stock".
+
+### Coverage map (contact page)
+
+"Our coverage across Italy": a dark band with a full-width map centred on
+Rome, pins for Rome, Milan, Florence, Venice, Naples, the Amalfi Coast,
+Bologna, Pisa, Turin and Verona, plane markers for 13 airports (FCO, CIA, MXP,
+LIN, BGY, FLR, PSA, BLQ, VCE, TSF, VRN, TRN, NAP), and a white overlay card
+("Rome Fiumicino & Ciampino transfers", Get a quote). Places and coordinates:
+`src/data/coverage.ts`. Component: `src/components/CoverageMap.astro`.
+
+- **Leaflet + OpenStreetMap tiles**: no API key, no cookies. Leaflet is only
+  downloaded when the section comes within 400px of the screen, so it adds
+  nothing to the first load. The map box has a fixed height, so nothing shifts
+  when it arrives.
+- Scroll-wheel zoom is off (the page scrolls past the map, not into it), and
+  on phones one finger scrolls the page; the + / − buttons zoom.
+- The same cities and airports are in the markup as lists, for screen readers
+  and for visitors without JavaScript (shown in place of the map).
+- **Tiles.** OSM's public tile server is free for light use with the
+  attribution shown in the corner, but its policy discourages heavy commercial
+  traffic. If the site gets busy, change `TILE_URL` in `CoverageMap.astro` to a
+  commercial provider (MapTiler, Stadia, Thunderforest; a free key covers a
+  small site) and update `ATTRIBUTION`.
+
+### Header and mobile menu
+
+- **Utility bar.** The note and an "Email us" (`mailto:`) button, centred on
+  phones and split left/right from 48rem. The address itself is not written
+  out there; it is in the footer and on the contact page.
+- **Phones and tablets (below 68rem).** One row: the logo left, Menu right. The
+  lockup steps down (52px mark and 20px name; 44px and 18px under 384px) so the
+  name stays on one line beside the button. Under 360px Menu shows its icon
+  only, with the word kept for screen readers.
+- **Full-screen menu.** Menu opens a menu that covers the whole screen, with
+  the EN/IT switch and Close at the top, the four pages as large links, and
+  Get a quote and Email us at the foot. Focus moves to Close and stays inside
+  the menu; the page behind does not scroll; Escape or Close returns focus to
+  Menu; tapping any link closes the menu at once as the page opens. The sticky
+  bar is hidden while the menu is open.
+- **Sticky bar.** Email us and Get a quote only.
 
 ---
 
@@ -328,13 +422,19 @@ City slugs differ per language (`florence` / `firenze`) and live on each city in
 ## Project structure
 
 ```
+content/
+  image-alt-text.md   alt text for every image, EN and IT (read by the build)
 src/
+  assets/             source photos, WebP, descriptive names
   data/
     site.mjs          business details + SITE_URL + FORM_ENDPOINT — all placeholders live here
     i18n.ts           routes, nav order, UI chrome strings, x-default choice
     seo.ts            per-page title/description/H1, canonical + hreflang helpers, CITY_PAGES_INDEXABLE
     schema.ts         JSON-LD builders (placeholder-aware)
-    cities.ts         the six areas, per-language slugs, names and card text
+    cities.ts         the six areas, per-language slugs, names, card text and photos
+    coverage.ts       cities and airports on the contact-page map
+    image-alt.ts      reads content/image-alt-text.md; fails the build on a missing row
+    logo.mjs          the logo geometry (header mark, masters, icons)
     icons.ts          the icon names, shared by Icon.astro and the content files
     content/
       en.ts           English page copy
@@ -343,7 +443,8 @@ src/
   layouts/Base.astro  <head>, SEO, JSON-LD graph, header/footer/mobile bar
   components/
     Header, Footer, LangSwitch, MobileBar, Breadcrumbs, CtaBand, QuoteForm,
-    Seo, Logo, Icon (Lucide), HeroPhoto, Tricolore, Placeholders
+    Seo, Logo (inline mark), LogoEmblem (emblem image), HeadIcons, Icon (Lucide),
+    HeroPhoto, Tricolore, Placeholders, CoverageMap (Leaflet, contact page)
     sections/         HomeBody, LocationsBody, AboutBody, ContactBody,
                       CityStubBody, NotFoundBody — one per page type, lang-driven
   pages/              thin: each sets SEO props and renders a section body
@@ -351,10 +452,14 @@ src/
                       global.css (tokens + base), components.css
 scripts/
   copy-fonts.mjs      re-copy the three latin woff2 files from @fontsource, prune stale ones
-  make-icons.mjs      favicon, app icons, logo.svg and OG image from the logo geometry
+  outline-logo-text.mjs  logo and OG lettering to outlines (logo-outlines.json)
+  make-icons.mjs      masters, favicons, app icons, manifest and OG image from the logo geometry
+  make-usage-sheet.mjs   brand/logo-usage-sheet.html
   verify-seo.mjs      post-build audit (see below)
+brand/                logo masters and the usage sheet (not served); reference/ holds
+                      the logo brief, its reference images and photo originals
 public/
-  favicon.svg, site.webmanifest, icons/, images/, fonts/
+  favicon.svg, favicon.ico, site.webmanifest, icons/, images/, fonts/
 ```
 
 **Why page files are thin.** Each language's page file only declares SEO
@@ -411,7 +516,7 @@ Three rules enforced in `src/data/schema.ts`:
    fabrication.
 3. Any field still holding a `[[PLACEHOLDER]]` is **omitted**, not emitted. The
    markup is valid now and fills itself in as `site.mjs` gets real values. This
-   covers `email`, the WhatsApp and email `contactPoint`s, `address`, `geo`,
+   covers `email`, the email `contactPoint`, `address`, `geo`,
    `vatID` and `sameAs`. There is no `telephone`: the site takes no calls.
 
 **`BreadcrumbList` is generated from the same array that renders the visible
@@ -437,8 +542,9 @@ exactly one `<h1>` and no skipped heading levels, self-referencing canonicals,
 hreflang reciprocity and exactly one `x-default`, JSON-LD parsing plus the three
 rules above, no `noindex` URL in the sitemap and no sitemap URL that was not
 built, an absolute `Sitemap:` line, the licence-wording ban, and the booking
-rules: no `tel:` link, no `telephone` in JSON-LD, and every WhatsApp link opening
-in a new tab with `rel="noopener"`.
+rules: no `tel:` link, no `telephone` in JSON-LD, and no WhatsApp anywhere. It
+also checks every image: alt, width and height present, no PNG/JPG, and at
+most one eager (hero) image per page.
 
 It found seven real defects on first run, including a 63-character 404 title, a
 156-character Italian description and a non-reciprocal hreflang set on the
@@ -485,9 +591,8 @@ rings in the flag green (the light green on the dark bands); `prefers-reduced-mo
 `aria-invalid` on the inputs; in every row of the quote form the inputs start on
 the same line whatever the label length, including when an error shows, via
 CSS subgrid. Checked in both languages at four widths, with and without errors;
-the WhatsApp links carry "(opens in a new tab)" for screen readers (the hero
-button as its `aria-label`, which contains the visible "WhatsApp" as WCAG 2.5.3
-requires); decorative SVG is `aria-hidden`; the decorative
+the full-screen menu keeps focus inside itself while open and returns it to
+Menu on close; the coverage map's places are also listed as text; decorative SVG is `aria-hidden`; the decorative
 tricolour and placeholder frames carry no meaning that text does not also carry.
 
 **Measured:** Lighthouse accessibility 100 on every page tested (Lighthouse
@@ -537,8 +642,8 @@ and every icon also carry intrinsic `width`/`height`.
 
 Watch this when the last placeholder lands:
 
-- The contact map placeholder becomes a third-party iframe. Lazy-load it, or
-  better, swap in a static image that links out.
+- The coverage map's tiles come from openstreetmap.org once a visitor scrolls
+  to it. Leaflet loads only then, so the first paint is unaffected.
 
 ---
 
@@ -557,12 +662,9 @@ grep -rn '\[\[' src/
 | Placeholder | File | Notes |
 |---|---|---|
 | `SITE_URL` | `src/data/site.mjs` | Currently `https://www.ciaoitaliantaxiservice.com`. **Drives every canonical, hreflang and sitemap URL.** Wrong here = wrong everywhere. |
-| `FORM_ENDPOINT` | `src/data/site.mjs` | Empty. The form validates, then shows a notice pointing at WhatsApp/email rather than silently dropping the enquiry. Set it to a Formspree/Basin URL, a Netlify function or your own handler. |
-| `[[WHATSAPP_NUMBER]]` (`whatsappNumber`) | `src/data/site.mjs` | Digits only, international, no "+" or spaces (e.g. `393331234567`). Builds every `https://wa.me/…` link and the WhatsApp `contactPoint`. |
-| `[[WHATSAPP_NUMBER]]` (`whatsappDisplay`) | `src/data/site.mjs` | The same number as shown on the page (e.g. `+39 333 123 4567`): footer and contact page. |
+| `FORM_ENDPOINT` | `src/data/site.mjs` | Empty. The form validates, then shows a notice pointing at email rather than silently dropping the enquiry. Set it to a Formspree/Basin URL, a Netlify function or your own handler. |
 | `[[hello@example.com]]` | `src/data/site.mjs` | |
 | `[[REGISTERED COMPANY NAME]]`, `[[VAT / P.IVA]]` | `src/data/site.mjs` | Footer and `Organization.vatID`. Legally required in Italy. |
-| `public/images/og-default.png` | `scripts/make-icons.mjs` | Generated from the logo, and correct in size and format, but the wordmark is set in a system serif because the brand fonts are not installed where the rasteriser runs. Have a designer export the final card at 1200×630 and drop it in at the same path. |
 
 ### Content
 
@@ -573,16 +675,15 @@ grep -rn '\[\[' src/
 | `[[OTHER LANGUAGES]]` / `[[ALTRE LINGUE]]`, `[[CITY, COUNTRY]]` / `[[CITTÀ, PAESE]]` | About trust table |
 | `[[INTERVAL]]` / `[[INTERVALLO]]`, `[[DESCRIBE THE VETTING STEPS YOU ACTUALLY PERFORM]]` / `[[DESCRIVERE LE VERIFICHE EFFETTIVAMENTE SVOLTE]]` | About — driver vetting |
 | `[[CONFIRM ACCEPTED PAYMENT METHODS AND DEPOSIT POLICY]]` / `[[CONFERMARE METODI DI PAGAMENTO E POLITICA DI ACCONTO]]` | Home FAQ. **This answer also goes into `FAQPage` JSON-LD** — fill it before submitting the site for rich results. |
-| `[[RESPONSE TIME]]` / `[[TEMPO DI RISPOSTA]]`, `[[OPENING HOURS]]` / `[[ORARI]]` | Contact |
+| `[[RESPONSE TIME]]` / `[[TEMPO DI RISPOSTA]]` | Contact (opening hours are no longer a placeholder: 24/7) |
 | `[[EMBED A MAP…]]` / `[[INSERIRE UNA MAPPA…]]` | Contact — or delete the section if there is no public office |
 | Street, city, region, postcode, `[[LAT]]`, `[[LNG]]` | `src/data/site.mjs` — address and geo are suppressed from `LocalBusiness` until complete |
 | `site.social` | `src/data/site.mjs` — empty strings are skipped in `sameAs` |
 | `[[ADD twitter:site …]]` | `src/components/Seo.astro` |
-| Venice card photo | Placeholder kept deliberately; see *Photography → Check these before launch* |
 
-`site.hours` assumes 24/7 dispatch and feeds
-`LocalBusiness.openingHoursSpecification`. **Confirm or change it** — it is an
-assumption presented as fact, not a bracketed placeholder.
+`site.hours` is 24/7 (confirmed in the v1.3 brief) and feeds
+`LocalBusiness.openingHoursSpecification` and the email `contactPoint`'s
+`hoursAvailable`.
 
 ---
 

@@ -48,7 +48,7 @@ export const it = {
     how: [
       {
         title: 'Ci dite la tratta',
-        body: 'Punto di ritiro, destinazione, data, ora e numero di passeggeri. Dal modulo o con un messaggio su WhatsApp.',
+        body: 'Punto di ritiro, destinazione, data, ora e numero di passeggeri. Dal modulo o con una breve email.',
       },
       {
         title: 'Riceve un preventivo scritto',
@@ -188,27 +188,42 @@ export const it = {
 
   contact: {
     lead:
-      'Il modulo è la via più rapida per avere una cifra, perché chiede i quattro dati che ci servono per fare il preventivo. Se preferite parlarne direttamente, WhatsApp ed email qui sotto arrivano alle stesse persone.',
-    formHeading: 'Richiedi un preventivo',
+      'Vi serve un transfer privato in Italia? Evitate la coda del taxi all’aeroporto di Fiumicino o Ciampino, prenotate un servizio con autista tra una città e l’altra o il transfer da Napoli alla Costiera Amalfitana. Compilate il modulo per una tariffa fissa: rispondiamo 24 ore su 24, 7 giorni su 7.',
+    formHeading: 'Richiedete un preventivo per il transfer privato',
     formNote:
-      'Rispondiamo entro [[TEMPO DI RISPOSTA]] negli orari d’ufficio. Niente è confermato finché non avete un preventivo scritto da noi.',
-    methodsHeading: 'Altri modi per contattarci',
-    hoursHeading: 'Quando rispondiamo',
+      'Rispondiamo entro [[TEMPO DI RISPOSTA]], di giorno e di notte. Niente è confermato finché non avete un preventivo scritto da noi.',
+    methodsHeading: 'Preferite l’email?',
+    methodsNote:
+      'Scriveteci tratta, data e numero di passeggeri. Modulo e casella di posta sono gestiti dalle stesse persone.',
+    hoursHeading: 'Aperti 24 ore su 24, 7 giorni su 7',
     hoursBody:
-      'Orari d’ufficio: [[ORARI]]. Per i servizi già prenotati gli autisti sono raggiungibili a qualsiasi ora.',
-    mapHeading: 'Dove siamo',
-    mapNote:
-      'Segnaposto per la mappa. [[INSERIRE UNA MAPPA DELLA SEDE OPPURE RIMUOVERE QUESTA SEZIONE SE NON C’È UNA SEDE APERTA AL PUBBLICO]]',
+      'Accettiamo prenotazioni e rispondiamo alle richieste 24 ore su 24, 7 giorni su 7. Per i servizi già prenotati gli autisti sono raggiungibili a qualsiasi ora.',
+    hoursMore:
+      'Cercate un servizio taxi 24 ore in Italia per un volo all’alba o un treno a tarda sera? Prenotate il transfer in anticipo e l’auto vi aspetta all’arrivo.',
     addressHeading: 'Sede legale',
     responseHeading: 'Prima di scriverci',
     responseBody:
       'Indicare numero del volo o del treno, indirizzo esatto di ritiro e quanti bagagli grandi ci sono fa arrivare una cifra precisa al primo scambio, invece di un giro di domande.',
+    coverage: {
+      eyebrow: 'Copertura',
+      heading: 'La nostra copertura in Italia',
+      intro:
+        'Transfer privati e servizio con autista da Roma a Milano, Firenze, Venezia, Napoli e Costiera Amalfitana, oltre a Bologna, Pisa, Torino e Verona, con ritiri in tutti i principali aeroporti.',
+      cardKicker: 'FCO · CIA',
+      cardTitle: 'Transfer da Fiumicino e Ciampino',
+      cardBody:
+        'Al posto della fila per il taxi all’aeroporto di Fiumicino, l’autista vi aspetta agli arrivi con un cartello col vostro nome, segue il volo e vi porta fino a destinazione.',
+      cardCta: 'Richiedi un preventivo',
+      mapLabel: 'Mappa dell’Italia con le città e gli aeroporti serviti',
+      citiesLabel: 'Le città che serviamo',
+      airportsLabel: 'Gli aeroporti che serviamo',
+    },
   },
 
   form: {
     name: 'Nome e cognome',
     email: 'Indirizzo email',
-    phone: 'Telefono o WhatsApp',
+    phone: 'Telefono',
     pickup: 'Indirizzo di ritiro, aeroporto o stazione',
     dropoff: 'Destinazione',
     date: 'Data del viaggio',
@@ -242,7 +257,7 @@ export const it = {
       summary: 'Correggete questi punti prima di inviare:',
     },
     unconfigured:
-      'Il modulo non è ancora collegato a una casella di posta. Inviate questi dati via WhatsApp o email con i pulsanti qui sopra: vi rispondiamo allo stesso modo.',
+      'Il modulo non è ancora collegato a una casella di posta. Inviate questi dati via email all’indirizzo indicato in questa pagina: vi rispondiamo allo stesso modo.',
     success: 'Grazie. La richiesta è arrivata e vi risponderemo con un preventivo a tariffa fissa.',
   },
 
