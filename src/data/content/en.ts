@@ -8,6 +8,7 @@ export const en = {
     heroLead:
       'One car, one driver, one agreed price. We arrange private transfers and chauffeured rides between Italian airports, cities and coastlines, so the travelling part of your trip stops being the part you worry about.',
     heroTrust: [
+      'Available 24/7',
       'Fixed quote before you book',
       'Flight and train times tracked',
       'English-speaking drivers',
@@ -104,6 +105,10 @@ export const en = {
         a: 'We track the flight number you give us and move the pickup to the new arrival time. Waiting time is included for the period stated in your confirmation, and we will tell you clearly what happens beyond it.',
       },
       {
+        q: 'Do you drive at night and early in the morning?',
+        a: 'Yes. We run 24 hours a day, 7 days a week: dawn flights, late trains and midnight arrivals at the same fixed quote, with no night supplement added at the end. Book ahead and the driver is waiting when you land.',
+      },
+      {
         q: 'Is the quote per person or per vehicle?',
         a: 'Per vehicle. The figure covers the car, the driver, motorway tolls and the included waiting time, so four passengers pay the same as one on the same route.',
       },
@@ -194,7 +199,7 @@ export const en = {
     hoursBody:
       'We take bookings and answer requests 24 hours a day, 7 days a week. Drivers on the road can be reached at any hour for journeys already booked.',
     hoursMore:
-      'Looking for a 24 hour taxi in Italy for a dawn flight or a late train? Book the transfer ahead and the car is waiting when you arrive.',
+      'Need a 24 hour taxi in Italy for a dawn flight or a late train? Our private transfers run around the clock: book ahead and the car is waiting when you arrive.',
     addressHeading: 'Registered address',
     responseHeading: 'Before you write',
     responseBody:
@@ -259,7 +264,7 @@ export const en = {
   cta: {
     heading: 'Know where you are going?',
     body: 'Send us the route and we will come back with one fixed price, including tolls and waiting time.',
-    note: 'No payment details needed to get a quote.',
+    note: 'Requests answered 24/7. No payment details needed to get a quote.',
   },
 
   notFound: {

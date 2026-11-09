@@ -55,8 +55,8 @@ export const ui = {
      * rules out licence claims, so this is the neutral equivalent.
      */
     lockupTag: 'Private transfers · Italia',
-    /** Utility bar. Deliberately states no opening hours. */
-    utilityNote: 'Airport, city and coast transfers across Italy',
+    /** Utility bar, on every page. The service runs 24/7. */
+    utilityNote: '24/7 airport, city and coast transfers across Italy',
   },
   it: {
     skipToContent: 'Vai al contenuto principale',
@@ -80,7 +80,7 @@ export const ui = {
     getInTouch: 'Scrivici',
     mobileActions: 'Azioni rapide',
     lockupTag: 'Transfer privati · Italia',
-    utilityNote: 'Transfer per aeroporti, città e costa in tutta Italia',
+    utilityNote: 'Transfer 24 ore su 24 per aeroporti, città e costa in tutta Italia',
   },
 } as const;
 

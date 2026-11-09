@@ -80,8 +80,8 @@ function sameAs() {
 }
 
 const descriptions: Record<Lang, string> = {
-  en: 'Private transfers and chauffeured rides between Italian airports, cities and coastal towns, quoted at a fixed price before travel.',
-  it: 'Transfer privati e servizi con autista fra aeroporti, città e località costiere italiane, con tariffa fissa concordata prima del viaggio.',
+  en: 'Private transfers and chauffeured rides between Italian airports, cities and coastal towns, available 24 hours a day, 7 days a week, quoted at a fixed price before travel.',
+  it: 'Transfer privati e servizi con autista fra aeroporti, città e località costiere italiane, attivi 24 ore su 24, 7 giorni su 7, con tariffa fissa concordata prima del viaggio.',
 };
 
 export function organizationSchema(lang: Lang) {

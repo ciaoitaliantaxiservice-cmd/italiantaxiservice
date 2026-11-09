@@ -61,6 +61,13 @@ The service runs **24 hours a day, 7 days a week**: the contact page says so
 `LocalBusiness.openingHoursSpecification` is Monday-Sunday 00:00-23:59,
 schema.org's form for 24 hours.
 
+Where 24/7 appears, in both languages: the utility bar on every page, the
+home hero checklist ("Available 24/7" / "Attivi 24 ore su 24"), the home
+meta description, a home FAQ ("Do you drive at night and early in the
+morning?", also in the FAQPage JSON-LD), the CTA band note, the footer blurb,
+the Organization/LocalBusiness description, and the contact page (title, H1,
+intro, form note and the 24/7 panel).
+
 v1.3 copy and meta changes (everything else is word-for-word as before,
 checked by diffing the builds):
 

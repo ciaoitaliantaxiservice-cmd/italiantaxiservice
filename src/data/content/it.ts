@@ -13,6 +13,7 @@ export const it = {
     heroLead:
       'Un’auto, un autista, una tariffa concordata prima di partire. Organizziamo transfer privati e servizi con autista fra aeroporti, città e coste italiane, con un preventivo scritto e nessun supplemento a sorpresa alla fine del viaggio.',
     heroTrust: [
+      'Attivi 24 ore su 24',
       'Tariffa fissa concordata',
       'Monitoraggio di voli e treni',
       'Autisti della zona',
@@ -100,6 +101,10 @@ export const it = {
 
     faqHeading: 'Domande frequenti',
     faq: [
+      {
+        q: 'Viaggiate anche di notte e all’alba?',
+        a: 'Sì. Siamo attivi 24 ore su 24, 7 giorni su 7: voli all’alba, treni a tarda sera e arrivi a mezzanotte alla stessa tariffa fissa, senza supplementi notturni aggiunti alla fine. Prenotate in anticipo e l’autista vi aspetta all’arrivo.',
+      },
       {
         q: 'Il preventivo è per persona o per vettura?',
         a: 'Per vettura. La cifra comprende l’auto, l’autista, i pedaggi autostradali e l’attesa inclusa, quindi quattro passeggeri pagano quanto uno sulla stessa tratta.',
@@ -199,7 +204,7 @@ export const it = {
     hoursBody:
       'Accettiamo prenotazioni e rispondiamo alle richieste 24 ore su 24, 7 giorni su 7. Per i servizi già prenotati gli autisti sono raggiungibili a qualsiasi ora.',
     hoursMore:
-      'Cercate un servizio taxi 24 ore in Italia per un volo all’alba o un treno a tarda sera? Prenotate il transfer in anticipo e l’auto vi aspetta all’arrivo.',
+      'Vi serve un servizio taxi 24 ore in Italia per un volo all’alba o un treno a tarda sera? I nostri transfer privati sono attivi giorno e notte: prenotate in anticipo e l’auto vi aspetta all’arrivo.',
     addressHeading: 'Sede legale',
     responseHeading: 'Prima di scriverci',
     responseBody:
@@ -264,7 +269,7 @@ export const it = {
   cta: {
     heading: 'Sapete già dove dovete andare?',
     body: 'Scriveteci la tratta e vi rispondiamo con una tariffa fissa, pedaggi e attesa compresi.',
-    note: 'Per il preventivo non serve inserire dati di pagamento.',
+    note: 'Rispondiamo 24 ore su 24. Per il preventivo non serve inserire dati di pagamento.',
   },
 
   notFound: {

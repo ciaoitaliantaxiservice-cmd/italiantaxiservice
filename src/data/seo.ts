@@ -21,13 +21,13 @@ export const meta: Record<RouteKey, MetaByLang> = {
     en: {
       title: 'Italy Private Transfers & Chauffeured Rides | Ciao',
       description:
-        'Fixed-quote private transfers and chauffeured rides across Italy. Airport pickups, city-to-city journeys and private driver days. Quote in minutes.',
+        'Fixed-quote private transfers and chauffeured rides across Italy, 24/7. Airport pickups, city-to-city journeys and private driver days.',
       h1: 'Private transfers and chauffeured rides across Italy',
     },
     it: {
       title: 'Transfer Privati e Auto con Autista in Italia | Ciao',
       description:
-        'Transfer privati e auto con autista in tutta Italia, con preventivo fisso. Aeroporti, tratte tra città e giornate a disposizione. Rispondiamo in poche ore.',
+        'Transfer privati e auto con autista in tutta Italia, 24 ore su 24, con preventivo fisso. Aeroporti, tratte tra città e giornate a disposizione.',
       h1: 'Transfer privati e auto con autista in tutta Italia',
     },
   },
