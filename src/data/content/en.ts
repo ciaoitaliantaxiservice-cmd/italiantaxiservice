@@ -174,7 +174,6 @@ export const en = {
       { label: 'Regions covered', value: '[[REGIONS]]' },
       { label: 'Languages spoken', value: 'English, Italian, [[OTHER LANGUAGES]]' },
       { label: 'Registered office', value: '[[CITY, COUNTRY]]' },
-      { label: 'VAT number', value: '[[VAT / P.IVA]]' },
     ],
     trustNote:
       'Every bracketed item above is a placeholder waiting on a verified fact. Nothing on this site states a rating, a review count or a figure we have not confirmed.',
@@ -258,6 +257,8 @@ export const en = {
     },
     unconfigured:
       'This form is not connected to a mailbox yet. Please send these details by email using the address on this page and we will reply the same way.',
+    failed:
+      'Sorry, your request could not be sent. Please try again in a moment, or email us the details using the address on this page.',
     success: 'Thank you. Your request is with us and we will reply with a fixed quote.',
   },
 

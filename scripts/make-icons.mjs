@@ -140,7 +140,7 @@ await write(
   JSON.stringify(
     {
       name: 'Ciao Italian Taxi Service',
-      short_name: 'Ciao Taxi',
+      short_name: 'Ciao Italian Taxi Service',
       description: 'Private transfers and chauffeured rides across Italy.',
       start_url: '/',
       scope: '/',

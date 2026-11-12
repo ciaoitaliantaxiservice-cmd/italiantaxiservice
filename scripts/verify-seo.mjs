@@ -3,7 +3,7 @@
  *
  * Checks the invariants that are easy to break with an innocent edit and hard
  * to spot by eye:
- *   1. one <title> per page, <= 60 chars
+ *   1. one <title> per page, <= 75 chars
  *   2. one meta description per page, <= 155 chars
  *   3. exactly one <h1>, and no skipped heading levels
  *   4. a self-referencing canonical that matches the page's own URL
@@ -16,7 +16,9 @@
  *      "telephone" in JSON-LD, and no WhatsApp link, button or text
  *  11. images: every <img> has alt, width and height; none is PNG or JPG;
  *      at most one per page loads eagerly (the hero), the rest are lazy
- *      with rel="noopener"
+ *  12. no VAT / P.IVA, tax or company registration identifiers anywhere:
+ *      the site is a lead-generation and booking platform (vatID, taxID and
+ *      similar are banned from the JSON-LD too)
  *
  * Exits non-zero on any failure, so it can gate a deploy.
  */
@@ -28,7 +30,11 @@ import { dirname } from 'node:path';
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const dist = join(root, 'dist');
 
-const TITLE_MAX = 60;
+// Every title ends "| Ciao Italian Taxi Service" (the full business name, by
+// decision), which takes the longest to 72 characters. Google shows about 60
+// in results, so the name can be cut off there; the start of each title
+// carries the keywords.
+const TITLE_MAX = 75;
 const DESC_MAX = 155;
 
 /**
@@ -69,6 +75,14 @@ function urlPathFor(file) {
   return `/${rel}`;
 }
 
+const decodeEntities = (s) =>
+  s
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>')
+    .replace(/&quot;/g, '"')
+    .replace(/&#x27;|&#39;/g, "'")
+    .replace(/&amp;/g, '&');
+
 const attr = (tag, name) => {
   const m = tag.match(new RegExp(`${name}="([^"]*)"`, 'i'));
   return m ? m[1] : null;
@@ -90,7 +104,10 @@ for (const file of files) {
   // ---- title -------------------------------------------------------------
   // Only <title> elements in <head>; inline SVG <title> is excluded.
   const head = html.slice(0, html.indexOf('</head>') + 7);
-  const titles = [...head.matchAll(/<title>([\s\S]*?)<\/title>/gi)].map((m) => m[1].trim());
+  // Lengths are measured on the text as displayed: &amp; counts as one character.
+  const titles = [...head.matchAll(/<title>([\s\S]*?)<\/title>/gi)].map((m) =>
+    decodeEntities(m[1].trim())
+  );
   if (titles.length !== 1) fail(name, `expected 1 <title> in head, found ${titles.length}`);
   const title = titles[0] ?? '';
   if (title.length > TITLE_MAX) fail(name, `title ${title.length} chars (max ${TITLE_MAX}): "${title}"`);
@@ -98,7 +115,7 @@ for (const file of files) {
   // ---- description -------------------------------------------------------
   const descTags = [...head.matchAll(/<meta\s+name="description"[^>]*>/gi)];
   if (descTags.length !== 1) fail(name, `expected 1 meta description, found ${descTags.length}`);
-  const desc = descTags[0] ? (attr(descTags[0][0], 'content') ?? '') : '';
+  const desc = descTags[0] ? decodeEntities(attr(descTags[0][0], 'content') ?? '') : '';
   if (desc.length > DESC_MAX) fail(name, `description ${desc.length} chars (max ${DESC_MAX})`);
 
   // ---- robots ------------------------------------------------------------
@@ -197,6 +214,14 @@ for (const file of files) {
   if (/href="tel:/i.test(html)) fail(name, 'contains a tel: link (the site takes no calls)');
   if (/"telephone"\s*:/.test(html)) fail(name, 'JSON-LD has a telephone (the site takes no calls)');
   if (/wa\.me|api\.whatsapp|whatsapp/i.test(html)) fail(name, 'mentions WhatsApp (removed from the site)');
+
+  // ---- no VAT or registration numbers --------------------------------------
+  if (/\bVAT\b|\bP\.\s?IVA\b|Codice fiscale|\bREA\b|Company (registration )?number/i.test(visible)) {
+    fail(name, 'shows a VAT / P.IVA or registration number (the site shows none)');
+  }
+  if (/"(vatID|taxID|leiCode|duns|naics|isicV4|iso6523Code)"\s*:/.test(html)) {
+    fail(name, 'JSON-LD carries a VAT / tax / registration identifier');
+  }
 
   // ---- images --------------------------------------------------------------
   let eager = 0;

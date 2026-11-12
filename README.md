@@ -1,23 +1,63 @@
-# Ciao Italian Taxi Service — bilingual site, v1.2
+# Ciao Italian Taxi Service — bilingual site, v2.0
 
-Static, bilingual (EN/IT) marketing site for a private-transfer business.
-Built with [Astro](https://astro.build) 5, output as plain HTML with about
-2.4 KB of inlined JavaScript and no runtime framework. The visual design follows
+Static, bilingual (EN/IT) lead-generation and booking site for private
+transfers in Italy. Built with [Next.js](https://nextjs.org) 16 (App Router,
+TypeScript), every page statically generated and exported as plain HTML to
+`./dist`. v2.0 moved the site from Astro to Next.js with no visual or content
+change (see *Next.js migration* below). The visual design follows
 the approved brand concept (see *Design system* below). Tailwind CSS 4,
 Flowbite 4 and Lucide icons are installed and mapped to the brand (see
 *Tailwind CSS, Flowbite and Lucide*).
 
 ```bash
 npm install
-npm run dev        # http://localhost:4321
-npm run build      # -> ./dist
-npm run preview    # serve ./dist locally
-npm run check      # Astro + TypeScript diagnostics
+npm run dev        # http://localhost:3000
+npm run build      # photos + next build -> ./dist (static HTML)
+npm start          # serve ./dist locally
+npm run check      # TypeScript diagnostics
 npm run verify     # audit ./dist against the SEO invariants
 npm run audit      # build + verify in one go
 npm run fonts      # re-copy the three self-hosted woff2 files from @fontsource
 npm run icons      # outline the logo lettering, then rebuild masters, icons, manifest and OG image
 ```
+
+Node 20.9 or newer (`.nvmrc` pins 22 for hosts that read it).
+
+---
+
+## Next.js migration (v2.0)
+
+- **Same output.** Every page was screenshotted before and after, desktop
+  (1280px) and phone (390px), full height, and compared pixel by pixel: all
+  48 captures identical, and so were the open mobile menu, the form's error
+  state and the opened FAQ. Copy, headings, links, image attributes, every
+  SEO tag, the JSON-LD and sitemap.xml were compared page by page: identical.
+  The one difference: the root `/404.html` says `robots: noindex` where it
+  said `noindex, follow` (same effect; Next adds it to not-found pages).
+- **Same URLs.** Every path and slug is unchanged; no redirects were needed.
+  `trailingSlash` keeps `/en/about/` style URLs, and the export still goes to
+  `./dist`, so the host's build command (`npm run build`) and output folder
+  (`dist`) stay as they were.
+- **Routing.** `src/app/[lang]/layout.tsx` is the root layout for every page
+  under `/en/` and `/it/` (it sets `<html lang>`); `src/app/[lang]/[[...slug]]/page.tsx`
+  renders them all from one table, `src/data/pages.ts` (path, title,
+  description, hreflang, breadcrumbs, page JSON-LD). The language gate at `/`
+  has its own layout (`src/app/(gate)/`), and the bilingual `/404.html` is
+  `src/app/global-not-found.tsx`.
+- **SEO through the Metadata API** (`src/data/metadata.ts`): title,
+  description, robots, canonical, reciprocal hreflang with x-default, Open
+  Graph and Twitter. `sitemap.xml` and `robots.txt` are `src/app/sitemap.ts`
+  and `src/app/robots.ts`.
+- **JavaScript.** Pages are server components rendered at build time. Three
+  small client components add behaviour to that markup: the mobile menu
+  (`HeaderMenu.tsx`), the quote form (`QuoteFormScript.tsx`) and the map
+  (`CoverageMapScript.tsx`). Next's React runtime (about 100 KB gzipped)
+  now loads on every page; Astro shipped none. It does not block rendering.
+- **Photos** are resized by `scripts/build-assets.mjs` before each build
+  (same widths and WebP quality 80 as before) into `public/images/photos/`,
+  listed in `src/data/photo-manifest.json`, and rendered by `Picture.tsx`.
+- Plain `<a>` links throughout, so every page load is a normal full load, as
+  before.
 
 ---
 
@@ -111,9 +151,9 @@ who answer their phones" on About.
 | Notte Verde `#0F2A1E` / `#0B2016` | utility bar, CTA band / footer | `--c-notte`, `--c-notte-deep` |
 | Spacing | 8px grid with a 4px half-step | `--s-*` in `global.css` |
 | Corners | one 6px radius on buttons, fields, selects, cards, panels, the form and the language switch. The concept is square; `--radius: 0` restores that everywhere | `--radius` in `global.css` |
-| Icons | Lucide, every icon 24px at a 1.5 stroke, `currentColor`; nothing else on the site sets an icon size | `src/components/Icon.astro`, `--icon-size` |
+| Icons | Lucide, every icon 24px at a 1.5 stroke, `currentColor`; nothing else on the site sets an icon size | `src/components/Icon.tsx`, `--icon-size` |
 | Motion | one 180ms ease-out transition for hover, focus and press; lifts and zooms switch off under `prefers-reduced-motion` | `--dur`, `--ease` |
-| Tricolore | one inline rule per eyebrow and one full-width cap on the footer; never a stripe background | `src/components/Tricolore.astro` |
+| Tricolore | one inline rule per eyebrow and one full-width cap on the footer; never a stripe background | `src/components/Tricolore.tsx` |
 
 **Logo.** One geometry, `src/data/logo.mjs`, drives every rendering: 16 tread
 teeth and the tyre (the gear), the green rim, five spokes aligned with the
@@ -129,8 +169,8 @@ Which reading where (the name stops reading below about 150px):
 
 | Size | Reading | Where on the site |
 |---|---|---|
-| 150px and up | emblem, name on the ribbon | footer (reversed, 160px), root language gate and root 404 (160px); `LogoEmblem.astro`, an `<img>` with fixed width/height |
-| header, 64px (52px on phones, 44px under 384px) | plain ribbon, no letters, inline SVG | `Logo.astro`, beside the live wordmark and tagline |
+| 150px and up | emblem, name on the ribbon | footer (reversed, 160px), root language gate and root 404 (160px); `LogoEmblem.tsx`, an `<img>` with fixed width/height |
+| header, 64px (52px on phones, 44px under 384px) | plain ribbon, no letters, inline SVG | `Logo.tsx`, beside the live wordmark and tagline |
 | every icon, 16-512px | **the site icon**: full colour (black gear, green wheel and spokes, red star, plain ribbon), heavier strokes | the favicon (`favicon.svg` and all three `favicon.ico` sizes, on a white rounded tile so it stays visible on dark tab strips), the iPhone/iPad home-screen icon and the manifest icons (on white) |
 
 Since v1.3 there is one icon artwork everywhere, so the browser tab, the
@@ -161,7 +201,7 @@ not served; `public/` is what the site serves.
 | `public/site.webmanifest` | 192, 512 and maskable icons; theme `#00693A`, background `#FFFFFF` |
 
 Every page's `<head>` links `favicon.ico`, `favicon.svg`, the touch icon and
-the manifest through `src/components/HeadIcons.astro`. The page
+the manifest through `iconMetadata` in `src/data/metadata.ts`. The page
 `<meta name="theme-color">` stays `#0F2A1E` on the site (it tints the phone
 status bar over the dark utility bar), while the manifest uses `#00693A`.
 
@@ -223,9 +263,9 @@ inside one native dropdown, with the same glyphs in the same positions.
 
 | | Version | How it is wired |
 |---|---|---|
-| Tailwind CSS | 4.3.3 | `@tailwindcss/vite` in `astro.config.mjs`, which is what `astro add tailwind` sets up for Tailwind 4. Entry stylesheet: `src/styles/main.css`. |
+| Tailwind CSS | 4.3.3 | `@tailwindcss/postcss` in `postcss.config.mjs`, the Next.js setup for Tailwind 4. Entry stylesheet: `src/styles/main.css`, imported by the root layouts. |
 | Flowbite | 4.0.2 | `@plugin 'flowbite/plugin'` in `main.css`. No Flowbite JavaScript is loaded anywhere yet. |
-| Lucide | `@lucide/astro` 1.61.0 | `src/components/Icon.astro` imports each icon it uses, one module each. |
+| Lucide | `lucide-react` 1.61.0 | `src/components/Icon.tsx` imports each icon it uses. |
 
 **`src/styles/main.css`** is the one stylesheet entry (fonts aside). The things
 to know:
@@ -259,11 +299,13 @@ to know:
 **When you first use an interactive Flowbite component** (dropdown, modal,
 tooltip…), load only its module, only on the page that has it:
 
-```astro
-<script>
-  import { initDropdowns } from 'flowbite';
-  initDropdowns();
-</script>
+```tsx
+'use client';
+import { useEffect } from 'react';
+export default function DropdownScript() {
+  useEffect(() => { import('flowbite').then(({ initDropdowns }) => initDropdowns()); }, []);
+  return null;
+}
 ```
 
 and add `@source '../../node_modules/flowbite';` to `main.css`, so the classes
@@ -271,7 +313,7 @@ Flowbite's JavaScript adds at runtime are generated.
 
 **Icons.** Use `<Icon name="…" />`. The names are listed in
 `src/data/icons.ts`, each mapped to one Lucide icon. To add one, import it in
-`Icon.astro` from `@lucide/astro/icons/<lucide-name>` and add a name. The
+`Icon.tsx` from `lucide-react` and add a name. The
 select chevron and the date and time picker icons are the Lucide
 `chevron-down`, `calendar` and `clock` as CSS data URIs, because the browser
 draws those controls itself. Map markers use the Lucide `plane` for airports.
@@ -301,10 +343,10 @@ typography rather than an icon.
 Since v1.3 every source photo is WebP (converted from the 2.3–3.0 MB PNGs at
 quality 90, now 200–510 KB each) with a descriptive, keyword-bearing file name.
 The names survive into the built URLs, e.g.
-`/_astro/rome-private-transfer-colosseum.HASH.webp`. The sources live in
-`src/assets/`, not `public/`, because anything in `public/` is shipped
-untouched. `<Picture>` from `astro:assets` serves WebP only (no JPG or PNG
-fallback), resized per screen, with explicit width and height. The original
+`/images/photos/rome-private-transfer-colosseum.HASH-720.webp`. The sources
+live in `src/assets/`; `scripts/build-assets.mjs` resizes them before every
+build. `Picture.tsx` serves WebP only (no JPG or PNG fallback), resized per
+screen, with explicit width and height. The original
 PNG of the new Venice photo is kept in `brand/reference/photo-originals/`.
 
 Not WebP, on purpose: `public/images/og-default.png` (social networks' link
@@ -330,9 +372,10 @@ the platforms require), and the logo SVGs.
   21% horizontal on Home, centred on About. If you swap a photo, check the crop
   on a phone.
 - **To add or replace a photo:** save it as WebP in `src/assets/...` with a
-  descriptive name (`city-private-transfer-landmark.webp`), import it where it
-  is used (`src/data/cities.ts` for city cards), and add a row for its file
-  name to `content/image-alt-text.md`.
+  descriptive name (`city-private-transfer-landmark.webp`), reference its file
+  name where it is used (`altKey` in `src/data/cities.ts` for city cards), and
+  add a row for that name to `content/image-alt-text.md`. New folders need
+  their widths in `scripts/build-assets.mjs`.
 
 **Check these before launch:**
 
@@ -353,7 +396,7 @@ Rome, pins for Rome, Milan, Florence, Venice, Naples, the Amalfi Coast,
 Bologna, Pisa, Turin and Verona, plane markers for 13 airports (FCO, CIA, MXP,
 LIN, BGY, FLR, PSA, BLQ, VCE, TSF, VRN, TRN, NAP), and a white overlay card
 ("Rome Fiumicino & Ciampino transfers", Get a quote). Places and coordinates:
-`src/data/coverage.ts`. Component: `src/components/CoverageMap.astro`.
+`src/data/coverage.ts`. Components: `src/components/CoverageMap.tsx` (markup) and `CoverageMapScript.tsx` (Leaflet).
 
 - **Leaflet + OpenStreetMap tiles**: no API key, no cookies. Leaflet is only
   downloaded when the section comes within 400px of the screen, so it adds
@@ -365,7 +408,7 @@ LIN, BGY, FLR, PSA, BLQ, VCE, TSF, VRN, TRN, NAP), and a white overlay card
   and for visitors without JavaScript (shown in place of the map).
 - **Tiles.** OSM's public tile server is free for light use with the
   attribution shown in the corner, but its policy discourages heavy commercial
-  traffic. If the site gets busy, change `TILE_URL` in `CoverageMap.astro` to a
+  traffic. If the site gets busy, change `TILE_URL` in `CoverageMapScript.tsx` to a
   commercial provider (MapTiler, Stadia, Thunderforest; a free key covers a
   small site) and update `ATTRIBUTION`.
 
@@ -431,46 +474,60 @@ City slugs differ per language (`florence` / `firenze`) and live on each city in
 ```
 content/
   image-alt-text.md   alt text for every image, EN and IT (read by the build)
+next.config.ts        static export to ./dist, trailing slashes
 src/
+  app/
+    [lang]/layout.tsx             root layout for /en/ and /it/ (html lang, CSS, fonts)
+    [lang]/[[...slug]]/page.tsx   every page under /en/ and /it/, from data/pages.ts
+    (gate)/                       the language gate at /
+    global-not-found.tsx          the bilingual /404.html
+    sitemap.ts, robots.ts
   assets/             source photos, WebP, descriptive names
   data/
-    site.mjs          business details + SITE_URL + FORM_ENDPOINT — all placeholders live here
+    site.mjs          business details, emails, SITE_URL, Supabase form settings
     i18n.ts           routes, nav order, UI chrome strings, x-default choice
     seo.ts            per-page title/description/H1, canonical + hreflang helpers, CITY_PAGES_INDEXABLE
     schema.ts         JSON-LD builders (placeholder-aware)
     cities.ts         the six areas, per-language slugs, names, card text and photos
     coverage.ts       cities and airports on the contact-page map
+    pages.ts          every page: path, title, description, hreflang, breadcrumbs
+    metadata.ts       Next Metadata (canonical, hreflang, OG, Twitter, icons)
+    photo-manifest.json  generated by scripts/build-assets.mjs
     image-alt.ts      reads content/image-alt-text.md; fails the build on a missing row
     logo.mjs          the logo geometry (header mark, masters, icons)
-    icons.ts          the icon names, shared by Icon.astro and the content files
+    icons.ts          the icon names, shared by Icon.tsx and the content files
     content/
       en.ts           English page copy
       it.ts           Italian page copy — written natively, NOT a translation
       index.ts        typed so neither language can lose a key
-  layouts/Base.astro  <head>, SEO, JSON-LD graph, header/footer/mobile bar
   components/
-    Header, Footer, LangSwitch, MobileBar, Breadcrumbs, CtaBand, QuoteForm,
-    Seo, Logo (inline mark), LogoEmblem (emblem image), HeadIcons, Icon (Lucide),
-    HeroPhoto, Tricolore, Placeholders, CoverageMap (Leaflet, contact page)
+    PageShell         JSON-LD graph, skip link, header, breadcrumbs, footer, mobile bar
+    Header (+ HeaderMenu client script), Footer, LangSwitch, MobileBar,
+    Breadcrumbs, CtaBand, QuoteForm (+ QuoteFormScript), Logo (inline mark),
+    LogoEmblem (emblem image), Icon (Lucide), Picture, HeroPhoto, Tricolore,
+    Placeholders, CoverageMap (+ CoverageMapScript, Leaflet)
     sections/         HomeBody, LocationsBody, AboutBody, ContactBody,
                       CityStubBody, NotFoundBody — one per page type, lang-driven
-  pages/              thin: each sets SEO props and renders a section body
   styles/             main.css (Tailwind + Flowbite entry), fonts.css,
                       global.css (tokens + base), components.css
 scripts/
+  build-assets.mjs    resize photos to WebP widths, copy Leaflet's CSS (runs before every build)
+  postbuild.mjs       drop the two stray copies of the 404 Next writes
   copy-fonts.mjs      re-copy the three latin woff2 files from @fontsource, prune stale ones
   outline-logo-text.mjs  logo and OG lettering to outlines (logo-outlines.json)
   make-icons.mjs      masters, favicons, app icons, manifest and OG image from the logo geometry
   make-usage-sheet.mjs   brand/logo-usage-sheet.html
   verify-seo.mjs      post-build audit (see below)
+supabase/             quote_requests migrations and the notify-quote email function (see supabase/README.md)
 brand/                logo masters and the usage sheet (not served); reference/ holds
                       the logo brief, its reference images and photo originals
 public/
   favicon.svg, favicon.ico, site.webmanifest, icons/, images/, fonts/
 ```
 
-**Why page files are thin.** Each language's page file only declares SEO
-metadata and renders a shared section component with a `lang` prop. The
+**Why there is one page file.** `src/data/pages.ts` declares each page's SEO
+metadata, and the page route renders a shared section component with a
+`lang` prop. The
 *template* is shared; the *copy* is not — it comes from `content/en.ts` or
 `content/it.ts`. So layout changes happen once, and the two languages' wording
 can never accidentally converge.
@@ -523,8 +580,12 @@ Three rules enforced in `src/data/schema.ts`:
    fabrication.
 3. Any field still holding a `[[PLACEHOLDER]]` is **omitted**, not emitted. The
    markup is valid now and fills itself in as `site.mjs` gets real values. This
-   covers `email`, the email `contactPoint`, `address`, `geo`,
-   `vatID` and `sameAs`. There is no `telephone`: the site takes no calls.
+   covers `address`, `geo` and `sameAs`. There is no `telephone`: the site
+   takes no calls.
+4. No VAT, tax or company registration identifiers (`vatID`, `taxID`…): the
+   site is a lead-generation and booking platform. `email` is info@, with two
+   `contactPoint`s, both 24/7: "General enquiries" (customer service,
+   info@) and "Bookings" (reservations, booking@).
 
 **`BreadcrumbList` is generated from the same array that renders the visible
 breadcrumbs**, so markup and page can't drift.
@@ -657,7 +718,7 @@ Watch this when the last placeholder lands:
 ## Placeholders to fill in
 
 Every placeholder is `[[LIKE THIS]]`, highlighted in yellow on the rendered page
-(`src/components/Placeholders.astro`) so none can ship unnoticed. Find them all
+(`src/components/Placeholders.tsx`) so none can ship unnoticed. Find them all
 with:
 
 ```bash
@@ -669,9 +730,6 @@ grep -rn '\[\[' src/
 | Placeholder | File | Notes |
 |---|---|---|
 | `SITE_URL` | `src/data/site.mjs` | Currently `https://www.ciaoitaliantaxiservice.com`. **Drives every canonical, hreflang and sitemap URL.** Wrong here = wrong everywhere. |
-| `FORM_ENDPOINT` | `src/data/site.mjs` | Empty. The form validates, then shows a notice pointing at email rather than silently dropping the enquiry. Set it to a Formspree/Basin URL, a Netlify function or your own handler. |
-| `[[hello@example.com]]` | `src/data/site.mjs` | |
-| `[[REGISTERED COMPANY NAME]]`, `[[VAT / P.IVA]]` | `src/data/site.mjs` | Footer and `Organization.vatID`. Legally required in Italy. |
 
 ### Content
 
@@ -686,15 +744,90 @@ grep -rn '\[\[' src/
 | `[[EMBED A MAP…]]` / `[[INSERIRE UNA MAPPA…]]` | Contact — or delete the section if there is no public office |
 | Street, city, region, postcode, `[[LAT]]`, `[[LNG]]` | `src/data/site.mjs` — address and geo are suppressed from `LocalBusiness` until complete |
 | `site.social` | `src/data/site.mjs` — empty strings are skipped in `sameAs` |
-| `[[ADD twitter:site …]]` | `src/components/Seo.astro` |
+| `twitter:site` (add once an X / Twitter handle exists) | `src/data/metadata.ts` |
 
 `site.hours` is 24/7 (confirmed in the v1.3 brief) and feeds
-`LocalBusiness.openingHoursSpecification` and the email `contactPoint`'s
+`LocalBusiness.openingHoursSpecification` and both email `contactPoint`s'
 `hoursAvailable`.
+
+### Business name, emails, no VAT (v2.0)
+
+- **Name.** "Ciao Italian Taxi Service" is the one business name, from
+  `site.brand` / `site.legalName` in `src/data/site.mjs`: header wordmark,
+  footer and copyright line ("© 2026 Ciao Italian Taxi Service. All rights
+  reserved."), contact page, page titles (every `| Ciao` / `| Ciao Taxi`
+  suffix is now `| Ciao Italian Taxi Service`), `og:site_name`, JSON-LD
+  `name` and `legalName`, the web app manifest and the email sender name.
+  Titles are now up to 72 characters; Google shows about 60, so the end of
+  the name can be cut in results. `npm run verify` allows 75.
+- **No VAT / registration numbers.** The VAT line in the footer and on the
+  contact page, the VAT row in the About "practical details" table (both
+  languages) and `Organization.vatID` are gone. `npm run verify` fails if a
+  VAT / P.IVA or registration number, or a `vatID`/`taxID`-style property,
+  ever appears. (The Italian FAQ "Rilasciate fattura?" still asks *customers*
+  for their own partita IVA to issue an invoice; it shows no number of ours.)
+- **Emails.** info@ciaoitaliantaxiservice.com for general enquiries and
+  booking@ciaoitaliantaxiservice.com for bookings, both clickable `mailto:`
+  links in the footer and on the contact page, and in the JSON-LD. Every
+  "Email us" / "Scrivici" button (utility bar, hero, CTA band, phone bar,
+  menu) opens info@.
+
+---
+
+## Quote form (Supabase)
+
+The quote form (contact page, both languages) sends each request straight
+from the browser to Supabase as one row in `public.quote_requests`. A
+Database Webhook then runs the `notify-quote` Edge Function, which emails the
+request to booking@ through Gmail SMTP (Nodemailer, smtp.gmail.com:465) with Reply-To set
+to the customer, and sends the customer a short confirmation. **Setup,
+secrets, DNS and the test checklist: `supabase/README.md`.**
+
+Project URL: `https://zuutmiilqhtqgfvowlns.supabase.co` (`SUPABASE_URL` in
+`src/data/site.mjs`).
+
+The table: `supabase/migrations/20261112000000_quote_requests.sql`, then
+`20261113000000_email_alerts.sql` (form type, honeypot, validation, rate
+limits, email status). The publishable key is in `SUPABASE_ANON_KEY`. Never
+use the `service_role` / secret key in the site: it bypasses every rule and
+would be public in the page.
+
+**Security.** The anon key is public by design. The SQL grants that key
+`INSERT` on the form's columns and nothing else: it cannot list, read, edit or
+delete requests, and cannot set `status`. Check constraints cap every field's
+length and require consent; a database trigger validates each request again,
+rate-limits it and marks honeypot hits as `spam` (never emailed).
+
+**Reading requests.** Dashboard → **Table Editor → quote_requests**, newest
+first. `status` starts at `new`; set it to `quoted`, `booked` or `closed` as
+you work. `email_status` shows whether the alert went out.
+
+**When sending fails** (network, wrong key, table missing) the visitor keeps
+everything they typed and sees a message asking them to retry or use email.
 
 ---
 
 ## Host configuration needed
+
+**Canonical host: www.** Every canonical, hreflang, sitemap and Open Graph
+URL is `https://www.ciaoitaliantaxiservice.com/…` (`SITE_URL` in
+`src/data/site.mjs`). The bare domain redirects there with a 301, keeping
+path and query, through a Cloudflare **Redirect Rule** (Rules → Redirect
+Rules → Single Redirects):
+
+| Setting | Value |
+|---|---|
+| When incoming requests match | Custom filter expression: `(http.host eq "ciaoitaliantaxiservice.com")` |
+| Then | URL redirect · Dynamic · `concat("https://www.ciaoitaliantaxiservice.com", http.request.uri.path)` |
+| Status code | 301 |
+| Preserve query string | on |
+
+It cannot loop: it only matches the bare host, and the target is www. It does
+not touch the quote form or email: the form posts to Supabase
+(`zuutmiilqhtqgfvowlns.supabase.co`), the alert function runs there, the site
+itself has no API routes, and MX/SPF/DKIM/DMARC are DNS records that HTTP
+rules never see. **SSL/TLS → Edge Certificates → Always Use HTTPS** should be
+on, so `http://www…` also lands on `https://www…`.
 
 **Root redirect.** `/` detects the browser language in a blocking inline script
 and redirects, with both languages as links for anyone without JS. A static
@@ -721,7 +854,7 @@ Stated plainly so nothing here reads as verified when it is not.
 
 - **No screen-reader pass.** Automated accessibility checks only (see
   *Accessibility*).
-- **No form backend.** By design for v1; see `FORM_ENDPOINT`.
+- **No email alert for new requests.** Requests land in Supabase; see *Quote form (Supabase)* for adding a notification.
 - **No city page content.** Twelve stubs, `noindex`. See `KEYWORD-MAP.md` for
   what each needs before the flag flips.
 - **No legal pages.** An Italian business site handling personal data through a

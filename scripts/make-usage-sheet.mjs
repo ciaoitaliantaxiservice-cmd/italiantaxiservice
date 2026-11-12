@@ -8,7 +8,7 @@
  *   node scripts/make-usage-sheet.mjs
  *
  * The page loads the brand fonts from /fonts/, so open it through a server
- * rooted at public/ (e.g. `npx astro preview` after copying it to dist, or
+ * rooted at public/ (e.g. `npm start` after copying it to out/, or
  * any static server pointed at the repo with public/ as root).
  */
 import { writeFile } from 'node:fs/promises';

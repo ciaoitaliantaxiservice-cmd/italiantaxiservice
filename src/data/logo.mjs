@@ -1,6 +1,6 @@
 /**
  * The Ciao Italian Taxi Service mark: one set of geometry for every place it
- * appears. src/components/Logo.astro (the inline header mark) and
+ * appears. src/components/Logo.tsx (the inline header mark) and
  * scripts/make-icons.mjs (the master SVGs, favicons, app icons and the Open
  * Graph card) both build from these functions, so they cannot drift apart.
  *

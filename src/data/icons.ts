@@ -1,10 +1,9 @@
 /**
  * The icons the site uses, by role. Each maps to one Lucide icon in
- * src/components/Icon.astro, and only these are imported.
+ * src/components/Icon.tsx, and only these are imported.
  *
  * The union lives here rather than in the component because .ts modules
- * (the content files) import it, and Vite will not type-strip an .astro
- * frontmatter when it is pulled in from plain TypeScript.
+ * (the content files) import it without pulling in React.
  */
 export type IconName =
   | 'check' //        hero checklist

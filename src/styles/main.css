@@ -1,6 +1,6 @@
 /*
  * Stylesheet entry: Tailwind CSS v4 + Flowbite, set up so the existing design
- * renders exactly as before. Imported once, from src/layouts/Base.astro.
+ * renders exactly as before. Imported by the root layouts in src/app/.
  *
  * Cascade layers, lowest first:
  *   theme       Tailwind's theme variables

@@ -1,19 +1,11 @@
-import type { ImageMetadata } from 'astro';
 import type { Lang } from './i18n';
 
-// Source photos live in src/assets as WebP with descriptive file names (the
-// names survive into the built URLs, e.g. /_astro/rome-private-transfer-
-// colosseum.HASH.webp). The build serves resized WebP with explicit width and
-// height. Alt text lives in content/image-alt-text.md, keyed by file name.
-import romePhoto from '../assets/locations/rome-private-transfer-colosseum.webp';
-import milanPhoto from '../assets/locations/milan-private-transfer-duomo-galleria.webp';
-import florencePhoto from '../assets/locations/florence-private-transfer-duomo.webp';
-import naplesPhoto from '../assets/locations/naples-private-transfer-vesuvius.webp';
-import amalfiPhoto from '../assets/locations/amalfi-coast-private-transfer-positano.webp';
+// Card photos live in src/assets/locations/ as WebP with descriptive file
+// names (the names survive into the built URLs, e.g. /images/photos/rome-
+// private-transfer-colosseum.HASH-720.webp; see scripts/build-assets.mjs).
+// Alt text lives in content/image-alt-text.md, keyed by file name.
 // Venice: the car at Piazzale Roma, where road transfers really do end, with
-// the Ponte della Costituzione behind. (The earlier photo, with the car on the
-// Grand Canal promenade where no car can go, was dropped.)
-import venicePhoto from '../assets/locations/venezia-transfer-piazzale-roma.webp';
+// the Ponte della Costituzione behind.
 
 export interface City {
   id: string;
@@ -27,8 +19,8 @@ export interface City {
   stubIntro: Record<Lang, string>;
   /** 16:9 card photo. Cities without one keep the hatched placeholder. */
   photo?: {
-    src: ImageMetadata;
-    /** Row key in content/image-alt-text.md (the file name, no extension). */
+    /** Source file name in src/assets/locations/ (no extension); also the
+     *  row key in content/image-alt-text.md. */
     altKey: string;
   };
 }
@@ -54,7 +46,6 @@ export const cities: City[] = [
       it: 'Auto con autista a Roma e nel Lazio: ritiri in aeroporto con monitoraggio del volo, transfer dal porto e giornate private oltre il Grande Raccordo.',
     },
     photo: {
-      src: romePhoto,
       altKey: 'rome-private-transfer-colosseum',
     },
   },
@@ -72,7 +63,6 @@ export const cities: City[] = [
       it: 'Transfer da e per Milano al ritmo del lavoro, con autisti discreti che sanno quale uscita del terminal fa guadagnare dieci minuti.',
     },
     photo: {
-      src: milanPhoto,
       altKey: 'milan-private-transfer-duomo-galleria',
     },
   },
@@ -90,7 +80,6 @@ export const cities: City[] = [
       it: 'Firenze è il punto di partenza di quasi ogni itinerario toscano. Copriamo stazione e aeroporto, oltre a giornate intere tra Chianti, Siena e Val d’Orcia.',
     },
     photo: {
-      src: florencePhoto,
       altKey: 'florence-private-transfer-duomo',
     },
   },
@@ -108,7 +97,6 @@ export const cities: City[] = [
       it: 'A Venezia il centro non è raggiungibile in auto, quindi il punto di scambio conta. Spieghiamo dove si ferma l’auto già prima della prenotazione.',
     },
     photo: {
-      src: venicePhoto,
       altKey: 'venezia-transfer-piazzale-roma',
     },
   },
@@ -126,7 +114,6 @@ export const cities: City[] = [
       it: 'Napoli funziona bene come base: aeroporto, porto e stazione in un triangolo ristretto, con Pompei e il Vesuvio a breve distanza.',
     },
     photo: {
-      src: naplesPhoto,
       altKey: 'naples-private-transfer-vesuvius',
     },
   },
@@ -144,7 +131,6 @@ export const cities: City[] = [
       it: 'Guidare in costiera premia pazienza e conoscenza locale: spazi di manovra ridotti, sensi unici stagionali e discese che a volte finiscono in scalinata.',
     },
     photo: {
-      src: amalfiPhoto,
       altKey: 'amalfi-coast-private-transfer-positano',
     },
   },

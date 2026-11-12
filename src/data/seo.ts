@@ -19,13 +19,13 @@ type MetaByLang = Record<Lang, Meta>;
 export const meta: Record<RouteKey, MetaByLang> = {
   home: {
     en: {
-      title: 'Italy Private Transfers & Chauffeured Rides | Ciao',
+      title: 'Italy Private Transfers & Chauffeured Rides | Ciao Italian Taxi Service',
       description:
         'Fixed-quote private transfers and chauffeured rides across Italy, 24/7. Airport pickups, city-to-city journeys and private driver days.',
       h1: 'Private transfers and chauffeured rides across Italy',
     },
     it: {
-      title: 'Transfer Privati e Auto con Autista in Italia | Ciao',
+      title: 'Transfer Privati e Auto con Autista in Italia | Ciao Italian Taxi Service',
       description:
         'Transfer privati e auto con autista in tutta Italia, 24 ore su 24, con preventivo fisso. Aeroporti, tratte tra città e giornate a disposizione.',
       h1: 'Transfer privati e auto con autista in tutta Italia',
@@ -61,13 +61,13 @@ export const meta: Record<RouteKey, MetaByLang> = {
   },
   contact: {
     en: {
-      title: 'Private Transfer Italy 24/7: Contact & Quote | Ciao',
+      title: 'Private Transfer Italy 24/7: Contact & Quote | Ciao Italian Taxi Service',
       description:
         'Book a private transfer in Italy 24 hours a day: Rome Fiumicino airport pickups, chauffeur service between cities and Naples to Amalfi Coast transfers.',
       h1: 'Private transfer in Italy: get a quote 24/7',
     },
     it: {
-      title: 'Transfer privato Italia 24 ore: contatti | Ciao Taxi',
+      title: 'Transfer privato Italia 24 ore: contatti | Ciao Italian Taxi Service',
       description:
         'Transfer privato in Italia 24 ore su 24: ritiri all’aeroporto di Fiumicino e Ciampino, servizio con autista e transfer da Napoli alla Costiera Amalfitana.',
       h1: 'Transfer privato in Italia: preventivo 24 ore su 24',

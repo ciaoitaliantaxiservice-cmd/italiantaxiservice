@@ -6,7 +6,9 @@ import { absolute } from './seo';
  * Structured data builders.
  *
  * Two rules enforced here:
- *  1. No licence, permit or authorisation properties of any kind.
+ *  1. No licence, permit or authorisation properties of any kind, and no
+ *     VAT, tax or company registration identifiers (vatID, taxID, leiCode…):
+ *     the site is a lead-generation and booking platform.
  *  2. No `aggregateRating`, `review` or `priceRange` — we publish no ratings
  *     and no prices, so claiming them in markup would be fabrication.
  *
@@ -47,27 +49,38 @@ function postalAddress() {
 }
 
 /**
- * How to book: the quote form and email. The site takes no calls and has no
- * WhatsApp, so no node carries `telephone`. The email point is only emitted
- * once the address is real (not a [[placeholder]]), and states that it is
- * answered around the clock.
+ * How to get in touch: the quote form and two email addresses, info@ for
+ * general enquiries and booking@ for bookings. The site takes no calls and
+ * has no WhatsApp, so no node carries `telephone`. Both points are answered
+ * around the clock.
  */
 function contactPoints() {
   const availableLanguage = ['English', 'Italian'];
+  const hoursAvailable = {
+    '@type': 'OpeningHoursSpecification',
+    dayOfWeek: DAYS,
+    opens: site.hours.opens,
+    closes: site.hours.closes,
+  };
   const points = [
-    real(site.email)
+    real(site.emailInfo)
       ? {
           '@type': 'ContactPoint',
-          name: 'Email',
-          contactType: 'reservations',
-          email: site.email,
+          name: 'General enquiries',
+          contactType: 'customer service',
+          email: site.emailInfo,
           availableLanguage,
-          hoursAvailable: {
-            '@type': 'OpeningHoursSpecification',
-            dayOfWeek: DAYS,
-            opens: site.hours.opens,
-            closes: site.hours.closes,
-          },
+          hoursAvailable,
+        }
+      : undefined,
+    real(site.emailBooking)
+      ? {
+          '@type': 'ContactPoint',
+          name: 'Bookings',
+          contactType: 'reservations',
+          email: site.emailBooking,
+          availableLanguage,
+          hoursAvailable,
         }
       : undefined,
   ].filter(Boolean);
@@ -93,8 +106,7 @@ export function organizationSchema(lang: Lang) {
     url: absolute(routes.home[lang]),
     logo: absolute('/images/logo.svg'),
     description: descriptions[lang],
-    vatID: real(site.vatNumber) ? site.vatNumber : undefined,
-    email: real(site.email) ? site.email : undefined,
+    email: real(site.emailInfo) ? site.emailInfo : undefined,
     contactPoint: contactPoints(),
     address: postalAddress(),
     sameAs: sameAs(),
@@ -115,7 +127,7 @@ export function localBusinessSchema(lang: Lang) {
     url: absolute(routes.home[lang]),
     image: absolute('/images/og-default.png'),
     description: descriptions[lang],
-    email: real(site.email) ? site.email : undefined,
+    email: real(site.emailInfo) ? site.emailInfo : undefined,
     address: postalAddress(),
     geo,
     openingHoursSpecification: [

@@ -179,7 +179,6 @@ export const it = {
       { label: 'Regioni coperte', value: '[[REGIONI]]' },
       { label: 'Lingue parlate', value: 'Italiano, inglese, [[ALTRE LINGUE]]' },
       { label: 'Sede legale', value: '[[CITTÀ, PAESE]]' },
-      { label: 'Partita IVA', value: '[[P. IVA]]' },
     ],
     trustNote:
       'Ogni voce fra parentesi quadre è un segnaposto in attesa di un dato verificato. In questo sito non compaiono valutazioni, numeri di recensioni o cifre che non abbiamo confermato.',
@@ -263,6 +262,8 @@ export const it = {
     },
     unconfigured:
       'Il modulo non è ancora collegato a una casella di posta. Inviate questi dati via email all’indirizzo indicato in questa pagina: vi rispondiamo allo stesso modo.',
+    failed:
+      'Non è stato possibile inviare la richiesta. Riprovate tra poco oppure inviateci i dati via email all’indirizzo indicato in questa pagina.',
     success: 'Grazie. La richiesta è arrivata e vi risponderemo con un preventivo a tariffa fissa.',
   },
 

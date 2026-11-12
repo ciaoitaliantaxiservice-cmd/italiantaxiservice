@@ -1,0 +1,7 @@
+# Supabase CLI settings for this project (only what differs from defaults).
+project_id = "zuutmiilqhtqgfvowlns"
+
+[functions.notify-quote]
+# Called by the Database Webhook, not by browsers. It checks its own
+# secret (x-webhook-secret), so Supabase's JWT check is switched off.
+verify_jwt = false

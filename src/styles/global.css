@@ -92,7 +92,7 @@
   --dur: 180ms;
   --ease: cubic-bezier(0.2, 0.8, 0.2, 1);
 
-  /* Every icon on the site is this size (see .icon below and Icon.astro). */
+  /* Every icon on the site is this size (see .icon below and Icon.tsx). */
   --icon-size: 1.5rem; /* 24, Lucide's native grid */
 
   /* Height of the sticky mobile action bar, so content can clear it */

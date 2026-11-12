@@ -2035,7 +2035,7 @@ html.nav-open .mobile-bar {
 }
 
 /* The text version of the map: for screen readers, and shown when
-   JavaScript is off (see the <noscript> rule in CoverageMap.astro). */
+   JavaScript is off (see the <noscript> rule in CoverageMap.tsx). */
 .coverage__lists {
   position: absolute;
   width: 1px;
