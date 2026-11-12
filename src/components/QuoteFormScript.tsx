@@ -179,7 +179,18 @@ export default function QuoteFormScript() {
     };
 
     form.addEventListener('submit', onSubmit);
+
+    // Hand-over from the inline guard in QuoteForm.tsx: from now on this
+    // handler owns submits, and one pressed before it was ready is sent now.
+    const w = window as Window & { __quoteFormReady?: boolean; __quoteFormQueued?: boolean };
+    w.__quoteFormReady = true;
+    if (w.__quoteFormQueued) {
+      w.__quoteFormQueued = false;
+      form.requestSubmit();
+    }
+
     return () => {
+      w.__quoteFormReady = false;
       form.removeEventListener('submit', onSubmit);
       cleanups.forEach((fn) => fn());
     };
