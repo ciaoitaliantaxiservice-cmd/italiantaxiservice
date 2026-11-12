@@ -1,0 +1,22 @@
+// Cloudflare Workers deploy for the static site (Workers & Pages →
+// italiantaxiservice). Cloudflare runs `npx wrangler deploy`; this file tells
+// it exactly what to do, so nothing is guessed from the framework:
+//   1. build.command runs `npm run build` (photos + Next.js static export to ./dist)
+//   2. ./dist is uploaded as static assets; there is no server code.
+// Routes and custom domains (ciaoitaliantaxiservice.com, www) stay as they are
+// configured in the Cloudflare dashboard; they are deliberately not listed here.
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "italiantaxiservice",
+  "compatibility_date": "2026-10-28",
+  "build": {
+    "command": "npm run build"
+  },
+  "assets": {
+    "directory": "./dist",
+    // Unknown URLs get the bilingual /404.html with a real 404 status.
+    "not_found_handling": "404-page",
+    // /en/about -> /en/about/ and /en/index.html -> /en/, as before.
+    "html_handling": "auto-trailing-slash"
+  }
+}

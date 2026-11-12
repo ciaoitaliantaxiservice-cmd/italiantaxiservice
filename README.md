@@ -822,7 +822,9 @@ Rules → Single Redirects):
 | Status code | 301 |
 | Preserve query string | on |
 
-It cannot loop: it only matches the bare host, and the target is www. It does
+It cannot loop on its own: it only matches the bare host, and the target is
+www. (Redirect Rules on this plan cannot exclude Worker subrequests, so the
+www Worker must serve its pages itself, never by fetching the bare domain.) It does
 not touch the quote form or email: the form posts to Supabase
 (`zuutmiilqhtqgfvowlns.supabase.co`), the alert function runs there, the site
 itself has no API routes, and MX/SPF/DKIM/DMARC are DNS records that HTTP
