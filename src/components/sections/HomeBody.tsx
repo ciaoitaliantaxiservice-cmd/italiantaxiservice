@@ -2,6 +2,8 @@ import HeroPhoto from '../HeroPhoto';
 import Icon from '../Icon';
 import CtaBand from '../CtaBand';
 import Tricolore from '../Tricolore';
+import ServiceAreas from './ServiceAreas';
+import Fleet from './Fleet';
 import { altFor } from '../../data/image-alt';
 import { t } from '../../data/content';
 import { meta } from '../../data/seo';
@@ -193,6 +195,11 @@ export default function HomeBody({ lang }: { lang: Lang }) {
           </div>
         </div>
       </section>
+
+      {/* Where we serve (tint) and vehicle types (white): between the white
+          routes section and the tinted FAQ, so the alternation holds. */}
+      <ServiceAreas lang={lang} />
+      <Fleet lang={lang} />
 
       {/* FAQ. Matches the FAQPage JSON-LD emitted by the page that renders this. */}
       <section className="section section--tint" aria-labelledby="faq-heading">

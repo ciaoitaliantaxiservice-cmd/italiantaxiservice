@@ -125,6 +125,37 @@ export const en = {
         a: 'Payment methods and any deposit terms are confirmed in writing with your quote. [[CONFIRM ACCEPTED PAYMENT METHODS AND DEPOSIT POLICY]]',
       },
     ],
+
+    areas: {
+      heading: 'Where We Serve',
+      lead: 'From the airport cities to the lakes and the coast, the drivers we send know the roads they work on.',
+      // Values are placeholders until confirmed: [[TEXT:stat-1]], [[TEXT:stat-2]], [[TEXT:stat-3]].
+      stats: [
+        { id: 'stat-1', value: null as string | null, label: 'Cities and areas served' },
+        { id: 'stat-2', value: null as string | null, label: 'Airports covered' },
+        { id: 'stat-3', value: null as string | null, label: 'Years of service' },
+      ],
+      browseHeading: 'Browse by service area',
+      carouselLabel: 'Service areas',
+      prev: 'Previous service areas',
+      next: 'Next service areas',
+      viewAll: 'View all service areas',
+    },
+
+    fleet: {
+      eyebrow: 'Our fleet',
+      heading: 'Vehicle types',
+      lead: 'Each car is chosen for the route, the luggage and the occasion, and you know which one is coming before you confirm.',
+      tabsLabel: 'Vehicle types by trip',
+      passengers: 'Up to {n} passengers',
+      suitcases: '{n} large suitcases',
+      priceFrom: 'From {n}',
+      formatPrice: (n: number) => `€${n.toLocaleString('en-GB')}`,
+      bestFor: 'Best for:',
+      prev: 'Previous vehicle',
+      next: 'Next vehicle',
+      position: '{i} of {n}',
+    },
   },
 
   locations: {
@@ -236,6 +267,8 @@ export const en = {
       'Private driver day',
       'Something else',
     ],
+    vehicle: 'Preferred vehicle',
+    vehicleNone: 'No preference, suggest one',
     flight: 'Flight or train number',
     flightHelp: 'Optional, but it lets us track delays and hold the car.',
     notes: 'Anything else we should know',

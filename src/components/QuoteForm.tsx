@@ -1,5 +1,6 @@
 import { t } from '../data/content';
 import { type Lang } from '../data/i18n';
+import { fleet } from '../data/fleet';
 import { SUPABASE_URL, SUPABASE_ANON_KEY, SUPABASE_TABLE } from '../data/site.mjs';
 import QuoteFormScript from './QuoteFormScript';
 
@@ -221,6 +222,24 @@ export default function QuoteForm({ lang, heading, headingLevel = 2, note }: Pro
               inputMode="numeric"
             />
           </div>
+        </div>
+
+        {/* Pre-selected from ?vehicle=<id> by QuoteFormScript (the homepage
+            fleet section's "Book …" buttons). The stored value is the English
+            name, so alerts read the same whichever language was used. */}
+        <div className="field">
+          <label htmlFor="qf-vehicle">
+            {`${f.vehicle} `}
+            <span className="field__hint">{`(${f.optional})`}</span>
+          </label>
+          <select id="qf-vehicle" name="vehicle" defaultValue="">
+            <option value="">{f.vehicleNone}</option>
+            {fleet.map((v) => (
+              <option value={v.formValue} data-vehicle-id={v.id} key={v.id}>
+                {v.name[lang]}
+              </option>
+            ))}
+          </select>
         </div>
 
         <div className="field">

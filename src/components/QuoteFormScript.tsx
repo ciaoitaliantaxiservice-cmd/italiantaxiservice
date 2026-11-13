@@ -62,6 +62,9 @@ export default function QuoteFormScript() {
         travel_time: opt('time'),
         passengers: int('passengers'),
         luggage: int('luggage'),
+        // Sent only when chosen: needs the `vehicle` column
+        // (supabase/migrations/20261113020000_vehicle_preference.sql).
+        ...(opt('vehicle') ? { vehicle: opt('vehicle') } : {}),
         flight: opt('flight'),
         notes: opt('notes'),
         consent: data.get('consent') === 'yes',
@@ -91,6 +94,14 @@ export default function QuoteFormScript() {
       });
       if (!res.ok) throw new Error(`Supabase ${res.status}`);
     };
+
+    // ?vehicle=s-class (from a "Book the …" button) pre-selects that car.
+    const wanted = new URLSearchParams(location.search).get('vehicle');
+    const vehicleSelect = form.querySelector<HTMLSelectElement>('#qf-vehicle');
+    if (wanted && vehicleSelect) {
+      const match = Array.from(vehicleSelect.options).find((o) => o.dataset.vehicleId === wanted);
+      if (match) vehicleSelect.value = match.value;
+    }
 
     // Clear a field's error as soon as it becomes valid again.
     const cleanups: (() => void)[] = [];

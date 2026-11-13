@@ -25,6 +25,10 @@ import {
   Menu,
   X,
   ChevronDown,
+  ChevronLeft,
+  ChevronRight,
+  Users,
+  Luggage,
   type LucideIcon,
 } from 'lucide-react';
 import type { IconName } from '../data/icons';
@@ -42,6 +46,10 @@ const ICONS = {
   menu: Menu,
   close: X,
   'chevron-down': ChevronDown,
+  'chevron-left': ChevronLeft,
+  'chevron-right': ChevronRight,
+  users: Users,
+  luggage: Luggage,
 } satisfies Record<IconName, LucideIcon>;
 
 interface Props {

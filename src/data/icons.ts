@@ -17,4 +17,8 @@ export type IconName =
   | 'mail' //         email
   | 'menu' //         mobile menu button, closed
   | 'close' //        mobile menu button, open (Lucide x)
-  | 'chevron-down'; // FAQ open/closed marker
+  | 'chevron-down' // FAQ open/closed marker
+  | 'chevron-left' // carousel: previous
+  | 'chevron-right' // carousel: next
+  | 'users' //        vehicle: passengers
+  | 'luggage'; //     vehicle: suitcases

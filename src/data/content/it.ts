@@ -130,6 +130,37 @@ export const it = {
         a: 'Di norma sì, ma va detto in fase di prenotazione. Trasportino, sacca da golf, passeggino, sacca da sci o custodia per strumenti musicali cambiano la vettura da assegnare, e preferiamo saperlo prima che a bagagliaio aperto.',
       },
     ],
+
+    areas: {
+      heading: 'Dove operiamo',
+      lead: 'Dalle città con aeroporto ai laghi e alla costa: gli autisti che vi mandiamo conoscono bene le strade su cui lavorano.',
+      // Valori segnaposto finché non sono confermati: [[TEXT:stat-1]], [[TEXT:stat-2]], [[TEXT:stat-3]].
+      stats: [
+        { id: 'stat-1', value: null as string | null, label: 'Città e zone servite' },
+        { id: 'stat-2', value: null as string | null, label: 'Aeroporti coperti' },
+        { id: 'stat-3', value: null as string | null, label: 'Anni di servizio' },
+      ],
+      browseHeading: 'Cerca per zona',
+      carouselLabel: 'Zone servite',
+      prev: 'Zone precedenti',
+      next: 'Zone successive',
+      viewAll: 'Vedi tutte le zone servite',
+    },
+
+    fleet: {
+      eyebrow: 'Tipi di veicolo',
+      heading: 'La nostra flotta',
+      lead: 'Scegliamo ogni auto in base al percorso, ai bagagli e all’occasione, e saprete quale arriva prima di confermare.',
+      tabsLabel: 'Veicoli per tipo di viaggio',
+      passengers: 'Fino a {n} passeggeri',
+      suitcases: '{n} valigie grandi',
+      priceFrom: 'Da {n}',
+      formatPrice: (n: number) => `€ ${n.toLocaleString('it-IT')}`,
+      bestFor: 'Ideale per:',
+      prev: 'Veicolo precedente',
+      next: 'Veicolo successivo',
+      position: '{i} di {n}',
+    },
   },
 
   locations: {
@@ -241,6 +272,8 @@ export const it = {
       'Auto a disposizione a giornata',
       'Evento o cerimonia',
     ],
+    vehicle: 'Veicolo preferito',
+    vehicleNone: 'Nessuna preferenza, consigliatecelo voi',
     flight: 'Numero del volo o del treno',
     flightHelp: 'Facoltativo, ma ci permette di seguire i ritardi e trattenere la vettura.',
     notes: 'Altro che dovremmo sapere',

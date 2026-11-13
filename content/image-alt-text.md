@@ -27,6 +27,32 @@ How to write one:
 | `logo` | Ciao Italian Taxi Service | Ciao Italian Taxi Service, logo |
 | `logo-emblem-reversed` | Ciao Italian Taxi Service | Ciao Italian Taxi Service, logo |
 
+## Pending photos (homepage "Where We Serve" and "Vehicle types")
+
+These photos are not shot or chosen yet; their slots show `[[IMG:…]]`
+placeholders (see `docs/PLACEHOLDERS.md`). The alt text is written first, so
+it doubles as the photo brief: pick or shoot a photo that matches the row,
+or update the row to match the photo you use. Save the file under the key
+below in `src/assets/` and set `photo` in `src/data/service-areas.ts` or
+`src/data/fleet.ts`.
+
+| Image | English (`/en/`) | Italiano (`/it/`) |
+|---|---|---|
+| `rome-service-area-colosseum` | The Colosseum in warm evening light, seen from a quiet street in central Rome. | Il Colosseo nella luce calda della sera, visto da una strada tranquilla del centro di Roma. |
+| `milan-service-area-duomo` | The white marble spires of Milan Cathedral against a clear sky above Piazza del Duomo. | Le guglie di marmo bianco del Duomo di Milano contro il cielo limpido sopra piazza del Duomo. |
+| `florence-service-area-duomo` | Terracotta rooftops of Florence with Brunelleschi’s dome rising above them. | I tetti in cotto di Firenze e, sopra di essi, la cupola del Brunelleschi. |
+| `venice-service-area-grand-canal` | Gondolas and palazzi along the Grand Canal in Venice in soft morning light. | Gondole e palazzi affacciati sul Canal Grande a Venezia, nella luce morbida del mattino. |
+| `naples-service-area-vesuvius` | The Bay of Naples with boats in the harbour and Vesuvius on the horizon. | Il golfo di Napoli con le barche in porto e il Vesuvio all’orizzonte. |
+| `amalfi-coast-service-area-positano` | Positano’s pastel houses stepping down the cliff to the sea on the Amalfi Coast. | Le case color pastello di Positano che scendono a gradoni verso il mare, in Costiera Amalfitana. |
+| `lake-como-service-area-bellagio` | The lakefront at Bellagio on Lake Como, with villas and mountains across the water. | Il lungolago di Bellagio sul Lago di Como, con ville e montagne sull’altra sponda. |
+| `pisa-service-area-leaning-tower` | The Leaning Tower and the cathedral on Pisa’s Piazza dei Miracoli. | La Torre pendente e il Duomo in piazza dei Miracoli, a Pisa. |
+| `bologna-service-area-two-towers` | Bologna’s Two Towers rising above red-roofed medieval streets. | Le Due Torri di Bologna che svettano sopra le vie medievali dai tetti rossi. |
+| `verona-service-area-arena` | The Roman Arena on Piazza Bra in Verona on a sunny afternoon. | L’Arena romana in piazza Bra a Verona, in un pomeriggio di sole. |
+| `mercedes-s-class-chauffeur-car` | A black Mercedes-Benz S-Class saloon, seen from the front three-quarter angle. | Una berlina Mercedes-Benz Classe S nera, vista di tre quarti dal davanti. |
+| `mercedes-e-class-chauffeur-car` | A black Mercedes-Benz E-Class saloon, seen from the front three-quarter angle. | Una berlina Mercedes-Benz Classe E nera, vista di tre quarti dal davanti. |
+| `mercedes-a-class-chauffeur-car` | A black Mercedes-Benz A-Class, seen from the front three-quarter angle. | Una Mercedes-Benz Classe A nera, vista di tre quarti dal davanti. |
+| `bmw-5-series-chauffeur-car` | A black BMW 5 Series saloon, seen from the front three-quarter angle. | Una berlina BMW Serie 5 nera, vista di tre quarti dal davanti. |
+
 Images with no alt text on purpose (decorative, `alt=""` or `aria-hidden`):
 the inline header logo mark (the wordmark beside it names the link), the
 Lucide icons (each sits next to a text label) and the map tiles.

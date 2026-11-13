@@ -2099,3 +2099,529 @@ html.nav-open .mobile-bar {
 .coverage .leaflet-bar a {
   color: var(--c-carbone);
 }
+
+/* ==========================================================================
+   Homepage: "Where We Serve" and "Vehicle types"
+   Built only from the existing tokens: Cormorant for display, Manrope for UI,
+   Verde Felce for the accent rule and display numbers (graphics and display
+   type only, per global.css), Verde Profondo for controls, Notte for the
+   photo overlay, the one --radius and the one --dur/--ease.
+   ========================================================================== */
+
+/* H2 with a short accent rule under it. The tricolore stays once per page
+   (the hero); this is the plain green accent. */
+.accent-title::after {
+  content: '';
+  display: block;
+  width: 3rem;
+  height: 3px;
+  margin-top: var(--s-4);
+  border-radius: 2px;
+  background: var(--c-verde-felce);
+}
+
+/* Round prev/next buttons: 48px, the same 1.5px green outline as .btn--outline. */
+.round-btn {
+  display: inline-grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 48px;
+  height: 48px;
+  padding: 0;
+  border: 1.5px solid var(--c-verde-profondo);
+  border-radius: 50%;
+  background: var(--c-white);
+  color: var(--c-verde-profondo);
+  cursor: pointer;
+  transition:
+    background-color var(--dur) var(--ease),
+    color var(--dur) var(--ease),
+    opacity var(--dur) var(--ease),
+    transform var(--dur) var(--ease);
+}
+
+.round-btn:hover:not(:disabled) {
+  background: var(--c-verde-profondo);
+  color: var(--c-white);
+}
+
+.round-btn:active:not(:disabled) {
+  transform: scale(0.96);
+}
+
+.round-btn:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
+/* Image slot waiting for its photo: the hatched swatch used elsewhere on the
+   site, filling the real frame, with an amber TYPE · ID tag (the editorial
+   marker colour from .placeholder). */
+.img-placeholder {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  width: 100%;
+  height: 100%;
+  background-color: var(--c-placeholder);
+  background-image: repeating-linear-gradient(
+    135deg,
+    rgb(28 31 29 / 0.06) 0 1px,
+    transparent 1px 12px
+  );
+}
+
+.img-placeholder--dark {
+  background-color: var(--c-border-dark);
+  background-image:
+    repeating-linear-gradient(135deg, rgb(255 255 255 / 0.05) 0 1px, transparent 1px 12px),
+    linear-gradient(160deg, var(--c-border-dark), var(--c-notte));
+}
+
+.img-placeholder__tag {
+  position: relative;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  max-width: calc(100% - 2 * var(--s-3));
+  margin: var(--s-3);
+  padding: var(--s-1) var(--s-2);
+  border: 1px dashed #b08900;
+  border-radius: 3px;
+  background: #fff4cc;
+  color: #5c4600;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: var(--t-label);
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+}
+
+/* --------------------------------------------------------------------------
+   Where We Serve
+   -------------------------------------------------------------------------- */
+
+.stats {
+  display: grid;
+  gap: var(--s-4);
+  margin: 0 0 var(--s-14);
+  padding: 0;
+  list-style: none;
+}
+
+@media (min-width: 40rem) {
+  .stats {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.stat {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-2);
+  padding: var(--s-6);
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius);
+  background: var(--c-white);
+  box-shadow: var(--shadow-soft);
+}
+
+/* The box is the number's final height, so the confirmed figure replaces the
+   placeholder without moving anything. */
+.stat__value {
+  display: flex;
+  align-items: center;
+  min-height: 3.5rem;
+  font-family: var(--font-serif);
+  font-size: clamp(2.75rem, 4.5vw, 3.5rem);
+  font-weight: 600;
+  line-height: 1;
+  color: var(--c-verde-felce);
+}
+
+.stat__value .placeholder {
+  font-size: var(--t-small);
+  font-weight: 400;
+  line-height: 1.5;
+}
+
+.stat__label {
+  font-size: var(--t-small);
+  font-weight: 600;
+  line-height: 1.571;
+  color: var(--c-pietra);
+}
+
+.carousel__bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-4);
+  margin-bottom: var(--s-6);
+}
+
+.carousel__nav {
+  display: flex;
+  gap: var(--s-2);
+}
+
+/* A native scroller with snap points: swipe, trackpad and Tab all work
+   without script. It runs to the screen edge on phones so the next card
+   visibly peeks in. */
+.areas__track {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 72%;
+  gap: var(--s-4);
+  margin: 0 calc(-1 * var(--gutter));
+  padding: var(--s-1) var(--gutter);
+  list-style: none;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline: var(--gutter);
+  scrollbar-width: none;
+}
+
+.areas__track::-webkit-scrollbar {
+  display: none;
+}
+
+@media (min-width: 40rem) {
+  .areas__track {
+    grid-auto-columns: calc((100% - 2 * var(--s-4)) / 2.5);
+  }
+}
+
+@media (min-width: 64rem) {
+  .areas__track {
+    grid-auto-columns: calc((100% - 3 * var(--s-4)) / 4);
+  }
+}
+
+.area-card {
+  scroll-snap-align: start;
+}
+
+.area-card__link {
+  position: relative;
+  display: block;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  isolation: isolate;
+  border-radius: var(--radius);
+  background: var(--c-notte);
+  color: var(--c-white);
+  text-decoration: none;
+}
+
+.area-card__link:hover {
+  color: var(--c-white);
+}
+
+.area-card__media,
+.area-card__media img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.area-card__media img {
+  transition: transform 500ms var(--ease);
+}
+
+.area-card__link:hover .area-card__media img {
+  transform: scale(1.04);
+}
+
+/* The dark overlay, deepening a little on hover. */
+.area-card__link::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(180deg, rgb(15 42 30 / 0.2) 0%, rgb(15 42 30 / 0.62) 100%);
+  transition: background-color var(--dur) var(--ease);
+}
+
+.area-card__link:hover::after {
+  background-color: rgb(15 42 30 / 0.12);
+}
+
+.area-card__name {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--s-3);
+  padding: var(--s-4);
+  font-family: var(--font-serif);
+  font-size: clamp(1.75rem, 2.4vw, 2rem);
+  font-weight: 600;
+  line-height: 1.1;
+  text-align: center;
+  text-shadow: 0 1px 14px rgb(11 32 22 / 0.45);
+}
+
+/* Accent underline: Verde Chiaro, the green made for dark grounds. */
+.area-card__name::after {
+  content: '';
+  width: 2.5rem;
+  height: 3px;
+  border-radius: 2px;
+  background: var(--c-verde-chiaro);
+  transition: transform var(--dur) var(--ease);
+}
+
+.area-card__link:hover .area-card__name::after {
+  transform: scaleX(1.4);
+}
+
+/* Inset ring: the scroller would clip one drawn outside the card. */
+.area-card__link:focus-visible {
+  outline: 3px solid var(--c-verde-chiaro);
+  outline-offset: -5px;
+}
+
+.areas__more {
+  display: flex;
+  justify-content: center;
+  margin-top: var(--s-10);
+}
+
+/* --------------------------------------------------------------------------
+   Vehicle types
+   -------------------------------------------------------------------------- */
+
+.fleet__tabs {
+  display: flex;
+  gap: var(--s-1);
+  margin-bottom: var(--s-10);
+  border-bottom: 1px solid var(--c-border);
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.fleet__tabs::-webkit-scrollbar {
+  display: none;
+}
+
+.fleet__tab {
+  flex-shrink: 0;
+  min-height: 48px;
+  margin-bottom: -1px;
+  padding: 0 var(--s-5);
+  border: 0;
+  border-bottom: 3px solid transparent;
+  background: none;
+  font-family: var(--font-sans);
+  font-size: var(--t-base);
+  font-weight: 700;
+  color: var(--c-pietra);
+  cursor: pointer;
+  transition: color var(--dur) var(--ease), border-color var(--dur) var(--ease);
+}
+
+/* Phones: all three tabs fit the row (360px and up) instead of scrolling. */
+@media (max-width: 39.99rem) {
+  .fleet__tab {
+    flex: 1 1 auto;
+    padding: 0 var(--s-2);
+    font-size: var(--t-small);
+  }
+}
+
+.fleet__tab:hover {
+  color: var(--c-verde-profondo);
+}
+
+.fleet__tab[aria-selected='true'] {
+  border-bottom-color: var(--c-verde-felce);
+  color: var(--c-verde-profondo);
+}
+
+.fleet__tab:focus-visible {
+  outline-offset: -3px;
+}
+
+.fleet__panel {
+  display: grid;
+  gap: var(--s-8);
+  align-items: center;
+}
+
+@media (min-width: 64rem) {
+  .fleet__panel {
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    gap: var(--s-12);
+  }
+}
+
+/* Phones and tablets: the photo leads, the details follow. */
+@media (max-width: 63.99rem) {
+  .fleet__media {
+    order: -1;
+  }
+}
+
+/* All vehicles share one cell; only the active one shows. The outgoing one
+   fades out quickly towards the side it is leaving by, then the incoming
+   one fades in from the other side. */
+.fleet__copy {
+  display: grid;
+}
+
+.fleet__item {
+  grid-area: 1 / 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-4);
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity 180ms var(--ease),
+    transform 180ms var(--ease),
+    visibility 0s linear 180ms;
+}
+
+.fleet__item[data-state='before'] {
+  transform: translateX(-16px);
+}
+
+.fleet__item[data-state='after'] {
+  transform: translateX(16px);
+}
+
+.fleet__item[data-state='active'] {
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+  transition:
+    opacity 380ms var(--ease) 140ms,
+    transform 380ms var(--ease) 140ms,
+    visibility 0s linear 0s;
+}
+
+.fleet__item h3 {
+  margin: 0;
+}
+
+.fleet__badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.fleet__badges li {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-2);
+  padding: var(--s-1) var(--s-3) var(--s-1) var(--s-2);
+  border: 1px solid var(--c-border);
+  border-radius: 999px;
+  background: var(--c-bianco);
+  font-size: var(--t-small);
+  font-weight: 600;
+  line-height: 1.571;
+  color: var(--c-carbone);
+}
+
+.fleet__badges .icon {
+  color: var(--c-verde-profondo);
+}
+
+.fleet__desc {
+  color: var(--c-pietra);
+}
+
+.fleet__best {
+  font-size: var(--t-small);
+  line-height: 1.571;
+  color: var(--c-pietra);
+}
+
+.fleet__best strong {
+  color: var(--c-carbone);
+}
+
+.fleet__item .btn {
+  margin-top: var(--s-2);
+}
+
+.fleet__media {
+  min-width: 0;
+}
+
+/* Photo strip: one car in place, the next peeking in on the right. */
+.fleet__track {
+  position: relative;
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 84%;
+  gap: var(--s-4);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+}
+
+.fleet__track::-webkit-scrollbar {
+  display: none;
+}
+
+.fleet__slide {
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  border-radius: var(--radius);
+  scroll-snap-align: start;
+  opacity: 0.55;
+  transform: scale(0.94);
+  transform-origin: left center;
+  transition: opacity 400ms var(--ease), transform 400ms var(--ease);
+}
+
+.fleet__slide[data-state='active'] {
+  opacity: 1;
+  transform: none;
+}
+
+picture.fleet__photo,
+.fleet__photo img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* The placeholder keeps its own flex layout; it just fills the frame. */
+.img-placeholder.fleet__photo {
+  width: 100%;
+  height: 100%;
+}
+
+.fleet__nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--s-4);
+  margin-top: var(--s-6);
+}
+
+.fleet__count {
+  min-width: 4.5rem;
+  font-size: var(--t-small);
+  font-weight: 600;
+  text-align: center;
+  color: var(--c-pietra);
+  font-variant-numeric: tabular-nums;
+}
