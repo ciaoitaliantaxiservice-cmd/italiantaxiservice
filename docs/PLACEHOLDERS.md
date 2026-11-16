@@ -68,6 +68,36 @@ car, so change it if the car is another colour.
 `src/data/fleet.ts` with `categories: ['groups', 'events']`. The tabs, the
 slides and the form's "Preferred vehicle" list update from that.
 
+## Rome page (`loc-rome`): `/en/locations/rome/` and `/it/localita/roma/`
+
+Facts and copy live in `src/data/rome.ts`; each slot there has a
+`// PLACEHOLDER(TYPE:ID)` comment. Prices and capacities never go into JSON-LD.
+
+| ID | Type | What's needed | Status |
+|---|---|---|---|
+| loc-rome-sedan-from, loc-rome-executive-from, loc-rome-minivan-from, loc-rome-van-from | PRICE | One-way "from" price per vehicle class, EUR | open |
+| loc-rome-sedan-bags, loc-rome-executive-bags, loc-rome-minivan-bags, loc-rome-van-bags | VEHICLE | Large suitcases per class | open |
+| loc-rome-fleet-wifi | VERIFY | Confirm Wi-Fi in the Executive, Minivan and Van (shown now); set `wifi` in `romeVehicles` | open |
+| loc-rome-sedan, loc-rome-executive, loc-rome-minivan, loc-rome-van | IMG | Vehicle photos, 4:3, at least 1200×900, WebP | open |
+| loc-rome-fco-from, loc-rome-cia-from, loc-rome-civitavecchia-from, loc-rome-termini-from | PRICE | Fixed fare to central Rome, sedan | open |
+| loc-rome-route-{florence, naples, amalfi-coast, positano, pisa, siena, orvieto, tivoli, civitavecchia}-from | PRICE | One-way "from" price per route, sedan | open |
+| loc-rome-video | IMG | Intro video for "Why riders choose us", 16:9 | open |
+| loc-rome-dest-{vatican, trevi, pantheon, spanish-steps, forum, trastevere, villa-borghese} | IMG | Destination photos, 4:3, at least 960×720, WebP (the Colosseum card uses the existing photo) | open |
+| loc-rome-hotel-{hassler, de-russie, eden, st-regis, cavalieri, artemide} | IMG | Hotel photos you have the right to use, 4:3 | open |
+| loc-rome-hotels | VERIFY | Confirm the hotel list and star ratings (no partnership is claimed) | open |
+| loc-rome-faq-waiting | DATA | Free waiting time at the airports, in minutes | open |
+| loc-rome-faq-payment | TEXT | Accepted payment methods and deposit policy | open |
+| loc-rome-faq-cancellation | TEXT | Cancellation window and terms | open |
+
+Alt text for every pending photo is already in `content/image-alt-text.md`
+(section "Pending photos (Rome page…)"); the file name is the row key.
+
+## Blog: `/en/blog/` and `/it/blog/`
+
+| ID | Type | What's needed | Status |
+|---|---|---|---|
+| blog-rome-taxi-flat-fares | VERIFY | The current official Rome taxi flat fares from Fiumicino and Ciampino to inside the Aurelian Walls, in "Rome taxi prices" (`src/data/blog.ts`) | open |
+
 ## Location pages linked from the homepage but not built yet
 
 The "Where We Serve" cards link to these on purpose, ahead of the pages, so
@@ -86,7 +116,6 @@ need the full playbook build:
 
 | Area | EN | IT | Status |
 |---|---|---|---|
-| Rome | `/en/locations/rome/` | `/it/localita/roma/` | stub (noindex) |
 | Milan | `/en/locations/milan/` | `/it/localita/milano/` | stub (noindex) |
 | Florence | `/en/locations/florence/` | `/it/localita/firenze/` | stub (noindex) |
 | Venice | `/en/locations/venice/` | `/it/localita/venezia/` | stub (noindex) |

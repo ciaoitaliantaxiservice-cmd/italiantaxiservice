@@ -17,6 +17,11 @@ export interface City {
   gateways: Record<Lang, string>;
   /** Intro paragraph for the (noindex) city stub page. */
   stubIntro: Record<Lang, string>;
+  /**
+   * True once the city has its full location page (indexable, in the
+   * sitemap). The others stay noindex stubs until theirs is built.
+   */
+  fullPage?: boolean;
   /** 16:9 card photo. Cities without one keep the hatched placeholder. */
   photo?: {
     /** Source file name in src/assets/locations/ (no extension); also the
@@ -34,6 +39,7 @@ export interface City {
 export const cities: City[] = [
   {
     id: 'rome',
+    fullPage: true,
     slug: { en: 'rome', it: 'roma' },
     name: { en: 'Rome', it: 'Roma' },
     gateways: { en: 'FCO · CIA · Termini · Civitavecchia', it: 'FCO · CIA · Termini · Civitavecchia' },

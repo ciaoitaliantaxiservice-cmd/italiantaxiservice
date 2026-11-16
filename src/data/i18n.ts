@@ -1,3 +1,5 @@
+import type { IconName } from './icons';
+
 export type Lang = 'en' | 'it';
 export const LANGS: Lang[] = ['en', 'it'];
 
@@ -8,6 +10,7 @@ export const X_DEFAULT_LANG: Lang = 'en';
 export const routes = {
   home: { en: '/en/', it: '/it/' },
   locations: { en: '/en/locations/', it: '/it/localita/' },
+  blog: { en: '/en/blog/', it: '/it/blog/' },
   about: { en: '/en/about/', it: '/it/chi-siamo/' },
   contact: { en: '/en/contact/', it: '/it/contatti/' },
   notFound: { en: '/en/404/', it: '/it/404/' },
@@ -33,6 +36,7 @@ export const ui = {
     breadcrumb: 'Breadcrumb',
     home: 'Home',
     locations: 'Locations',
+    blog: 'Blog',
     about: 'About',
     contact: 'Contact',
     getQuote: 'Get a quote',
@@ -65,6 +69,7 @@ export const ui = {
     breadcrumb: 'Percorso di navigazione',
     home: 'Home',
     locations: 'Località',
+    blog: 'Blog',
     about: 'Chi siamo',
     contact: 'Contatti',
     getQuote: 'Richiedi un preventivo',
@@ -90,6 +95,15 @@ export const ui = {
  * purpose: `notFound` is a real route but has no nav label, and typing this as
  * RouteKey[] would let a label-less key reach `ui[lang][key]`.
  */
-export type NavKey = Extract<RouteKey, 'home' | 'locations' | 'about' | 'contact'>;
+export type NavKey = Extract<RouteKey, 'home' | 'locations' | 'blog' | 'about' | 'contact'>;
 
-export const navOrder: NavKey[] = ['home', 'locations', 'about', 'contact'];
+export const navOrder: NavKey[] = ['home', 'locations', 'blog', 'about', 'contact'];
+
+/** The icon beside each label in the header's pill nav. */
+export const navIcons: Record<NavKey, IconName> = {
+  home: 'home',
+  locations: 'map-pin',
+  blog: 'book-open',
+  about: 'users',
+  contact: 'mail',
+};

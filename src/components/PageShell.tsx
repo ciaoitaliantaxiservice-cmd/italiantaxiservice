@@ -19,7 +19,7 @@ import {
  * as FAQPage), skip link, header, breadcrumbs, footer and the phone action bar.
  */
 export default function PageShell({ page, children }: { page: PageDef; children: ReactNode }) {
-  const { lang, crumbs, current, altPaths, extraSchema } = page;
+  const { lang, crumbs, current, altPaths, extraSchema, book } = page;
   const hasCrumbs = !!crumbs && crumbs.length > 1;
 
   const jsonLd = JSON.stringify(
@@ -46,7 +46,7 @@ export default function PageShell({ page, children }: { page: PageDef; children:
       <main id="main">{children}</main>
 
       <Footer lang={lang} altPaths={altPaths} />
-      <MobileBar lang={lang} />
+      <MobileBar lang={lang} book={book} />
     </>
   );
 }

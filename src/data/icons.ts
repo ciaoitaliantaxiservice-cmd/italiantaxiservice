@@ -21,4 +21,23 @@ export type IconName =
   | 'chevron-left' // carousel: previous
   | 'chevron-right' // carousel: next
   | 'users' //        vehicle: passengers
-  | 'luggage'; //     vehicle: suitcases
+  | 'luggage' //      vehicle: suitcases
+  | 'home' // header: home
+  | 'book-open' // blog
+  | 'star' // hotel star rating
+  | 'wifi' // vehicle: Wi-Fi
+  | 'air-vent' // vehicle: air conditioning
+  | 'baby' // vehicle: child seat
+  | 'armchair' // vehicle: comfort level
+  | 'landmark' // history / sights
+  | 'utensils' // food
+  | 'palette' // art
+  | 'church' // religion
+  | 'play' // video placeholder
+  | 'train' // railway station
+  | 'ship' // cruise port
+  | 'route' // intercity route
+  | 'calendar' // date
+  | 'hotel' // hotels
+  | 'arrow-right' // card link arrow
+  | 'timer'; // punctual

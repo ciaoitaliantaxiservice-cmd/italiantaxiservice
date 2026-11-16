@@ -65,6 +65,10 @@ export default function QuoteFormScript() {
         // Sent only when chosen: needs the `vehicle` column
         // (supabase/migrations/20261113020000_vehicle_preference.sql).
         ...(opt('vehicle') ? { vehicle: opt('vehicle') } : {}),
+        // The Rome booking form's "Return trip" box. Sent only when ticked:
+        // needs the `return_trip` column
+        // (supabase/migrations/20261116000000_return_trip.sql).
+        ...(data.get('return_trip') === 'yes' ? { return_trip: true } : {}),
         flight: opt('flight'),
         notes: opt('notes'),
         consent: data.get('consent') === 'yes',
@@ -95,13 +99,39 @@ export default function QuoteFormScript() {
       if (!res.ok) throw new Error(`Supabase ${res.status}`);
     };
 
-    // ?vehicle=s-class (from a "Book the …" button) pre-selects that car.
-    const wanted = new URLSearchParams(location.search).get('vehicle');
+    // Prefill. From the URL: ?vehicle=<id> (a "Book the …" button on another
+    // page), ?pickup= and ?dropoff=. From "Book" links on the same page
+    // (a[data-prefill] with data-pickup / data-dropoff / data-vehicle): the
+    // fields are filled in place and the form scrolls into view, no reload.
+    // Those links keep a real ?…#quote-form href for a new tab or no script.
     const vehicleSelect = form.querySelector<HTMLSelectElement>('#qf-vehicle');
-    if (wanted && vehicleSelect) {
-      const match = Array.from(vehicleSelect.options).find((o) => o.dataset.vehicleId === wanted);
+    const setVehicle = (id: string | null | undefined) => {
+      if (!id || !vehicleSelect) return;
+      const match = Array.from(vehicleSelect.options).find((o) => o.dataset.vehicleId === id);
       if (match) vehicleSelect.value = match.value;
-    }
+    };
+    const setText = (name: string, value: string | null | undefined) => {
+      const el = form.elements.namedItem(name);
+      if (value && el instanceof HTMLInputElement) el.value = value.slice(0, 300);
+    };
+    const params = new URLSearchParams(location.search);
+    setVehicle(params.get('vehicle'));
+    setText('pickup', params.get('pickup'));
+    setText('dropoff', params.get('dropoff'));
+
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const onPrefill = (e: MouseEvent) => {
+      const link = (e.target as Element | null)?.closest<HTMLAnchorElement>('a[data-prefill]');
+      if (!link || e.defaultPrevented || e.button !== 0) return;
+      if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+      e.preventDefault();
+      const d = link.dataset;
+      setText('pickup', d.pickup);
+      setText('dropoff', d.dropoff);
+      setVehicle(d.vehicle);
+      form.scrollIntoView({ behavior: reducedMotion.matches ? 'auto' : 'smooth', block: 'start' });
+    };
+    document.addEventListener('click', onPrefill);
 
     // Clear a field's error as soon as it becomes valid again.
     const cleanups: (() => void)[] = [];
@@ -201,6 +231,7 @@ export default function QuoteFormScript() {
     }
 
     return () => {
+      document.removeEventListener('click', onPrefill);
       w.__quoteFormReady = false;
       form.removeEventListener('submit', onSubmit);
       cleanups.forEach((fn) => fn());

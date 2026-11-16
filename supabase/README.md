@@ -98,6 +98,8 @@ npx supabase@3.1.0 secrets set --project-ref $R \
   SMTP_USER="ciaoitaliantaxiservice@gmail.com" SMTP_PASS="<Gmail App Password>" \
   ALERT_INBOX="ciaoitaliantaxiservice@gmail.com"
 # Optional: SEND_CONFIRMATION=false turns the customer confirmation off.
+# Optional: BOOKING_EMAIL_TO=<address> sends booking alerts (the quote and
+# Rome booking forms) there instead of ALERT_INBOX.
 
 # 3. The function
 npx supabase@3.1.0 functions deploy notify-quote --project-ref $R --no-verify-jwt --use-api

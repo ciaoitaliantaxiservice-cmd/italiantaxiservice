@@ -35,6 +35,8 @@
  *   WEBHOOK_SECRET                          required
  *   SMTP_USER / SMTP_PASS                   the Gmail address and its App Password
  *   ALERT_INBOX                             the Gmail address alerts are delivered to
+ *   BOOKING_EMAIL_TO                        optional: where booking alerts go instead of
+ *                                           ALERT_INBOX (enquiries still use ALERT_INBOX)
  *   SMTP_HOST                               optional, default smtp.gmail.com
  *   SMTP_BOOKING_USER / _PASS, SMTP_INFO_USER / _PASS
  *                                           optional per-address logins instead
@@ -160,12 +162,14 @@ Deno.serve(async (req) => {
     const smtp = transporter(kind);
 
     const alert = alertEmail(row);
+    // Booking alerts can go to their own inbox (BOOKING_EMAIL_TO).
+    const inbox = (kind === 'booking' && env('BOOKING_EMAIL_TO')) || env('ALERT_INBOX');
     await smtp.sendMail({
       from,
       to: { name: BRAND, address },
       replyTo: { name: oneLine(row.name, 100), address: row.email },
       // Delivered straight to the Gmail inbox; see "Gmail and forwarding" above.
-      ...(env('ALERT_INBOX') ? { envelope: { from: address, to: env('ALERT_INBOX') } } : {}),
+      ...(inbox ? { envelope: { from: address, to: inbox } } : {}),
       subject: alert.subject,
       text: alert.text,
       html: alert.html,

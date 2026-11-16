@@ -19,6 +19,14 @@ export default function HeaderMenu() {
     const desktop = window.matchMedia('(min-width: 68rem)');
     if (!toggle || !close || !nav) return;
 
+    // Narrow screens: the pill row scrolls sideways, so bring the current
+    // page's pill into view (centred where possible) without moving the page.
+    const list = nav.querySelector<HTMLElement>('.site-nav__list');
+    const current = list?.querySelector<HTMLElement>('[aria-current="page"]')?.parentElement;
+    if (list && current && list.scrollWidth > list.clientWidth) {
+      list.scrollLeft = current.offsetLeft - (list.clientWidth - current.offsetWidth) / 2;
+    }
+
     const setOpen = (open: boolean, returnFocus = false) => {
       nav.dataset.open = String(open);
       toggle.setAttribute('aria-expanded', String(open));

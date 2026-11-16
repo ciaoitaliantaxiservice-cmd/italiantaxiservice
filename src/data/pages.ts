@@ -7,10 +7,21 @@
 import { routes, ui, LANGS, type Lang, type RouteKey } from './i18n';
 import { meta, alternatesFor, alternatesForRoute, type Alternate } from './seo';
 import { cities, cityPath, type City } from './cities';
-import { faqSchema, type Crumb } from './schema';
+import { faqSchema, romeServiceSchema, blogPostingSchema, type Crumb } from './schema';
 import { t } from './content';
+import { romeCopy, withoutMarkers } from './rome';
+import { posts, postPath, type BlogPost } from './blog';
 
-export type PageKind = 'home' | 'locations' | 'about' | 'contact' | 'notFound' | 'city';
+export type PageKind =
+  | 'home'
+  | 'locations'
+  | 'blog'
+  | 'about'
+  | 'contact'
+  | 'notFound'
+  | 'city'
+  | 'rome'
+  | 'post';
 
 export interface PageDef {
   kind: PageKind;
@@ -30,9 +41,15 @@ export interface PageDef {
   /** Page-specific JSON-LD nodes, e.g. FAQPage. */
   extraSchema: unknown[];
   city?: City;
+  post?: BlogPost;
+  /**
+   * Where the phone sticky bar's main action goes, and its label, when the
+   * page has its own booking form (default: the contact page's form).
+   */
+  book?: { href: string; label: string };
 }
 
-function routePage(kind: Exclude<PageKind, 'city'>, lang: Lang): PageDef {
+function routePage(kind: Exclude<PageKind, 'city' | 'rome' | 'post'>, lang: Lang): PageDef {
   const m = meta[kind][lang];
   const l = ui[lang];
   const crumbs =
@@ -58,7 +75,69 @@ function routePage(kind: Exclude<PageKind, 'city'>, lang: Lang): PageDef {
   };
 }
 
+/** The full Rome location page (src/data/rome.ts). Indexable. */
+function romePage(city: City, lang: Lang): PageDef {
+  const path = cityPath(city, lang);
+  const paths = { en: cityPath(city, 'en'), it: cityPath(city, 'it') };
+  const c = romeCopy[lang];
+  return {
+    kind: 'rome',
+    lang,
+    title: c.meta.title,
+    description: c.meta.description,
+    path,
+    alternates: alternatesFor(paths),
+    altPaths: paths,
+    current: 'locations',
+    noindex: false,
+    crumbs: [
+      { name: ui[lang].home, path: routes.home[lang] },
+      { name: ui[lang].locations, path: routes.locations[lang] },
+      { name: city.name[lang], path },
+    ],
+    extraSchema: [
+      romeServiceSchema(lang, path),
+      // Exactly the visible questions and answers, minus [[PLACEHOLDER]] markers.
+      faqSchema(c.faq.items.map((f) => ({ q: f.q, a: withoutMarkers(f.a) }))),
+    ],
+    city,
+    book: { href: '#quote-form', label: c.bookNow },
+  };
+}
+
+function postPage(post: BlogPost, lang: Lang): PageDef {
+  const path = postPath(post, lang);
+  const paths = { en: postPath(post, 'en'), it: postPath(post, 'it') };
+  return {
+    kind: 'post',
+    lang,
+    title: post.title[lang],
+    description: post.description[lang],
+    path,
+    alternates: alternatesFor(paths),
+    altPaths: paths,
+    current: 'blog',
+    noindex: false,
+    crumbs: [
+      { name: ui[lang].home, path: routes.home[lang] },
+      { name: ui[lang].blog, path: routes.blog[lang] },
+      { name: post.h1[lang], path },
+    ],
+    extraSchema: [
+      blogPostingSchema({
+        lang,
+        path,
+        headline: post.h1[lang],
+        description: post.description[lang],
+        date: post.date,
+      }),
+    ],
+    post,
+  };
+}
+
 function cityPage(city: City, lang: Lang): PageDef {
+  if (city.id === 'rome') return romePage(city, lang);
   const path = cityPath(city, lang);
   const name = city.name[lang];
   const paths = { en: cityPath(city, 'en'), it: cityPath(city, 'it') };
@@ -93,10 +172,12 @@ function cityPage(city: City, lang: Lang): PageDef {
 export const pages: PageDef[] = LANGS.flatMap((lang) => [
   routePage('home', lang),
   routePage('locations', lang),
+  routePage('blog', lang),
   routePage('about', lang),
   routePage('contact', lang),
   routePage('notFound', lang),
   ...cities.map((city) => cityPage(city, lang)),
+  ...posts.map((post) => postPage(post, lang)),
 ]);
 
 /** /en/locations/rome/ -> ['locations', 'rome'];  /en/ -> [] */

@@ -53,6 +53,31 @@ below in `src/assets/` and set `photo` in `src/data/service-areas.ts` or
 | `mercedes-a-class-chauffeur-car` | A black Mercedes-Benz A-Class, seen from the front three-quarter angle. | Una Mercedes-Benz Classe A nera, vista di tre quarti dal davanti. |
 | `bmw-5-series-chauffeur-car` | A black BMW 5 Series saloon, seen from the front three-quarter angle. | Una berlina BMW Serie 5 nera, vista di tre quarti dal davanti. |
 
+## Pending photos (Rome page: fleet, destinations, hotels)
+
+Each photo must match its row (or the row is updated with it). File name = key.
+
+| Key | English | Italiano |
+|---|---|---|
+| `rome-sedan-private-transfer` | A black sedan waiting for passengers outside a hotel entrance in Rome. | Una berlina nera in attesa dei passeggeri davanti all’ingresso di un hotel a Roma. |
+| `rome-executive-car-chauffeur` | A black executive car with a chauffeur holding the rear door open in Rome. | Un’auto executive nera con l’autista che tiene aperta la portiera posteriore a Roma. |
+| `rome-minivan-family-transfer` | A black minivan with its sliding door open, ready for a family transfer in Rome. | Un monovolume nero con la porta scorrevole aperta, pronto per un transfer familiare a Roma. |
+| `rome-van-group-transfer` | A black passenger van for group transfers, parked on a street in Rome. | Un minibus nero per transfer di gruppo, parcheggiato in una strada di Roma. |
+| `rome-st-peters-basilica-vatican` | St. Peter’s Basilica and its dome seen across St. Peter’s Square in Vatican City. | La Basilica di San Pietro e la cupola viste da Piazza San Pietro, nella Città del Vaticano. |
+| `rome-trevi-fountain` | The Trevi Fountain in Rome, with Neptune at the centre of the Baroque façade. | La Fontana di Trevi a Roma, con Nettuno al centro della facciata barocca. |
+| `rome-pantheon` | The portico and columns of the Pantheon on Piazza della Rotonda in Rome. | Il pronao e le colonne del Pantheon su Piazza della Rotonda a Roma. |
+| `rome-spanish-steps` | The Spanish Steps climbing to the Trinità dei Monti church in Rome. | La scalinata di Piazza di Spagna che sale alla chiesa di Trinità dei Monti a Roma. |
+| `rome-roman-forum` | Columns and ruins of the Roman Forum below the Palatine Hill in Rome. | Colonne e rovine del Foro Romano ai piedi del Palatino, a Roma. |
+| `rome-trastevere` | An ivy-covered lane with trattoria tables in Trastevere, Rome. | Un vicolo coperto d’edera con i tavoli di una trattoria a Trastevere, Roma. |
+| `rome-villa-borghese` | Tree-lined paths and the lake temple in the Villa Borghese park in Rome. | Viali alberati e il tempietto sul lago nel parco di Villa Borghese a Roma. |
+| `rome-hotel-hassler` | The entrance of Hotel Hassler Roma at the top of the Spanish Steps. | L’ingresso dell’Hotel Hassler Roma in cima a Trinità dei Monti. |
+| `rome-hotel-de-russie` | The garden courtyard of Hotel de Russie near Piazza del Popolo in Rome. | Il giardino interno dell’Hotel de Russie vicino a Piazza del Popolo a Roma. |
+| `rome-hotel-eden` | The façade of Hotel Eden near Via Veneto in Rome. | La facciata dell’Hotel Eden vicino a Via Veneto a Roma. |
+| `rome-hotel-st-regis` | The entrance of The St. Regis Rome near Piazza della Repubblica. | L’ingresso del St. Regis Rome vicino a Piazza della Repubblica. |
+| `rome-hotel-cavalieri` | Rome Cavalieri hotel on Monte Mario, with gardens in front. | L’hotel Rome Cavalieri su Monte Mario, con i giardini davanti. |
+| `rome-hotel-artemide` | The façade of Hotel Artemide on Via Nazionale in Rome. | La facciata dell’Hotel Artemide in Via Nazionale a Roma. |
+
+
 Images with no alt text on purpose (decorative, `alt=""` or `aria-hidden`):
 the inline header logo mark (the wordmark beside it names the link), the
 Lucide icons (each sits next to a text label) and the map tiles.

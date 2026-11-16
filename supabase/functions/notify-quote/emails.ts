@@ -33,6 +33,7 @@ export interface QuoteRow {
   service: string | null;
   /** Optional; null on requests made before the field existed. */
   vehicle?: string | null;
+  return_trip?: boolean | null;
   pickup: string;
   dropoff: string;
   travel_date: string;
@@ -106,6 +107,7 @@ export function fields(r: QuoteRow): [string, string][] {
     ['Flight / train number', r.flight ?? 'Not given'],
     ['Service', r.service ?? 'Not given'],
     ['Preferred vehicle', r.vehicle ?? 'No preference'],
+    ['Return trip', r.return_trip ? 'Yes (see notes for date and time)' : 'No'],
     ['Notes', r.notes ?? 'None'],
     ['Language', r.language === 'it' ? 'Italian' : 'English'],
     ['Sent from', r.page ? `${SITE}${r.page}` : 'Website'],

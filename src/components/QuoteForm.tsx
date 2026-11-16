@@ -10,7 +10,7 @@ import QuoteFormScript from './QuoteFormScript';
  * page, and the request would be lost. It is held instead, and sent by
  * QuoteFormScript the moment it is ready.
  */
-const EARLY_SUBMIT_GUARD = `(function () {
+export const EARLY_SUBMIT_GUARD = `(function () {
   var form = document.getElementById('quote-form');
   if (!form) return;
   form.addEventListener('submit', function (e) {

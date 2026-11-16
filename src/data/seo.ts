@@ -45,6 +45,20 @@ export const meta: Record<RouteKey, MetaByLang> = {
       h1: 'Le località che serviamo',
     },
   },
+  blog: {
+    en: {
+      title: 'Rome Travel Blog: Transfers & Tips | Ciao Italian Taxi Service',
+      description:
+        'Guides to arriving in Rome and getting around: Fiumicino transfers, Rome taxi prices, day trips by car and the drive to the Amalfi Coast.',
+      h1: 'Rome travel blog: transfers, prices and tips',
+    },
+    it: {
+      title: 'Blog di viaggio su Roma: transfer e consigli | Ciao Italian Taxi Service',
+      description:
+        'Guide per arrivare a Roma e muoversi in città: transfer da Fiumicino, prezzi dei taxi, gite in auto e il viaggio verso la Costiera Amalfitana.',
+      h1: 'Blog di viaggio su Roma: transfer, prezzi e consigli',
+    },
+  },
   about: {
     en: {
       title: 'About Ciao Italian Taxi Service | Our Drivers',

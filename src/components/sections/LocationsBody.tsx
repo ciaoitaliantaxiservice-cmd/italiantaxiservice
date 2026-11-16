@@ -70,7 +70,7 @@ export default function LocationsBody({ lang }: { lang: Lang }) {
                     <span>{city.gateways[lang]}</span>
                   </p>
                   <p>{city.cardText[lang]}</p>
-                  <p className="city-card__flag">{c.comingSoonLabel}</p>
+                  {!city.fullPage && <p className="city-card__flag">{c.comingSoonLabel}</p>}
                 </div>
               </article>
             ))}

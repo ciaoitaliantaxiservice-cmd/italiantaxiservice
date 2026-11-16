@@ -6,6 +6,9 @@ import LocationsBody from '../../../components/sections/LocationsBody';
 import AboutBody from '../../../components/sections/AboutBody';
 import ContactBody from '../../../components/sections/ContactBody';
 import CityStubBody from '../../../components/sections/CityStubBody';
+import RomeBody from '../../../components/sections/RomeBody';
+import BlogHubBody from '../../../components/sections/BlogHubBody';
+import BlogPostBody from '../../../components/sections/BlogPostBody';
 import NotFoundBody from '../../../components/sections/NotFoundBody';
 import { pages, findPage, slugOf, type PageDef } from '../../../data/pages';
 import { pageMetadata } from '../../../data/metadata';
@@ -42,6 +45,12 @@ function Body({ page }: { page: PageDef }) {
       return <ContactBody lang={lang} />;
     case 'city':
       return <CityStubBody lang={lang} city={page.city!} />;
+    case 'rome':
+      return <RomeBody lang={lang} />;
+    case 'blog':
+      return <BlogHubBody lang={lang} />;
+    case 'post':
+      return <BlogPostBody lang={lang} post={page.post!} />;
     case 'notFound':
       return <NotFoundBody lang={lang} />;
   }

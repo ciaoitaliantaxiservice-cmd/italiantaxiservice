@@ -193,3 +193,56 @@ export function faqSchema(faqs: { q: string; a: string }[]) {
 export function graph(nodes: unknown[]) {
   return { '@context': 'https://schema.org', '@graph': nodes };
 }
+
+/**
+ * The Rome page's service: TaxiService (a schema.org Service subtype) with
+ * the areas it covers. No `offers`: no real prices are published yet, and
+ * placeholder prices never go into JSON-LD.
+ */
+export function romeServiceSchema(lang: Lang, path: string) {
+  return {
+    '@type': 'TaxiService',
+    '@id': `${absolute(path)}#service`,
+    name: lang === 'en' ? 'Rome taxi and private transfers' : 'Transfer privato e taxi a Roma',
+    serviceType: lang === 'en' ? 'Private transfer' : 'Transfer privato',
+    url: absolute(path),
+    inLanguage: lang,
+    provider: { '@id': ORG_ID },
+    areaServed: [
+      { '@type': 'City', name: lang === 'en' ? 'Rome' : 'Roma' },
+      { '@type': 'Airport', name: 'Rome Fiumicino Airport', iataCode: 'FCO' },
+      { '@type': 'Airport', name: 'Rome Ciampino Airport', iataCode: 'CIA' },
+      { '@type': 'Place', name: lang === 'en' ? 'Port of Civitavecchia' : 'Porto di Civitavecchia' },
+    ],
+    hoursAvailable: {
+      '@type': 'OpeningHoursSpecification',
+      dayOfWeek: DAYS,
+      opens: site.hours.opens,
+      closes: site.hours.closes,
+    },
+  };
+}
+
+/** One blog post. The publisher and author are the business itself. */
+export function blogPostingSchema(args: {
+  lang: Lang;
+  path: string;
+  headline: string;
+  description: string;
+  date: string;
+}) {
+  const url = absolute(args.path);
+  return {
+    '@type': 'BlogPosting',
+    '@id': `${url}#article`,
+    headline: args.headline,
+    description: args.description,
+    inLanguage: args.lang,
+    datePublished: args.date,
+    dateModified: args.date,
+    mainEntityOfPage: url,
+    image: absolute('/images/og-default.png'),
+    author: { '@id': ORG_ID },
+    publisher: { '@id': ORG_ID },
+  };
+}

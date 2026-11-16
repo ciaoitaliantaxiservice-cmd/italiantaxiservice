@@ -2,6 +2,7 @@ import type { MetadataRoute } from 'next';
 import { routes, LANGS, X_DEFAULT_LANG, type Lang, type RouteKey } from '../data/i18n';
 import { absolute, CITY_PAGES_INDEXABLE } from '../data/seo';
 import { cities, cityPath } from '../data/cities';
+import { posts, postPath } from '../data/blog';
 
 /**
  * /sitemap.xml. Every entry carries a full xhtml:link alternate set including
@@ -18,7 +19,7 @@ interface Entry {
   priority: number;
 }
 
-const indexableRoutes: RouteKey[] = ['home', 'locations', 'about', 'contact'];
+const indexableRoutes: RouteKey[] = ['home', 'locations', 'blog', 'about', 'contact'];
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const entries: Entry[] = indexableRoutes.map((key) => ({
@@ -26,13 +27,18 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: key === 'home' ? 1.0 : 0.8,
   }));
 
-  if (CITY_PAGES_INDEXABLE) {
-    for (const city of cities) {
+  // Cities with a full page are indexable on their own; the rest follow the flag.
+  for (const city of cities) {
+    if (city.fullPage || CITY_PAGES_INDEXABLE) {
       entries.push({
         paths: { en: cityPath(city, 'en'), it: cityPath(city, 'it') },
-        priority: 0.7,
+        priority: city.fullPage ? 0.9 : 0.7,
       });
     }
+  }
+
+  for (const post of posts) {
+    entries.push({ paths: { en: postPath(post, 'en'), it: postPath(post, 'it') }, priority: 0.6 });
   }
 
   const lastModified = new Date().toISOString().slice(0, 10);

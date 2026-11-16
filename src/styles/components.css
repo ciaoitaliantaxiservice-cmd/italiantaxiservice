@@ -114,20 +114,19 @@
   border-bottom: 1px solid var(--c-border);
 }
 
-/* Below 68rem: one row, the logo left and the Menu button right. */
+/* Row 1: the logo left and the actions right (Menu below 68rem; language
+   switch and quote button from 68rem). Row 2 (.site-header__nav): the pills. */
 .site-header__inner {
   display: flex;
   flex-wrap: nowrap;
   align-items: center;
   justify-content: space-between;
   gap: var(--s-3) var(--s-8);
-  padding-block: var(--s-4);
+  padding-block: var(--s-4) var(--s-3);
 }
 
-@media (min-width: 68rem) {
-  .site-header__inner {
-    flex-wrap: wrap;
-  }
+.site-header__nav {
+  padding-bottom: var(--s-3);
 }
 
 .logo {
@@ -255,7 +254,14 @@
   flex: none;
 }
 
+/* Closed, the nav is the header's second row: only the pill list shows. */
 .site-nav {
+  display: block;
+  min-width: 0;
+}
+
+.site-nav__top,
+.site-nav__actions {
   display: none;
 }
 
@@ -282,7 +288,7 @@ html.nav-open .mobile-bar {
   display: none;
 }
 
-.site-nav__top {
+.site-nav[data-open='true'] .site-nav__top {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -291,38 +297,83 @@ html.nav-open .mobile-bar {
   border-bottom: 1px solid var(--c-border);
 }
 
+/* The pill row. On narrow screens it runs to the screen edge and scrolls
+   sideways (swipe, trackpad or Tab), with no visible scrollbar. */
 .site-nav__list {
+  position: relative;
   display: flex;
-  flex-direction: column;
-  gap: 0;
-  margin: 0;
-  padding: var(--s-2) 0;
+  gap: var(--s-2);
+  margin: 0 calc(-1 * var(--gutter));
+  padding: 2px var(--gutter);
   list-style: none;
-  font-size: 1.25rem; /* 20, big tap targets in the full-screen menu */
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scrollbar-width: none;
+  font-size: var(--t-small);
   font-weight: 600;
 }
 
-.site-nav__list a {
-  display: block;
-  padding: var(--s-4) 0;
-  border-bottom: 1px solid var(--c-border);
-  color: var(--c-carbone);
-  text-decoration: none;
+.site-nav__list::-webkit-scrollbar {
+  display: none;
 }
 
-.site-nav__list a:hover {
+.site-nav__list li {
+  flex: none;
+}
+
+/* Icon + label capsule. The current page is the outlined one. */
+.nav-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-2);
+  min-height: 44px;
+  padding: 0 var(--s-4) 0 var(--s-3);
+  border: 1.5px solid transparent;
+  border-radius: 999px;
+  color: var(--c-carbone);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.nav-pill .icon {
   color: var(--c-verde-profondo);
 }
 
-.site-nav__list a[aria-current='page'] {
-  box-shadow: inset 3px 0 0 var(--c-verde-felce);
-  padding-left: var(--s-4);
+.nav-pill:hover {
+  background: var(--c-bianco);
+  color: var(--c-carbone);
 }
 
-.site-nav__actions {
+.nav-pill[aria-current='page'] {
+  border-color: var(--c-verde-profondo);
+  background: rgb(0 105 58 / 0.06);
+  color: var(--c-verde-profondo);
+}
+
+/* In the full-screen menu the same pills stack, full width and larger. */
+.site-nav[data-open='true'] .site-nav__list {
+  flex-direction: column;
+  margin: 0;
+  padding: var(--s-4) 0;
+  overflow: visible;
+  font-size: 1.125rem; /* 18 */
+}
+
+.site-nav[data-open='true'] .nav-pill {
+  width: 100%;
+  min-height: 56px;
+  padding: 0 var(--s-5);
+  border-color: var(--c-border);
+}
+
+.site-nav[data-open='true'] .nav-pill[aria-current='page'] {
+  border-color: var(--c-verde-profondo);
+}
+
+.site-nav[data-open='true'] .site-nav__actions {
   display: grid;
   gap: var(--s-3);
-  margin-top: var(--s-6);
+  margin-top: var(--s-2);
 }
 
 .site-nav__actions .btn {
@@ -361,28 +412,31 @@ html.nav-open .mobile-bar {
     overflow: visible;
   }
 
-  .site-nav__top,
-  .site-nav__actions {
+  .site-nav[data-open='true'] .site-nav__top,
+  .site-nav[data-open='true'] .site-nav__actions {
     display: none;
   }
 
-  .site-nav__list {
+  .site-nav__list,
+  .site-nav[data-open='true'] .site-nav__list {
     flex-direction: row;
     flex-wrap: wrap;
-    gap: var(--s-1) var(--s-8);
-    padding: 0;
+    gap: var(--s-2) var(--s-3);
+    margin: 0;
+    padding: 2px 0;
+    overflow: visible;
     font-size: 0.9375rem; /* 15 */
   }
 
-  .site-nav__list a {
-    padding: var(--s-3) 0;
-    border-bottom: 0;
+  .site-nav[data-open='true'] .nav-pill {
+    width: auto;
+    min-height: 44px;
+    padding: 0 var(--s-4) 0 var(--s-3);
+    border-color: transparent;
   }
 
-  .site-nav__list a[aria-current='page'] {
-    box-shadow: none;
-    padding-left: 0;
-    border-bottom: 2px solid var(--c-verde-felce);
+  .site-nav[data-open='true'] .nav-pill[aria-current='page'] {
+    border-color: var(--c-verde-profondo);
   }
 
   .header__lang {
@@ -2624,4 +2678,829 @@ picture.fleet__photo,
   text-align: center;
   color: var(--c-pietra);
   font-variant-numeric: tabular-nums;
+}
+
+/* ==========================================================================
+   Rome location page, its booking bar, and the blog
+   Existing tokens only: Notte for the dark hero (as the CTA band), Verde
+   Chiaro for accents on it, Verde Felce for graphics, Verde Profondo for
+   controls, red only on the submit button, one --radius, --dur/--ease.
+   ========================================================================== */
+
+/* Anchored jumps to the form clear the sticky two-row header. */
+#quote-form {
+  scroll-margin-top: 10rem;
+}
+
+/* --------------------------------------------------------------------------
+   1. Hero + booking bar: a Notte band, with the form card straddling its
+   lower edge onto the white page.
+   -------------------------------------------------------------------------- */
+
+.rome-hero {
+  padding-block: var(--s-10) var(--s-10);
+  background: linear-gradient(
+    to bottom,
+    var(--c-notte) 0,
+    var(--c-notte) calc(100% - 7rem),
+    var(--c-white) calc(100% - 7rem)
+  );
+}
+
+.rome-hero__head {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-4);
+  margin-bottom: var(--s-8);
+}
+
+@media (min-width: 64rem) {
+  .rome-hero__head {
+    gap: var(--s-3);
+    margin-bottom: var(--s-6);
+  }
+}
+
+.rome-hero__eyebrow {
+  color: var(--c-verde-chiaro);
+}
+
+.rome-hero h1 {
+  color: var(--c-white);
+}
+
+.rome-hero__lead {
+  max-width: 62rem;
+  font-size: var(--t-lead);
+  line-height: 1.556;
+  color: var(--c-text-dark-bg);
+}
+
+.rome-hero__trust {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-2) var(--s-6);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: var(--t-small);
+  font-weight: 600;
+  color: var(--c-white);
+}
+
+.rome-hero__trust li {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-2);
+}
+
+.rome-hero__trust .icon {
+  color: var(--c-verde-chiaro);
+}
+
+/* The booking bar: the quote form's card with a 3px Verde Chiaro frame. */
+.bookbar {
+  border: 3px solid var(--c-verde-chiaro);
+  border-radius: var(--radius);
+  gap: var(--s-4);
+}
+
+.bookbar .form__head h2 {
+  font-size: 1.5rem;
+}
+
+.bookbar__req {
+  color: var(--c-rosso);
+}
+
+.bookbar__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--s-4);
+  align-items: start;
+}
+
+.bookbar__grid .field {
+  min-width: 0;
+}
+
+.bookbar textarea {
+  min-height: 52px;
+  height: 52px;
+  padding-top: 0.8rem;
+}
+
+/* Two columns from a 30rem-wide form; six (three rows) from 56rem:
+   pickup, drop-off, date, time / passengers, luggage, vehicle, name /
+   email, phone, notes. */
+@container quote-form (min-width: 30rem) {
+  .bookbar__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .bookbar__grid .bk-wide {
+    grid-column: span 2;
+  }
+}
+
+@container quote-form (min-width: 56rem) {
+  .bookbar__grid {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+  }
+}
+
+.bookbar__foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-4) var(--s-8);
+}
+
+.bookbar__checks {
+  display: grid;
+  gap: var(--s-3);
+  flex: 1 1 26rem;
+}
+
+.bookbar__submit {
+  flex: 1 1 100%;
+}
+
+@container quote-form (min-width: 40rem) {
+  .bookbar__submit {
+    flex: 0 0 auto;
+    min-width: 16rem;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Shared card grid and cards
+   -------------------------------------------------------------------------- */
+
+.rgrid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--s-4);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+@media (min-width: 40rem) {
+  .rgrid--3,
+  .rgrid--4 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 64rem) {
+  .rgrid--3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .rgrid--4 {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+.rgrid__note {
+  margin-top: var(--s-4);
+}
+
+.rgrid__more {
+  margin-top: var(--s-8);
+}
+
+.rcard {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  overflow: hidden;
+  background: var(--c-white);
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-soft);
+  transition:
+    box-shadow var(--dur) var(--ease),
+    transform var(--dur) var(--ease);
+}
+
+.rcard:hover {
+  box-shadow: var(--shadow-card);
+  transform: translateY(-2px);
+}
+
+.rcard__media {
+  aspect-ratio: 4 / 3;
+  background: var(--c-placeholder);
+}
+
+.rcard__media picture,
+.rcard__media img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.rcard__body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: var(--s-3);
+  padding: var(--s-5);
+}
+
+.rcard--plain .rcard__body {
+  padding: var(--s-6);
+}
+
+.rcard__top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-3);
+}
+
+.rcard__title {
+  font-size: 1.5rem;
+  line-height: 1.2;
+}
+
+.rcard__meta {
+  display: flex;
+  align-items: center;
+  gap: var(--s-2);
+  margin: 0;
+  font-size: var(--t-small);
+  line-height: 1.571;
+  color: var(--c-pietra);
+}
+
+.rcard__meta .icon {
+  color: var(--c-verde-felce);
+}
+
+.rcard__best {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-2);
+}
+
+/* Price on its own line, the button full width under it: the card's foot
+   always sits on the card's bottom edge, so a row of cards lines up. */
+.rcard__foot {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-3);
+  margin-top: auto;
+  padding-top: var(--s-4);
+  border-top: 1px solid var(--c-border);
+}
+
+.icon-badge {
+  display: inline-grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: var(--c-bianco);
+  color: var(--c-verde-profondo);
+}
+
+.code-tag {
+  padding: 2px var(--s-2);
+  border: 1px solid var(--c-border);
+  border-radius: 3px;
+  font-size: var(--t-label);
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  color: var(--c-pietra);
+}
+
+/* Tags/chips: short facts instead of paragraphs. */
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.chips li {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  max-width: 100%;
+  padding: 2px var(--s-3) 2px var(--s-2);
+  border: 1px solid var(--c-border);
+  border-radius: 999px;
+  background: var(--c-bianco);
+  font-size: var(--t-fine);
+  font-weight: 600;
+  line-height: 1.6;
+  color: var(--c-carbone);
+}
+
+.chips .icon {
+  color: var(--c-verde-profondo);
+}
+
+.chips--soft li {
+  border-color: transparent;
+  background: rgb(0 105 58 / 0.07);
+  color: var(--c-verde-profondo);
+}
+
+.chips--soft li:not(:has(.icon)) {
+  padding-inline: var(--s-3);
+}
+
+.chips--lg li {
+  padding: var(--s-2) var(--s-4) var(--s-2) var(--s-3);
+  background: var(--c-white);
+  font-size: var(--t-base);
+}
+
+.price {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: var(--s-2);
+  margin: 0;
+  font-size: var(--t-small);
+  font-weight: 600;
+  color: var(--c-pietra);
+}
+
+.price-ph {
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+/* --------------------------------------------------------------------------
+   4. Routes
+   -------------------------------------------------------------------------- */
+
+.route-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-4);
+  padding: var(--s-6);
+  background: var(--c-white);
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-soft);
+}
+
+.route-card__title {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--s-2);
+  font-size: 1.5rem;
+  line-height: 1.2;
+}
+
+.route-card__title .icon {
+  color: var(--c-verde-felce);
+}
+
+.route-card__facts {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--s-3);
+  margin: 0;
+}
+
+/* A label that wraps (IT "Tempo indicativo") must not knock its value out
+   of line with its neighbours: values sit on the bottom of each column. */
+.route-card__facts > div {
+  display: grid;
+  grid-template-rows: 1fr auto;
+}
+
+.route-card__facts dt {
+  font-size: var(--t-label);
+  line-height: 1.333;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--c-pietra);
+}
+
+.route-card__facts dd {
+  margin: var(--s-1) 0 0;
+  font-weight: 700;
+}
+
+.route-card__btn {
+  align-self: flex-start;
+  margin-top: auto;
+}
+
+/* --------------------------------------------------------------------------
+   5. Nearby cities: link cards
+   -------------------------------------------------------------------------- */
+
+.link-card {
+  display: flex;
+  align-items: center;
+  gap: var(--s-3);
+  min-height: 72px;
+  padding: var(--s-4) var(--s-5);
+  background: var(--c-white);
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-soft);
+  color: var(--c-carbone);
+  text-decoration: none;
+  transition:
+    border-color var(--dur) var(--ease),
+    box-shadow var(--dur) var(--ease);
+}
+
+.link-card:hover {
+  border-color: var(--c-verde-profondo);
+  box-shadow: var(--shadow-card);
+  color: var(--c-carbone);
+}
+
+.link-card__icon {
+  color: var(--c-verde-felce);
+}
+
+.link-card__text {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.link-card__title {
+  font-weight: 700;
+}
+
+.link-card__meta {
+  font-size: var(--t-small);
+  line-height: 1.571;
+  color: var(--c-pietra);
+}
+
+.link-card__arrow {
+  color: var(--c-verde-profondo);
+}
+
+/* --------------------------------------------------------------------------
+   6. Why riders choose us
+   -------------------------------------------------------------------------- */
+
+.why-split {
+  display: grid;
+  gap: var(--s-10);
+  align-items: start;
+}
+
+@media (min-width: 64rem) {
+  .why-split {
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+    gap: var(--s-14);
+  }
+}
+
+/* A highlighter stroke behind the key words, in Verde Chiaro. */
+.hl {
+  padding: 0 0.08em;
+  background: linear-gradient(transparent 58%, rgb(92 196 140 / 0.45) 58%);
+  color: inherit;
+}
+
+.mini-grid {
+  display: grid;
+  gap: var(--s-4);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+@media (min-width: 40rem) {
+  .mini-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.mini-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-2);
+  padding: var(--s-6);
+  background: var(--c-white);
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-soft);
+}
+
+.mini-card__icon {
+  margin-bottom: var(--s-2);
+  color: var(--c-verde-profondo);
+}
+
+/* Small headings stay in Manrope (the serif is for 28px and up). */
+.mini-card__title {
+  font-family: var(--font-sans);
+  font-size: var(--t-base);
+  font-weight: 700;
+  line-height: 1.5;
+}
+
+.mini-card p {
+  font-size: var(--t-small);
+  line-height: 1.571;
+  color: var(--c-pietra);
+}
+
+.why-split__side {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-4);
+}
+
+.video-slot {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  border-radius: var(--radius);
+}
+
+.video-slot__play {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  width: 64px;
+  height: 64px;
+  margin: auto;
+  border-radius: 50%;
+  background: rgb(255 255 255 / 0.92);
+  color: var(--c-verde-profondo);
+}
+
+/* --------------------------------------------------------------------------
+   7-8. Destination and hotel carousels (the .areas__track scroller)
+   -------------------------------------------------------------------------- */
+
+.carousel__bar--head {
+  flex-wrap: wrap;
+  align-items: flex-end;
+  margin-bottom: var(--s-8);
+}
+
+.carousel__bar--head .section__head {
+  flex: 1 1 28rem;
+  margin: 0;
+}
+
+/* Room for the cards' shadows inside the scroller. */
+.rail {
+  padding-block: var(--s-1) var(--s-4);
+}
+
+.dest-card__link {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-1);
+  height: 100%;
+  color: var(--c-carbone);
+  text-decoration: none;
+}
+
+.dest-card__link:hover {
+  color: var(--c-carbone);
+}
+
+.dest-card__media {
+  display: block;
+  aspect-ratio: 4 / 3;
+  margin-bottom: var(--s-2);
+  overflow: hidden;
+  border-radius: var(--radius);
+  background: var(--c-placeholder);
+}
+
+.dest-card__media picture,
+.dest-card__media img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.dest-card__media img {
+  transition: transform 600ms var(--ease);
+}
+
+.dest-card__link:hover img {
+  transform: scale(1.04);
+}
+
+.dest-card__name {
+  font-family: var(--font-sans);
+  font-size: var(--t-lead);
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+.dest-card__line {
+  font-size: var(--t-small);
+  line-height: 1.571;
+  color: var(--c-pietra);
+}
+
+.hotel-card__type {
+  display: flex;
+  align-items: center;
+  gap: var(--s-2);
+  margin: 0;
+  font-size: var(--t-small);
+  color: var(--c-pietra);
+}
+
+/* Stars are the one place an icon is drawn smaller than 24px: five of them
+   at full size would outweigh the hotel's name. */
+.stars {
+  display: inline-flex;
+  gap: 2px;
+  color: var(--c-verde-felce);
+}
+
+.stars .icon {
+  width: 1rem;
+  height: 1rem;
+  fill: currentColor;
+}
+
+/* --------------------------------------------------------------------------
+   9. Why travellers visit
+   -------------------------------------------------------------------------- */
+
+.visit {
+  display: grid;
+  gap: var(--s-6);
+  align-items: center;
+}
+
+.visit .section__head {
+  margin: 0;
+}
+
+@media (min-width: 64rem) {
+  .visit {
+    grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+    gap: var(--s-14);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   10. Blog cards, the blog hub and post pages
+   -------------------------------------------------------------------------- */
+
+.post-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-3);
+  padding: var(--s-6);
+  background: var(--c-white);
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-soft);
+  transition:
+    box-shadow var(--dur) var(--ease),
+    transform var(--dur) var(--ease);
+}
+
+.post-card:hover {
+  box-shadow: var(--shadow-card);
+  transform: translateY(-2px);
+}
+
+.post-card__meta {
+  display: flex;
+  align-items: center;
+  gap: var(--s-2);
+  margin: 0;
+  font-size: var(--t-fine);
+  line-height: 1.538;
+  color: var(--c-pietra);
+}
+
+.post-card__meta .icon {
+  color: var(--c-verde-felce);
+}
+
+.post-card__title {
+  font-size: 1.5rem;
+  line-height: 1.2;
+}
+
+.post-card__title a {
+  color: var(--c-carbone);
+  text-decoration: none;
+}
+
+/* The whole card is the link's hit area. */
+.post-card__title a::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+}
+
+.post-card__title a:hover {
+  color: var(--c-verde-profondo);
+}
+
+.post-card p:not(.post-card__meta) {
+  font-size: var(--t-small);
+  line-height: 1.571;
+  color: var(--c-pietra);
+}
+
+.post-card__more {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-2);
+  margin-top: auto;
+  font-size: var(--t-small);
+  font-weight: 700;
+  color: var(--c-verde-profondo);
+}
+
+.blog-list__heading {
+  margin-bottom: var(--s-6);
+}
+
+.post__head {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-4);
+  margin-bottom: var(--s-10);
+}
+
+.post__title {
+  font-size: clamp(2.25rem, 4.5vw, 3.5rem);
+}
+
+.post__body {
+  font-size: 1.0625rem;
+  line-height: 1.75;
+}
+
+.post__body > * + * {
+  margin-top: var(--s-4);
+}
+
+.post__body h2 {
+  margin-top: var(--s-10);
+  font-size: var(--t-h3);
+  line-height: 1.214;
+}
+
+.post__body ul {
+  padding-left: var(--s-6);
+}
+
+.post__body li + li {
+  margin-top: var(--s-2);
+}
+
+.post__cta {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-3);
+  margin-top: var(--s-12);
+  padding: var(--s-7);
+  background: var(--c-bianco);
+  border-left: 4px solid var(--c-verde-felce);
+  border-radius: var(--radius);
+}
+
+.post__cta .btn-row {
+  margin-top: var(--s-2);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rcard,
+  .post-card,
+  .link-card,
+  .dest-card__media img {
+    transition: none;
+  }
+
+  .rcard:hover,
+  .post-card:hover,
+  .dest-card__link:hover img {
+    transform: none;
+  }
 }

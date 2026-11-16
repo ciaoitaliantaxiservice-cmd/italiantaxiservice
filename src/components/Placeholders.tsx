@@ -69,3 +69,16 @@ export function ImagePlaceholder({
     </div>
   );
 }
+
+/**
+ * A price that is not set yet, drawn inside the real price layout as
+ * "From €—" (playbook §7.2: prices render inline as a tag). Carries
+ * data-placeholder="PRICE:id", like every other marker.
+ */
+export function PricePlaceholder({ id, note }: { id: string; note?: string }) {
+  return (
+    <span className="placeholder price-ph" data-placeholder={`PRICE:${id}`} title={note}>
+      €—
+    </span>
+  );
+}

@@ -2,7 +2,7 @@ import Logo from './Logo';
 import LangSwitch from './LangSwitch';
 import Icon from './Icon';
 import HeaderMenu from './HeaderMenu';
-import { routes, navOrder, ui, type Lang, type RouteKey } from '../data/i18n';
+import { routes, navOrder, navIcons, ui, type Lang, type RouteKey } from '../data/i18n';
 import { site, emailHref } from '../data/site.mjs';
 
 interface Props {
@@ -44,40 +44,6 @@ export default function Header({ lang, current, altPaths }: Props) {
             </span>
           </a>
 
-          {/* One nav for both layouts. From 68rem it is the inline row. Below
-              that it is the full-screen menu: the top row (language switch and
-              close button) and the actions at the foot only show there. */}
-          <nav className="site-nav" id="site-nav" aria-label={l.mainNav} data-open="false">
-            <div className="site-nav__top">
-              <LangSwitch lang={lang} paths={altPaths} />
-              <button className="nav-close" type="button" aria-controls="site-nav" data-nav-close="">
-                <Icon name="close" />
-                <span>{l.closeMenu}</span>
-              </button>
-            </div>
-
-            <ul className="site-nav__list">
-              {navOrder.map((key) => (
-                <li key={key}>
-                  <a href={routes[key][lang]} aria-current={key === current ? 'page' : undefined}>
-                    {l[key]}
-                  </a>
-                </li>
-              ))}
-            </ul>
-
-            <div className="site-nav__actions">
-              <a className="btn btn--primary" href={quoteHref}>
-                <Icon name="tag" />
-                {l.getQuote}
-              </a>
-              <a className="btn btn--outline" href={emailHref}>
-                <Icon name="mail" />
-                {l.emailUs}
-              </a>
-            </div>
-          </nav>
-
           <div className="header__actions">
             <div className="header__lang">
               <LangSwitch lang={lang} paths={altPaths} />
@@ -98,6 +64,50 @@ export default function Header({ lang, current, altPaths }: Props) {
               <span className="nav-toggle__label">{l.menu}</span>
             </button>
           </div>
+        </div>
+
+        <div className="wrap site-header__nav">
+          {/* One nav for every layout: a row of icon + label pills under the
+              logo row (its own row in the markup too, so the Tab order matches
+              the screen), the current page outlined. Below 68rem the row
+              scrolls sideways, and the Menu button opens the same nav full
+              screen, where the top row (language switch and close button)
+              and the actions at the foot also show. */}
+          <nav className="site-nav" id="site-nav" aria-label={l.mainNav} data-open="false">
+            <div className="site-nav__top">
+              <LangSwitch lang={lang} paths={altPaths} />
+              <button className="nav-close" type="button" aria-controls="site-nav" data-nav-close="">
+                <Icon name="close" />
+                <span>{l.closeMenu}</span>
+              </button>
+            </div>
+
+            <ul className="site-nav__list">
+              {navOrder.map((key) => (
+                <li key={key}>
+                  <a
+                    className="nav-pill"
+                    href={routes[key][lang]}
+                    aria-current={key === current ? 'page' : undefined}
+                  >
+                    <Icon name={navIcons[key]} />
+                    <span>{l[key]}</span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+
+            <div className="site-nav__actions">
+              <a className="btn btn--primary" href={quoteHref}>
+                <Icon name="tag" />
+                {l.getQuote}
+              </a>
+              <a className="btn btn--outline" href={emailHref}>
+                <Icon name="mail" />
+                {l.emailUs}
+              </a>
+            </div>
+          </nav>
         </div>
       </header>
       <HeaderMenu />
