@@ -23,6 +23,13 @@ npm run icons      # outline the logo lettering, then rebuild masters, icons, ma
 
 Node 20.9 or newer (`.nvmrc` pins 22 for hosts that read it).
 
+## Branches and deploys
+
+- All daily work happens on the `dev` branch.
+- `main` is the live branch: every push to it redeploys the site. Merge `dev`
+  into `main` at most once per day, and only after `npm run audit` passes, so
+  the live site stays clean and is not redeployed many times a day.
+
 ---
 
 ## Next.js migration (v2.0)
