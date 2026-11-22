@@ -77,7 +77,22 @@ refuses anything but 465.
 | `functions/notify-quote/index.ts` | The Edge Function: auth, claim the row, send with Nodemailer. |
 | `functions/notify-quote/emails.ts` | Validation and the content of both emails (no I/O). |
 | `functions/notify-quote/deno.json` | Pinned `nodemailer@7.0.13` and `@supabase/supabase-js@2.118.0`. |
+| `migrations/20261123000000_keep_alive.sql` | `keep_alive()`: returns the server time, for the keep-alive ping. Applied 23 Nov 2026. |
 | `config.toml` | Turns off Supabase's JWT check for this function. |
+
+## Keep-alive (free plan pausing)
+
+The free plan pauses a project after about a week without activity, and a
+paused project silently stops the quote form. `.github/workflows/supabase-keep-alive.yml`
+calls `POST /rest/v1/rpc/keep_alive` with the publishable key every Monday
+and Thursday at 06:17 UTC (never more than 4 days apart). It needs no
+secrets. If Supabase does not answer, the run fails and GitHub emails the
+repository owner: resume the project in the dashboard, then press
+**Actions → Supabase keep-alive → Run workflow** to confirm.
+
+GitHub runs schedules only from `main`, and turns them off in a public repo
+after 60 days without commits (it emails a warning first; re-enable it in the
+Actions tab).
 
 ## Re-deploying or setting up again
 
@@ -90,6 +105,7 @@ R=zuutmiilqhtqgfvowlns
 npx supabase@3.1.0 db query --remote=$R --yes -f supabase/migrations/20261112000000_quote_requests.sql
 npx supabase@3.1.0 db query --remote=$R --yes -f supabase/migrations/20261113000000_email_alerts.sql
 npx supabase@3.1.0 db query --remote=$R --yes -f supabase/migrations/20261113010000_notify_webhook.sql
+npx supabase@3.1.0 db query --remote=$R --yes -f supabase/migrations/20261123000000_keep_alive.sql
 
 # 2. Secrets. WEBHOOK_SECRET must also be stored in Vault as
 #    notify_quote_webhook_secret (see the comment in the webhook migration).

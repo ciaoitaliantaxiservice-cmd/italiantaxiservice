@@ -1,0 +1,48 @@
+# Keeps the Supabase project awake. The free plan pauses a project after
+# about a week with no activity; this runs a tiny database query twice a
+# week (Monday and Thursday, 06:17 UTC), so the gap is never more than 4 days.
+#
+# - Uses only the publishable (anon) key, which is public by design and
+#   already ships in the site (src/data/site.mjs). No secrets are needed.
+# - Calls public.keep_alive() (supabase/migrations/20261123000000_keep_alive.sql),
+#   which returns the server time and reads no table.
+# - If the project is already paused or down, the run fails and GitHub emails
+#   the repository owner, so a pause is noticed instead of found by a customer.
+# - GitHub runs scheduled workflows from the default branch (main) only, and
+#   switches them off in a public repo after 60 days without commits. Run it
+#   by hand from the Actions tab ("Run workflow") at any time.
+name: Supabase keep-alive
+
+on:
+  schedule:
+    - cron: '17 6 * * 1,4'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: src/data/site.mjs
+          sparse-checkout-cone-mode: false
+
+      - name: Query the database
+        run: |
+          eval "$(node --input-type=module -e "
+            const s = await import('./src/data/site.mjs');
+            console.log('URL=' + s.SUPABASE_URL + ' KEY=' + s.SUPABASE_ANON_KEY);
+          ")"
+          for attempt in 1 2 3; do
+            status=$(curl -sS -o body.txt -w '%{http_code}' -X POST "$URL/rest/v1/rpc/keep_alive" \
+              -H "apikey: $KEY" -H 'Content-Type: application/json' -d '{}') || status=000
+            echo "Attempt $attempt: HTTP $status $(cat body.txt 2>/dev/null)"
+            [ "$status" = 200 ] && exit 0
+            sleep 20
+          done
+          echo "::error::Supabase did not answer. It may be paused: resume it at https://supabase.com/dashboard/project/zuutmiilqhtqgfvowlns"
+          exit 1
