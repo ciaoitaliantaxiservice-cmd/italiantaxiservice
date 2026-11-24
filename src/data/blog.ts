@@ -1,23 +1,29 @@
 /**
- * The Rome travel blog: the hub at /en/blog/ and /it/blog/, and one page per
- * post at /en/blog/{slug}/ and /it/blog/{slug}/. Every post links back to the
- * Rome page and ends with a booking call to action.
+ * The travel blog: the hub at /en/blog/ and /it/blog/, and one page per post
+ * at /en/blog/{slug}/ and /it/blog/{slug}/. Each post belongs to one city
+ * (`city`), links back to that city's page and ends with a booking call to
+ * action for it. Rome posts are below; Milan posts are in ./blog-milan.ts.
  *
  * Body text is plain strings. Two inline forms are understood (see
  * BlogPostBody.tsx):
- *   [anchor text](target)  an internal link. Targets: `rome`, `rome#quote-form`,
- *                          `contact`, `blog`, `post:<id>`. Resolved to the
+ *   [anchor text](target)  an internal link. Targets: `rome`, `milan` (each
+ *                          optionally with #<id>), `contact`, `blog`, `post:<id>`. Resolved to the
  *                          same-language URL, so a link can never cross languages.
  *   [[TYPE:ID]]            a placeholder (playbook §7), listed in docs/PLACEHOLDERS.md.
  */
 import type { Lang } from './i18n';
+import { milanPosts } from './blog-milan';
 
 type L = Record<Lang, string>;
 
-export type Block = { h2: string } | { p: string } | { ul: string[] };
+export type Block = { h2: string } | { h3: string } | { p: string } | { ul: string[] };
+
+/** The city a post is about; its page gets the post's links and CTA. */
+export type BlogCity = 'rome' | 'milan';
 
 export interface BlogPost {
   id: string;
+  city: BlogCity;
   slug: L;
   /** ISO date. Posts are listed newest first; ties keep this file's order. */
   date: string;
@@ -26,14 +32,21 @@ export interface BlogPost {
   h1: L;
   excerpt: L;
   minutes: number;
+  /**
+   * The post's lead image: the alt-text row in content/image-alt-text.md
+   * (also the photo's file name once it exists in src/assets/blog/). Until
+   * then a sized [[IMG:post-{id}]] placeholder stands in.
+   */
+  image?: { altKey: string; photo?: boolean };
   body: Record<Lang, Block[]>;
 }
 
 export const BLOG_DATE = '2026-11-16';
 
-export const posts: BlogPost[] = [
+const romePosts: BlogPost[] = [
   {
     id: 'fiumicino-to-rome',
+    city: 'rome',
     slug: { en: 'fiumicino-airport-to-rome-city-centre', it: 'da-fiumicino-al-centro-di-roma' },
     date: BLOG_DATE,
     title: {
@@ -94,6 +107,7 @@ export const posts: BlogPost[] = [
   },
   {
     id: 'rome-taxi-prices',
+    city: 'rome',
     slug: { en: 'rome-taxi-prices-fixed-fares', it: 'prezzi-taxi-roma-tariffe-fisse' },
     date: BLOG_DATE,
     title: {
@@ -130,7 +144,7 @@ export const posts: BlogPost[] = [
         ] },
         { h2: 'Tips for paying less and stressing less' },
         { ul: [
-          'Groups of four or more often pay less per person in a pre-booked minivan than in two taxis.',
+          'Groups of four or more often pay less per person in a pre-booked luxury van than in two taxis.',
           'Give your flight number, so a delay never turns into a waiting charge.',
           'Ask for a return quote at the same time if you know your departure date.',
         ] },
@@ -152,7 +166,7 @@ export const posts: BlogPost[] = [
         ] },
         { h2: 'Consigli per spendere meno e stressarsi meno' },
         { ul: [
-          'Dalle quattro persone in su un monovolume prenotato costa spesso meno a testa di due taxi.',
+          'Dalle quattro persone in su un van di lusso prenotato costa spesso meno a testa di due taxi.',
           'Indicate il numero di volo: così un ritardo non diventa mai un costo di attesa.',
           'Se conoscete già la data di partenza, chiedete subito anche il ritorno.',
         ] },
@@ -162,6 +176,7 @@ export const posts: BlogPost[] = [
   },
   {
     id: 'day-trips-from-rome',
+    city: 'rome',
     slug: { en: 'best-day-trips-from-rome-by-car', it: 'gite-da-roma-in-auto' },
     date: BLOG_DATE,
     title: {
@@ -230,6 +245,7 @@ export const posts: BlogPost[] = [
   },
   {
     id: 'rome-to-amalfi',
+    city: 'rome',
     slug: { en: 'rome-to-amalfi-coast-transfer-guide', it: 'da-roma-alla-costiera-amalfitana' },
     date: BLOG_DATE,
     title: {
@@ -286,6 +302,7 @@ export const posts: BlogPost[] = [
   },
   {
     id: 'getting-around-rome',
+    city: 'rome',
     slug: { en: 'getting-around-rome-taxi-metro-private-driver', it: 'muoversi-a-roma-taxi-metro-autista' },
     date: BLOG_DATE,
     title: {
@@ -344,9 +361,16 @@ export const posts: BlogPost[] = [
   },
 ];
 
-/** Newest first; same-day posts keep their order in `posts`. */
-export function latestPosts(n?: number): BlogPost[] {
+/** Every post, Rome first then Milan (the hub sorts by date). */
+export const posts: BlogPost[] = [...romePosts, ...milanPosts];
+
+/**
+ * Newest first; same-day posts keep their order in `posts`. With `city`,
+ * only that city's posts.
+ */
+export function latestPosts(n?: number, city?: BlogCity): BlogPost[] {
   const sorted = posts
+    .filter((p) => !city || p.city === city)
     .map((p, i) => ({ p, i }))
     .sort((a, b) => b.p.date.localeCompare(a.p.date) || a.i - b.i)
     .map(({ p }) => p);
@@ -376,28 +400,60 @@ export function formatDate(iso: string, lang: Lang): string {
 export const blogCopy = {
   en: {
     eyebrow: 'Travel blog',
-    lead: 'Practical guides for arriving in Rome, getting around the city and planning trips beyond it, written by the people who drive those roads every day.',
-    listHeading: 'Latest Rome guides',
+    lead: 'Practical guides for arriving in Rome and Milan, getting around each city and planning trips beyond them, written by the people who drive those roads every day.',
     read: 'Read the guide',
     minutes: '{n} min read',
-    ctaHeading: 'Need a ride in Rome?',
+    ctaHeading: 'Need a ride in Italy?',
     ctaBody: 'Send your route and date and we reply with one fixed price, tolls and waiting time included.',
-    ctaButton: 'Book your Rome transfer',
-    ctaRome: 'See Rome transfers',
-    related: 'More Rome guides',
     published: 'Published',
   },
   it: {
     eyebrow: 'Blog di viaggio',
-    lead: 'Guide pratiche per arrivare a Roma, muoversi in città e organizzare le gite fuori porta, scritte da chi quelle strade le percorre ogni giorno.',
-    listHeading: 'Le ultime guide su Roma',
+    lead: 'Guide pratiche per arrivare a Roma e a Milano, muoversi in città e organizzare le gite fuori porta, scritte da chi quelle strade le percorre ogni giorno.',
     read: 'Leggi la guida',
     minutes: '{n} min di lettura',
-    ctaHeading: 'Vi serve un’auto a Roma?',
+    ctaHeading: 'Vi serve un’auto in Italia?',
     ctaBody: 'Inviateci tratta e data: rispondiamo con un unico prezzo fisso, pedaggi e attesa inclusi.',
-    ctaButton: 'Prenota il transfer a Roma',
-    ctaRome: 'Transfer a Roma',
-    related: 'Altre guide su Roma',
     published: 'Pubblicato il',
   },
 } satisfies Record<Lang, Record<string, string>>;
+
+/** Per-city wording: the hub's list heading and each post's booking box. */
+export const blogCityCopy: Record<BlogCity, Record<Lang, Record<'listHeading' | 'ctaHeading' | 'ctaBody' | 'ctaButton' | 'ctaCity' | 'related', string>>> = {
+  rome: {
+    en: {
+      listHeading: 'Rome guides',
+      ctaHeading: 'Need a ride in Rome?',
+      ctaBody: 'Send your route and date and we reply with one fixed price, tolls and waiting time included.',
+      ctaButton: 'Book your Rome transfer',
+      ctaCity: 'See Rome transfers',
+      related: 'More Rome guides',
+    },
+    it: {
+      listHeading: 'Guide su Roma',
+      ctaHeading: 'Vi serve un’auto a Roma?',
+      ctaBody: 'Inviateci tratta e data: rispondiamo con un unico prezzo fisso, pedaggi e attesa inclusi.',
+      ctaButton: 'Prenota il transfer a Roma',
+      ctaCity: 'Transfer a Roma',
+      related: 'Altre guide su Roma',
+    },
+  },
+  milan: {
+    en: {
+      listHeading: 'Milan guides',
+      ctaHeading: 'Need a ride in Milan?',
+      ctaBody: 'Send your route and date and we reply with one fixed price for your Milan taxi transfer, tolls and waiting time included.',
+      ctaButton: 'Book your Milan transfer',
+      ctaCity: 'See Milan transfers',
+      related: 'More Milan guides',
+    },
+    it: {
+      listHeading: 'Guide su Milano',
+      ctaHeading: 'Vi serve un’auto a Milano?',
+      ctaBody: 'Inviateci tratta e data: rispondiamo con un unico prezzo fisso per il vostro transfer a Milano, pedaggi e attesa inclusi.',
+      ctaButton: 'Prenota il transfer a Milano',
+      ctaCity: 'Transfer a Milano',
+      related: 'Altre guide su Milano',
+    },
+  },
+};

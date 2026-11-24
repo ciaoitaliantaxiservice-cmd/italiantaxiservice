@@ -223,6 +223,32 @@ export function romeServiceSchema(lang: Lang, path: string) {
   };
 }
 
+/** The Milan location page's service. No prices, ratings or phone (owner rules). */
+export function milanServiceSchema(lang: Lang, path: string) {
+  return {
+    '@type': 'TaxiService',
+    '@id': `${absolute(path)}#service`,
+    name: lang === 'en' ? 'Milan taxi service and private transfers' : 'Taxi a Milano e transfer privato',
+    serviceType: lang === 'en' ? 'Private transfer' : 'Transfer privato',
+    url: absolute(path),
+    inLanguage: lang,
+    provider: { '@id': ORG_ID },
+    areaServed: [
+      { '@type': 'City', name: lang === 'en' ? 'Milan' : 'Milano' },
+      { '@type': 'Airport', name: 'Milan Malpensa Airport', iataCode: 'MXP' },
+      { '@type': 'Airport', name: 'Milan Linate Airport', iataCode: 'LIN' },
+      { '@type': 'Airport', name: 'Milan Bergamo Airport', iataCode: 'BGY' },
+      { '@type': 'Place', name: lang === 'en' ? 'Fiera Milano, Rho' : 'Fiera Milano, Rho' },
+    ],
+    hoursAvailable: {
+      '@type': 'OpeningHoursSpecification',
+      dayOfWeek: DAYS,
+      opens: site.hours.opens,
+      closes: site.hours.closes,
+    },
+  };
+}
+
 /** One blog post. The publisher and author are the business itself. */
 export function blogPostingSchema(args: {
   lang: Lang;

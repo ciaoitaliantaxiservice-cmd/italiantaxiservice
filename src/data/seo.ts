@@ -47,16 +47,16 @@ export const meta: Record<RouteKey, MetaByLang> = {
   },
   blog: {
     en: {
-      title: 'Rome Travel Blog: Transfers & Tips | Ciao Italian Taxi Service',
+      title: 'Italy Travel Blog: Rome & Milan Transfers | Ciao Italian Taxi Service',
       description:
-        'Guides to arriving in Rome and getting around: Fiumicino transfers, Rome taxi prices, day trips by car and the drive to the Amalfi Coast.',
-      h1: 'Rome travel blog: transfers, prices and tips',
+        'Guides to Rome and Milan: airport transfers, taxi fares, getting around each city and the best day trips by car, from the people who drive them.',
+      h1: 'Travel blog: Rome and Milan transfers, fares and tips',
     },
     it: {
-      title: 'Blog di viaggio su Roma: transfer e consigli | Ciao Italian Taxi Service',
+      title: 'Blog di viaggio: transfer a Roma e Milano | Ciao Italian Taxi Service',
       description:
-        'Guide per arrivare a Roma e muoversi in città: transfer da Fiumicino, prezzi dei taxi, gite in auto e il viaggio verso la Costiera Amalfitana.',
-      h1: 'Blog di viaggio su Roma: transfer, prezzi e consigli',
+        'Guide su Roma e Milano: transfer dagli aeroporti, tariffe dei taxi, come muoversi in città e le gite più belle in auto, scritte da chi guida ogni giorno.',
+      h1: 'Blog di viaggio: transfer, tariffe e consigli su Roma e Milano',
     },
   },
   about: {

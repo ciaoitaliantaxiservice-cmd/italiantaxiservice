@@ -40,4 +40,10 @@ export type IconName =
   | 'calendar' // date
   | 'hotel' // hotels
   | 'arrow-right' // card link arrow
-  | 'timer'; // punctual
+  | 'timer' // punctual
+  | 'shopping-bag' // outlets, shopping
+  | 'mountain' // lakes and mountains
+  | 'briefcase' // business travel
+  | 'building' // trade fairs, business district
+  | 'shirt' // fashion
+  | 'plus'; // accordion: closed

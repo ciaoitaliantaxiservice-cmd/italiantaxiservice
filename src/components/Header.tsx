@@ -69,8 +69,11 @@ export default function Header({ lang, current, altPaths }: Props) {
         <div className="wrap site-header__nav">
           {/* One nav for every layout: a row of icon + label pills under the
               logo row (its own row in the markup too, so the Tab order matches
-              the screen), the current page outlined. Below 68rem the row
-              scrolls sideways, and the Menu button opens the same nav full
+              the screen), the current page outlined. On phones (below 48rem)
+              the five links share the row as compact icon-over-label tabs,
+              all visible at once; from 48rem to 68rem the pill row scrolls
+              sideways if it ever has to. Below 68rem the Menu button also
+              opens the same nav full
               screen, where the top row (language switch and close button)
               and the actions at the foot also show. */}
           <nav className="site-nav" id="site-nav" aria-label={l.mainNav} data-open="false">

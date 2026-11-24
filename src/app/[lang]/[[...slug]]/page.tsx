@@ -7,6 +7,7 @@ import AboutBody from '../../../components/sections/AboutBody';
 import ContactBody from '../../../components/sections/ContactBody';
 import CityStubBody from '../../../components/sections/CityStubBody';
 import RomeBody from '../../../components/sections/RomeBody';
+import MilanBody from '../../../components/sections/MilanBody';
 import BlogHubBody from '../../../components/sections/BlogHubBody';
 import BlogPostBody from '../../../components/sections/BlogPostBody';
 import NotFoundBody from '../../../components/sections/NotFoundBody';
@@ -47,6 +48,8 @@ function Body({ page }: { page: PageDef }) {
       return <CityStubBody lang={lang} city={page.city!} />;
     case 'rome':
       return <RomeBody lang={lang} />;
+    case 'milan':
+      return <MilanBody lang={lang} />;
     case 'blog':
       return <BlogHubBody lang={lang} />;
     case 'post':

@@ -57,6 +57,7 @@ export const cities: City[] = [
   },
   {
     id: 'milan',
+    fullPage: true,
     slug: { en: 'milan', it: 'milano' },
     name: { en: 'Milan', it: 'Milano' },
     gateways: { en: 'MXP · LIN · BGY · Centrale', it: 'MXP · LIN · BGY · Centrale' },

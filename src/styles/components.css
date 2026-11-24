@@ -81,18 +81,30 @@
   }
 }
 
-/* "Email us": a small outline pill on the dark strip, a mailto: link. */
+/* "Email us": a compact button on the dark strip (a mailto: link), with the
+   site's button corners and a 16px icon so it stays a slim 28px tall
+   instead of growing to the 24px icon's height. */
 .utility-bar__email {
   display: inline-flex;
   align-items: center;
-  gap: var(--s-2);
-  padding: 1px var(--s-3) 1px var(--s-2);
-  border: 1px solid rgb(244 245 240 / 0.5);
-  border-radius: 999px;
+  gap: 6px;
+  min-height: 28px;
+  padding: 0 var(--s-3) 0 10px;
+  border: 1px solid rgb(244 245 240 / 0.3);
+  border-radius: var(--radius);
+  background: rgb(244 245 240 / 0.08);
   color: var(--c-bianco);
-  font-weight: 600;
+  font-size: var(--t-label);
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  line-height: 1;
   text-decoration: none;
   transition: background-color var(--dur) var(--ease), color var(--dur) var(--ease);
+}
+
+.utility-bar__email .icon {
+  width: 16px;
+  height: 16px;
 }
 
 /* Doubled class so it outranks the generic .utility-bar a:hover. */
@@ -348,6 +360,55 @@ html.nav-open .mobile-bar {
   border-color: var(--c-verde-profondo);
   background: rgb(0 105 58 / 0.06);
   color: var(--c-verde-profondo);
+}
+
+/* Phones: all five links fit across the screen at once, as compact tabs
+   (icon over label) that share the row, so none is clipped and nothing has
+   to be swiped into view. Sized for the longer Italian labels at 320px. */
+@media (max-width: 47.99rem) {
+  .site-header__nav {
+    padding-bottom: var(--s-2);
+  }
+
+  .site-nav:not([data-open='true']) .site-nav__list {
+    gap: 2px;
+    justify-content: space-between;
+    margin: 0;
+    padding: 2px 0;
+    overflow: visible;
+    font-size: var(--t-label); /* 12 */
+    line-height: 1.2;
+  }
+
+  .site-nav:not([data-open='true']) .site-nav__list li {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  .site-nav:not([data-open='true']) .nav-pill {
+    flex-direction: column;
+    justify-content: center;
+    gap: 3px;
+    width: 100%;
+    min-height: 50px;
+    padding: 5px 4px;
+    border-radius: 12px;
+  }
+
+  .site-nav:not([data-open='true']) .nav-pill .icon {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+@media (max-width: 22.49rem) {
+  .site-nav:not([data-open='true']) .site-nav__list {
+    font-size: 0.6875rem; /* 11 */
+  }
+
+  .site-nav:not([data-open='true']) .nav-pill {
+    padding-inline: 2px;
+  }
 }
 
 /* In the full-screen menu the same pills stack, full width and larger. */
@@ -1302,46 +1363,66 @@ html.nav-open .mobile-bar {
    Sticky mobile action bar
    -------------------------------------------------------------------------- */
 
+/* Two real buttons on a white strip: email (outline, sized to its label)
+   and the quote (red, takes the rest). --mobile-bar-h is the strip's height
+   without the safe area; the buttons are that minus the strip's padding. */
 .mobile-bar {
   position: fixed;
   inset: auto 0 0 0;
   z-index: 110;
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: var(--s-2);
+  padding: 6px var(--gutter) calc(6px + env(safe-area-inset-bottom));
   background: var(--c-white);
   border-top: 1px solid var(--c-border);
   box-shadow: var(--shadow-bar);
-  padding-bottom: env(safe-area-inset-bottom);
 }
 
 .mobile-bar__item {
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 2px;
-  height: var(--mobile-bar-h);
-  color: var(--c-carbone);
+  gap: 6px;
+  height: calc(var(--mobile-bar-h) - 12px);
+  padding-inline: var(--s-4);
+  border: 1.5px solid var(--c-verde-profondo);
+  border-radius: var(--radius);
+  color: var(--c-verde-profondo);
   text-decoration: none;
-  font-size: var(--t-label);
+  font-size: var(--t-small);
   font-weight: 700;
+  line-height: 1.15;
   /* Long labels ("Richiedi un preventivo") wrap centred, never ragged. */
   text-align: center;
-  line-height: 1.25;
-  padding-inline: var(--s-2);
 }
 
+.mobile-bar__item .icon {
+  width: 18px;
+  height: 18px;
+  flex: none;
+}
 
 /* The quote action is the page's main CTA, so it carries the red. */
 .mobile-bar__item--cta {
+  border-color: var(--c-rosso);
   background: var(--c-rosso);
   color: var(--c-white);
-  font-size: 0.9375rem; /* 15 */
 }
 
 .mobile-bar__item--cta:hover {
+  border-color: var(--c-rosso-shade);
   background: var(--c-rosso-shade);
   color: var(--c-white);
+}
+
+/* Tablets: the two buttons sit centred at a comfortable width instead of
+   stretching across the screen. */
+@media (min-width: 48rem) {
+  .mobile-bar {
+    grid-template-columns: repeat(2, minmax(0, 16rem));
+    justify-content: center;
+  }
 }
 
 /* The sticky bar stays until the header can show its own quote button
@@ -1949,8 +2030,10 @@ html.nav-open .mobile-bar {
   transition: background-color var(--dur) var(--ease);
 }
 
+.mobile-bar__item:not(.mobile-bar__item--cta):hover,
 .mobile-bar__item:not(.mobile-bar__item--cta):active {
-  background: var(--c-bianco);
+  background: rgb(0 105 58 / 0.06);
+  color: var(--c-verde-profondo);
 }
 
 .mobile-bar__item--cta:active {
@@ -3170,11 +3253,15 @@ picture.fleet__photo,
   }
 }
 
-/* A highlighter stroke behind the key words, in Verde Chiaro. */
+/* The site’s one title highlight (src/components/Marked.tsx): a soft Verde
+   Chiaro marker behind 1-3 key words, used ONLY on titles about the top or
+   best places and destinations, identical everywhere. */
 .hl {
   padding: 0 0.08em;
   background: linear-gradient(transparent 58%, rgb(92 196 140 / 0.45) 58%);
   color: inherit;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
 }
 
 .mini-grid {
@@ -3502,5 +3589,1001 @@ picture.fleet__photo,
   .post-card:hover,
   .dest-card__link:hover img {
     transform: none;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Shared fleet card label (Rome page) and blog additions
+   -------------------------------------------------------------------------- */
+
+.rcard__tier {
+  margin: 0;
+  font-size: var(--t-label);
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--c-verde-profondo);
+}
+
+.blog-group + .blog-group {
+  margin-top: var(--s-12);
+}
+
+/* A post's lead image (or its sized placeholder): 16:9, no layout shift. */
+.post__media {
+  margin: 0 0 var(--s-8);
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  border-radius: var(--radius);
+  background: var(--c-placeholder);
+}
+
+.post__media picture,
+.post__media img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.post__body h3 {
+  margin-top: var(--s-6);
+  font-size: 1.375rem;
+  line-height: 1.3;
+}
+
+/* ==========================================================================
+   Milan page (src/components/sections/MilanBody.tsx). Its own layouts, built
+   from the same tokens, so it does not read as a copy of the Rome page.
+   ========================================================================== */
+
+/* 1. Hero: a dark split band (copy left, photo right); the booking form
+   overlaps the band's foot on a white ground. */
+.mi-hero__band {
+  padding-block: var(--s-10) var(--s-16);
+  background: var(--c-notte);
+  color: var(--c-white);
+}
+
+.mi-hero__grid {
+  display: grid;
+  gap: var(--s-8);
+  align-items: center;
+}
+
+.mi-hero__copy {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-4);
+}
+
+.mi-hero__eyebrow {
+  color: var(--c-verde-chiaro);
+}
+
+.mi-hero h1 {
+  color: var(--c-white);
+}
+
+.mi-hero__lead {
+  font-size: var(--t-lead);
+  line-height: 1.556;
+  color: var(--c-text-dark-bg);
+}
+
+.mi-hero__trust {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
+  gap: var(--s-2) var(--s-4);
+  margin: var(--s-2) 0 0;
+  padding: 0;
+  list-style: none;
+  font-size: var(--t-small);
+  font-weight: 600;
+}
+
+.mi-hero__trust li {
+  display: flex;
+  align-items: center;
+  gap: var(--s-2);
+  padding: var(--s-2) var(--s-3);
+  border: 1px solid var(--c-border-dark);
+  border-radius: var(--radius);
+}
+
+.mi-hero__trust .icon {
+  color: var(--c-verde-chiaro);
+}
+
+.mi-hero__media {
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  border-radius: var(--radius);
+  box-shadow: 0 0 0 1px var(--c-border-dark);
+}
+
+.mi-hero__media picture,
+.mi-hero__media img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.mi-hero__form {
+  position: relative;
+  margin-top: calc(-1 * var(--s-10));
+}
+
+@media (min-width: 64rem) {
+  .mi-hero__grid {
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+    gap: var(--s-12);
+  }
+
+  .mi-hero__media {
+    aspect-ratio: 4 / 5;
+    max-height: 34rem;
+  }
+}
+
+/* 2. Fleet: horizontal cards, photo beside the details. */
+.mi-cars {
+  display: grid;
+  gap: var(--s-4);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.mi-car {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  overflow: hidden;
+  background: var(--c-white);
+  border: 1px solid var(--c-border);
+  border-left: 3px solid var(--c-verde-profondo);
+  border-radius: var(--radius);
+}
+
+.mi-car__media {
+  aspect-ratio: 16 / 10;
+  background: var(--c-placeholder);
+}
+
+.mi-car__media picture,
+.mi-car__media img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.mi-car__body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-3);
+  padding: var(--s-5);
+}
+
+.mi-car__tier {
+  margin: 0;
+  font-size: var(--t-label);
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--c-verde-profondo);
+}
+
+.mi-car__name {
+  font-size: 1.5rem;
+  line-height: 1.2;
+}
+
+.mi-car__specs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-2) var(--s-6);
+  margin: 0;
+}
+
+.mi-car__specs > div {
+  display: flex;
+  align-items: center;
+  gap: var(--s-2);
+}
+
+.mi-car__specs dt {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-2);
+  font-size: var(--t-small);
+  color: var(--c-pietra);
+}
+
+.mi-car__specs dt::after {
+  content: ":";
+}
+
+.mi-car__specs dd {
+  margin: 0;
+  font-weight: 700;
+}
+
+.mi-car__specs .icon,
+.mi-car__extras .icon {
+  color: var(--c-verde-felce);
+}
+
+.mi-car__desc {
+  margin: 0;
+  font-size: var(--t-small);
+  line-height: 1.571;
+  color: var(--c-pietra);
+}
+
+.mi-car__extras {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-1) var(--s-5);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: var(--t-small);
+  color: var(--c-pietra);
+}
+
+.mi-car__extras li {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-2);
+  white-space: nowrap;
+}
+
+.mi-car__foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-3);
+  margin-top: auto;
+  padding-top: var(--s-3);
+  border-top: 1px dashed var(--c-border);
+}
+
+.mi-link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-2);
+  min-height: 44px;
+  font-weight: 700;
+}
+
+@media (min-width: 40rem) {
+  .mi-car {
+    grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
+  }
+
+  .mi-car__media {
+    aspect-ratio: auto;
+    min-height: 100%;
+  }
+}
+
+@media (min-width: 72rem) {
+  .mi-cars {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  /* An odd last car takes the whole row instead of leaving a gap. */
+  .mi-car:last-child:nth-child(odd) {
+    grid-column: 1 / -1;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+  }
+}
+
+/* 3. Airports: a departure board on a dark band. */
+.mi-dark {
+  background: var(--c-notte);
+  color: var(--c-white);
+}
+
+.mi-dark .eyebrow {
+  color: var(--c-verde-chiaro);
+}
+
+.mi-dark h2 {
+  color: var(--c-white);
+}
+
+.mi-dark .section__head > p {
+  color: var(--c-text-dark-bg);
+}
+
+.mi-board {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--c-border-dark);
+}
+
+.mi-board__row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--s-4);
+  padding-block: var(--s-6);
+  border-bottom: 1px solid var(--c-border-dark);
+}
+
+.mi-board__code {
+  font-family: var(--font-serif);
+  font-size: 3rem;
+  line-height: 1;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  color: var(--c-verde-chiaro);
+}
+
+.mi-board__info {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-2);
+}
+
+.mi-board__name {
+  display: flex;
+  align-items: center;
+  gap: var(--s-2);
+  font-size: 1.5rem;
+  line-height: 1.2;
+  color: var(--c-white);
+}
+
+.mi-board__name .icon {
+  flex: none;
+  color: var(--c-verde-chiaro);
+}
+
+.mi-board__meta {
+  margin: 0;
+  font-size: var(--t-small);
+  color: var(--c-text-dark-bg);
+}
+
+.mi-board__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.mi-board__chips li {
+  padding: 2px var(--s-3);
+  border: 1px solid var(--c-border-dark);
+  border-radius: 999px;
+  font-size: var(--t-fine);
+  color: var(--c-bianco);
+}
+
+.mi-board__fare {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--s-3) var(--s-5);
+}
+
+.mi-dark .price {
+  color: var(--c-text-dark-bg);
+}
+
+@media (min-width: 64rem) {
+  .mi-board__row {
+    grid-template-columns: 8rem minmax(0, 1fr) auto;
+    align-items: center;
+    gap: var(--s-8);
+  }
+
+  .mi-board__fare {
+    flex-direction: column;
+    align-items: flex-end;
+    text-align: right;
+  }
+}
+
+/* 4. Routes: three trip types, each a list of destinations. */
+.mi-routes {
+  display: grid;
+  gap: var(--s-6);
+}
+
+.mi-routes__group {
+  display: flex;
+  flex-direction: column;
+  padding: var(--s-6);
+  background: var(--c-white);
+  border: 1px solid var(--c-border);
+  border-top: 3px solid var(--c-verde-profondo);
+  border-radius: var(--radius);
+}
+
+.mi-routes__head {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: var(--s-1) var(--s-4);
+  align-items: center;
+  margin-bottom: var(--s-4);
+}
+
+.mi-routes__head h3 {
+  font-size: 1.375rem;
+  line-height: 1.2;
+}
+
+.mi-routes__head p {
+  grid-column: 1 / -1;
+  margin: 0;
+  font-size: var(--t-small);
+  color: var(--c-pietra);
+}
+
+.mi-routes__list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.mi-routes__list li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-3);
+  padding-block: var(--s-3);
+  border-top: 1px solid var(--c-border);
+}
+
+.mi-routes__dest {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.mi-routes__to {
+  font-weight: 700;
+}
+
+.mi-routes__facts {
+  font-size: var(--t-fine);
+  color: var(--c-pietra);
+}
+
+.mi-routes__facts .price-ph {
+  font-size: inherit;
+}
+
+.mi-routes__book {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  gap: var(--s-1);
+  min-height: 44px;
+  font-size: var(--t-small);
+  font-weight: 700;
+  color: var(--c-verde-profondo);
+}
+
+@media (min-width: 64rem) {
+  .mi-routes {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+/* 5. Nearby: pill links. */
+.mi-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.mi-pill {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 2px var(--s-2);
+  min-height: 44px;
+  padding: var(--s-2) var(--s-5) var(--s-2) var(--s-4);
+  background: var(--c-white);
+  border: 1px solid var(--c-border);
+  border-radius: 999px;
+  color: var(--c-carbone);
+  text-decoration: none;
+  transition: border-color var(--dur) var(--ease);
+}
+
+.mi-pill:hover {
+  border-color: var(--c-verde-profondo);
+  color: var(--c-carbone);
+}
+
+.mi-pill .icon {
+  color: var(--c-verde-felce);
+}
+
+.mi-pill__name {
+  font-weight: 700;
+}
+
+.mi-pill__meta {
+  font-size: var(--t-fine);
+  color: var(--c-pietra);
+}
+
+/* 6. Why us: video first, numbered reasons beside it. */
+.mi-why {
+  display: grid;
+  gap: var(--s-10);
+}
+
+.mi-why__media {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-4);
+}
+
+.mi-why__estimate {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--s-3);
+  padding: var(--s-6);
+  background: var(--c-bianco);
+  border-radius: var(--radius);
+}
+
+.mi-why__estimate h3 {
+  font-size: 1.375rem;
+}
+
+.mi-why__estimate p {
+  margin: 0;
+  color: var(--c-pietra);
+}
+
+.mi-reasons {
+  display: grid;
+  gap: var(--s-5);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: reason;
+}
+
+.mi-reasons li {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: var(--s-4);
+  counter-increment: reason;
+}
+
+.mi-reasons__icon {
+  margin-top: 2px;
+  color: var(--c-verde-profondo);
+}
+
+.mi-reasons h3 {
+  font-size: 1.25rem;
+  line-height: 1.3;
+}
+
+.mi-reasons h3::before {
+  content: counter(reason, decimal-leading-zero) " ";
+  color: var(--c-verde-felce);
+}
+
+.mi-reasons p {
+  margin: var(--s-1) 0 0;
+  color: var(--c-pietra);
+}
+
+@media (min-width: 64rem) {
+  .mi-why {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    align-items: start;
+  }
+}
+
+/* 7. Top destinations: a numbered mosaic; the first tile is the large one. */
+.mi-mosaic {
+  display: grid;
+  gap: var(--s-4);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.mi-tile__link {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+  background: var(--c-white);
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius);
+  color: var(--c-carbone);
+  text-decoration: none;
+  transition: box-shadow var(--dur) var(--ease);
+}
+
+.mi-tile__link:hover {
+  color: var(--c-carbone);
+  box-shadow: var(--shadow-card);
+}
+
+.mi-tile__media {
+  aspect-ratio: 4 / 3;
+  background: var(--c-placeholder);
+}
+
+.mi-tile__num {
+  position: absolute;
+  top: var(--s-3);
+  right: var(--s-3);
+  display: grid;
+  place-items: center;
+  min-width: 2.5rem;
+  height: 2.5rem;
+  padding-inline: var(--s-2);
+  border-radius: 999px;
+  background: var(--c-notte);
+  color: var(--c-white);
+  font-family: var(--font-serif);
+  font-size: 1.125rem;
+  font-weight: 600;
+}
+
+.mi-tile__text {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-1);
+  padding: var(--s-4) var(--s-5) var(--s-5);
+}
+
+.mi-tile__name {
+  font-size: 1.375rem;
+  line-height: 1.2;
+}
+
+.mi-tile__line {
+  margin: 0;
+  font-size: var(--t-small);
+  line-height: 1.571;
+  color: var(--c-pietra);
+}
+
+@media (min-width: 40rem) {
+  .mi-mosaic {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 64rem) {
+  .mi-mosaic {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .mi-tile:first-child {
+    grid-column: span 2;
+    grid-row: span 2;
+  }
+
+  .mi-tile:first-child .mi-tile__media {
+    flex: 1;
+    aspect-ratio: auto;
+    min-height: 18rem;
+  }
+
+  .mi-tile:first-child .mi-tile__name {
+    font-size: 2rem;
+  }
+
+  /* With 8 tiles the large first one leaves one cell free: the last tile
+     takes two, at the same height as its neighbours. */
+  .mi-tile:last-child:nth-child(4n) {
+    grid-column: span 2;
+  }
+
+  .mi-tile:last-child:nth-child(4n) .mi-tile__media {
+    aspect-ratio: 8 / 3;
+  }
+}
+
+/* 8. Top hotels: compact rows with a square thumbnail. */
+.mi-hotels {
+  display: grid;
+  gap: var(--s-3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.mi-hotel {
+  display: grid;
+  grid-template-columns: 6rem minmax(0, 1fr);
+  gap: var(--s-4);
+  align-items: center;
+  padding: var(--s-3);
+  background: var(--c-white);
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius);
+}
+
+.mi-hotel__thumb {
+  aspect-ratio: 1;
+  overflow: hidden;
+  border-radius: calc(var(--radius) - 2px);
+  background: var(--c-placeholder);
+}
+
+.mi-hotel__thumb .img-placeholder__tag {
+  display: none;
+}
+
+.mi-hotel__body {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  min-width: 0;
+}
+
+.mi-hotel__name {
+  font-size: 1.25rem;
+  line-height: 1.25;
+}
+
+.mi-hotel__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--s-1) var(--s-3);
+  margin: 0;
+  font-size: var(--t-small);
+  color: var(--c-pietra);
+}
+
+@media (min-width: 48rem) {
+  .mi-hotels {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* 9. Why visit + business and events. */
+.mi-visit {
+  display: grid;
+  gap: var(--s-10);
+}
+
+.mi-events {
+  padding: var(--s-6);
+  background: var(--c-white);
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius);
+}
+
+.mi-events__label {
+  margin: 0 0 var(--s-4);
+  color: var(--c-verde-profondo);
+}
+
+.mi-events ul {
+  display: grid;
+  gap: var(--s-5);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.mi-event {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: var(--s-4);
+}
+
+.mi-event h3 {
+  font-size: 1.25rem;
+  line-height: 1.3;
+}
+
+.mi-event p {
+  margin: var(--s-1) 0 0;
+  font-size: var(--t-small);
+  line-height: 1.571;
+  color: var(--c-pietra);
+}
+
+@media (min-width: 64rem) {
+  .mi-visit {
+    grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+    align-items: start;
+  }
+}
+
+/* 10. Blog: one featured guide, the rest as a list. */
+.mi-blog {
+  display: grid;
+  gap: var(--s-6);
+}
+
+.mi-blog__featured {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-3);
+  padding: var(--s-8);
+  background: var(--c-notte);
+  border-radius: var(--radius);
+  color: var(--c-text-dark-bg);
+}
+
+.mi-blog__flag {
+  color: var(--c-verde-chiaro);
+}
+
+.mi-blog__title {
+  font-size: 1.75rem;
+  line-height: 1.2;
+}
+
+.mi-blog__title a {
+  color: var(--c-white);
+  text-decoration: none;
+}
+
+/* The whole featured card is the link's tap target. */
+.mi-blog__title a::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+}
+
+.mi-blog__featured .post-card__meta,
+.mi-blog__featured .post-card__more {
+  color: var(--c-verde-chiaro);
+}
+
+.mi-blog__list {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.mi-blog__list li {
+  padding-block: var(--s-4);
+  border-bottom: 1px solid var(--c-border);
+}
+
+.mi-blog__list li:first-child {
+  padding-top: 0;
+}
+
+.mi-blog__item {
+  font-size: 1.25rem;
+  line-height: 1.3;
+}
+
+.mi-blog__list p {
+  margin: var(--s-1) 0 0;
+  font-size: var(--t-small);
+  color: var(--c-pietra);
+}
+
+@media (min-width: 64rem) {
+  .mi-blog {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    align-items: start;
+  }
+}
+
+/* 11. FAQ: heading column beside a numbered accordion. */
+.mi-faq {
+  display: grid;
+  gap: var(--s-8);
+}
+
+.mi-faq__side {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--s-3);
+}
+
+.mi-faq__side > p {
+  color: var(--c-pietra);
+}
+
+.mi-faq__list {
+  display: grid;
+  gap: var(--s-3);
+}
+
+.mi-qa {
+  background: var(--c-white);
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius);
+}
+
+.mi-qa[open] {
+  border-color: var(--c-verde-profondo);
+}
+
+.mi-qa summary {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--s-4);
+  min-height: 56px;
+  padding: var(--s-4) var(--s-5);
+  cursor: pointer;
+  list-style: none;
+  font-weight: 700;
+}
+
+.mi-qa summary::-webkit-details-marker {
+  display: none;
+}
+
+.mi-qa__num {
+  font-family: var(--font-serif);
+  font-size: 1.25rem;
+  color: var(--c-verde-felce);
+}
+
+.mi-qa__icon {
+  color: var(--c-verde-profondo);
+  transition: transform var(--dur) var(--ease);
+}
+
+.mi-qa[open] .mi-qa__icon {
+  transform: rotate(45deg);
+}
+
+.mi-qa__a {
+  padding: 0 var(--s-5) var(--s-5) calc(var(--s-5) + 2.5rem);
+  color: var(--c-pietra);
+}
+
+.mi-qa__a p {
+  margin: 0;
+}
+
+@media (min-width: 64rem) {
+  .mi-faq {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+    align-items: start;
+  }
+
+  .mi-faq__side {
+    position: sticky;
+    top: 12rem;
+  }
+}
+
+@media (max-width: 30rem) {
+  .mi-qa__a {
+    padding-left: var(--s-5);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mi-qa__icon {
+    transition: none;
   }
 }

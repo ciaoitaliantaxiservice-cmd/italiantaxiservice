@@ -1,26 +1,30 @@
 import { t } from '../data/content';
 import { type Lang } from '../data/i18n';
-import { romeCopy, romeVehicles } from '../data/rome';
+import { type RomeCopy } from '../data/rome';
+import { fleet } from '../data/fleet';
 import { SUPABASE_URL, SUPABASE_ANON_KEY, SUPABASE_TABLE } from '../data/site.mjs';
 import QuoteFormScript from './QuoteFormScript';
 import { EARLY_SUBMIT_GUARD } from './QuoteForm';
 
 /**
- * The Rome page's booking form: the hero's wide "booking bar".
+ * The location pages' booking form (Rome, Milan): the hero's "booking bar".
  *
  * Same pipeline as the contact page's QuoteForm: same field names, the same
  * QuoteFormScript (validation, error summary, honeypot, send) and the same
  * Supabase insert, which the notify-quote function emails to the bookings
  * inbox (BOOKING_EMAIL_TO, see supabase/README.md). Only the layout and the
  * field set differ: no service or flight fields, a vehicle-type choice from
- * the Rome classes, and a "Return trip" checkbox.
+ * the shared premium fleet (src/data/fleet.ts), and a "Return trip" checkbox.
+ * Each page passes its own wording (`copy`, the `form` block of its copy).
  *
  * Required fields are marked with an asterisk, explained by the note under
  * the heading; `required` itself is what assistive tech announces.
  */
-export default function BookingForm({ lang }: { lang: Lang }) {
+export type BookingFormCopy = RomeCopy['form'];
+
+export default function BookingForm({ lang, copy }: { lang: Lang; copy: BookingFormCopy }) {
   const f = t(lang).form;
-  const r = romeCopy[lang].form;
+  const r = copy;
   const today = new Date().toISOString().slice(0, 10);
 
   const endpoint =
@@ -151,9 +155,9 @@ export default function BookingForm({ lang }: { lang: Lang }) {
             <label htmlFor="qf-vehicle">{r.vehicle}</label>
             <select id="qf-vehicle" name="vehicle" defaultValue="">
               <option value="">{r.vehicleNone}</option>
-              {romeVehicles.map((v) => (
+              {fleet.map((v) => (
                 <option value={v.formValue} data-vehicle-id={v.id} key={v.id}>
-                  {`${v.name[lang]} · ${v.pax[lang]}`}
+                  {`${v.name[lang]} · ${v.tier[lang]}`}
                 </option>
               ))}
             </select>

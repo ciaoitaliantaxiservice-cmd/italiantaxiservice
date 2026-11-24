@@ -48,6 +48,12 @@ import {
   Hotel,
   ArrowRight,
   Timer,
+  ShoppingBag,
+  Mountain,
+  Briefcase,
+  Building2,
+  Shirt,
+  Plus,
   type LucideIcon,
 } from 'lucide-react';
 import type { IconName } from '../data/icons';
@@ -88,6 +94,12 @@ const ICONS = {
   'hotel': Hotel,
   'arrow-right': ArrowRight,
   'timer': Timer,
+  'shopping-bag': ShoppingBag,
+  'mountain': Mountain,
+  'briefcase': Briefcase,
+  'building': Building2,
+  'shirt': Shirt,
+  'plus': Plus,
 } satisfies Record<IconName, LucideIcon>;
 
 interface Props {

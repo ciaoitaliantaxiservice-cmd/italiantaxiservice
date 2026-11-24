@@ -278,6 +278,8 @@ export const it = {
     flightHelp: 'Facoltativo, ma ci permette di seguire i ritardi e trattenere la vettura.',
     notes: 'Altro che dovremmo sapere',
     notesHelp: 'Seggiolini, esigenze di mobilità, tappe aggiuntive, bagagli ingombranti, fattura.',
+    returnTrip: 'Viaggio di ritorno',
+    returnHint: 'indicate data e ora del ritorno nelle note',
     optional: 'facoltativo',
     required: 'obbligatorio',
     submit: 'Invia la richiesta',

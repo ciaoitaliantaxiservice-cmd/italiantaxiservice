@@ -96,7 +96,7 @@
   --icon-size: 1.5rem; /* 24, Lucide's native grid */
 
   /* Height of the sticky mobile action bar, so content can clear it */
-  --mobile-bar-h: 4rem;
+  --mobile-bar-h: 3.5rem; /* 56: 44px buttons + 6px padding above and below */
 }
 
 @media (min-width: 48rem) {

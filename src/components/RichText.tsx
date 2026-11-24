@@ -3,7 +3,8 @@
  * injected; the text stays escaped):
  *
  *   [anchor](target)  an internal link in the page's own language. Targets:
- *                     `rome`, `rome#<id>`, `contact`, `blog`, `post:<id>`.
+ *                     `rome`, `milan` (each optionally #<id>), `contact`,
+ *                     `blog`, `post:<id>`.
  *                     An unknown target fails the build.
  *   [[TYPE:ID]]       a typed placeholder (playbook §7), drawn as a Marker
  *                     with data-placeholder="TYPE:ID".
@@ -17,7 +18,7 @@ import { postById, postPath } from '../data/blog';
 function resolve(target: string, lang: Lang): string {
   const [base, hash] = target.split('#');
   let path: string;
-  if (base === 'rome') path = cityPath(cityById('rome'), lang);
+  if (base === 'rome' || base === 'milan') path = cityPath(cityById(base), lang);
   else if (base === 'contact') path = routes.contact[lang];
   else if (base === 'blog') path = routes.blog[lang];
   else if (base.startsWith('post:')) path = postPath(postById(base.slice(5)), lang);

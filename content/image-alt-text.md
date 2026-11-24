@@ -50,8 +50,9 @@ below in `src/assets/` and set `photo` in `src/data/service-areas.ts` or
 | `verona-service-area-arena` | The Roman Arena on Piazza Bra in Verona on a sunny afternoon. | L’Arena romana in piazza Bra a Verona, in un pomeriggio di sole. |
 | `mercedes-s-class-chauffeur-car` | A black Mercedes-Benz S-Class saloon, seen from the front three-quarter angle. | Una berlina Mercedes-Benz Classe S nera, vista di tre quarti dal davanti. |
 | `mercedes-e-class-chauffeur-car` | A black Mercedes-Benz E-Class saloon, seen from the front three-quarter angle. | Una berlina Mercedes-Benz Classe E nera, vista di tre quarti dal davanti. |
-| `mercedes-a-class-chauffeur-car` | A black Mercedes-Benz A-Class, seen from the front three-quarter angle. | Una Mercedes-Benz Classe A nera, vista di tre quarti dal davanti. |
 | `bmw-5-series-chauffeur-car` | A black BMW 5 Series saloon, seen from the front three-quarter angle. | Una berlina BMW Serie 5 nera, vista di tre quarti dal davanti. |
+| `bmw-7-series-chauffeur-car` | A black BMW 7 Series saloon, seen from the front three-quarter angle. | Una berlina BMW Serie 7 nera, vista di tre quarti dal davanti. |
+| `mercedes-v-class-chauffeur-car` | A black Mercedes-Benz V-Class van with its sliding door open, showing the leather passenger seats. | Un van Mercedes-Benz Classe V nero con la porta scorrevole aperta, che lascia vedere i sedili in pelle. |
 
 ## Pending photos (Rome page: fleet, destinations, hotels)
 
@@ -59,10 +60,6 @@ Each photo must match its row (or the row is updated with it). File name = key.
 
 | Key | English | Italiano |
 |---|---|---|
-| `rome-sedan-private-transfer` | A black sedan waiting for passengers outside a hotel entrance in Rome. | Una berlina nera in attesa dei passeggeri davanti all’ingresso di un hotel a Roma. |
-| `rome-executive-car-chauffeur` | A black executive car with a chauffeur holding the rear door open in Rome. | Un’auto executive nera con l’autista che tiene aperta la portiera posteriore a Roma. |
-| `rome-minivan-family-transfer` | A black minivan with its sliding door open, ready for a family transfer in Rome. | Un monovolume nero con la porta scorrevole aperta, pronto per un transfer familiare a Roma. |
-| `rome-van-group-transfer` | A black passenger van for group transfers, parked on a street in Rome. | Un minibus nero per transfer di gruppo, parcheggiato in una strada di Roma. |
 | `rome-st-peters-basilica-vatican` | St. Peter’s Basilica and its dome seen across St. Peter’s Square in Vatican City. | La Basilica di San Pietro e la cupola viste da Piazza San Pietro, nella Città del Vaticano. |
 | `rome-trevi-fountain` | The Trevi Fountain in Rome, with Neptune at the centre of the Baroque façade. | La Fontana di Trevi a Roma, con Nettuno al centro della facciata barocca. |
 | `rome-pantheon` | The portico and columns of the Pantheon on Piazza della Rotonda in Rome. | Il pronao e le colonne del Pantheon su Piazza della Rotonda a Roma. |
@@ -76,6 +73,44 @@ Each photo must match its row (or the row is updated with it). File name = key.
 | `rome-hotel-st-regis` | The entrance of The St. Regis Rome near Piazza della Repubblica. | L’ingresso del St. Regis Rome vicino a Piazza della Repubblica. |
 | `rome-hotel-cavalieri` | Rome Cavalieri hotel on Monte Mario, with gardens in front. | L’hotel Rome Cavalieri su Monte Mario, con i giardini davanti. |
 | `rome-hotel-artemide` | The façade of Hotel Artemide on Via Nazionale in Rome. | La facciata dell’Hotel Artemide in Via Nazionale a Roma. |
+
+## Pending photos (Milan page: destinations, hotels)
+
+The fleet photos are the shared ones above. Each photo must match its row (or
+the row is updated with it). File name = key.
+
+| Key | English | Italiano |
+|---|---|---|
+| `milan-duomo-cathedral-rooftop` | Visitors on the marble rooftop terraces of Milan Cathedral, among the Gothic spires. | Visitatori sulle terrazze di marmo del Duomo di Milano, tra le guglie gotiche. |
+| `milan-galleria-vittorio-emanuele` | The glass-and-iron dome of the Galleria Vittorio Emanuele II in Milan, above its mosaic floor. | La cupola in vetro e ferro della Galleria Vittorio Emanuele II a Milano, sopra il pavimento a mosaico. |
+| `milan-santa-maria-delle-grazie` | The brick church of Santa Maria delle Grazie in Milan, home of Leonardo’s Last Supper. | La chiesa in mattoni di Santa Maria delle Grazie a Milano, che custodisce il Cenacolo di Leonardo. |
+| `milan-navigli-canal` | Bars and old houses along the Naviglio Grande canal in Milan at dusk. | Locali e case di ringhiera lungo il Naviglio Grande a Milano, all’imbrunire. |
+| `milan-brera-district` | A cobbled street with café tables and flower boxes in the Brera district of Milan. | Una via acciottolata con i tavolini dei caffè e le fioriere nel quartiere di Brera, a Milano. |
+| `milan-porta-nuova-bosco-verticale` | The tree-covered Bosco Verticale towers beside the glass skyscrapers of Porta Nuova in Milan. | Le torri del Bosco Verticale ricoperte di alberi accanto ai grattacieli di vetro di Porta Nuova, a Milano. |
+| `milan-castello-sforzesco` | The brick gate tower of the Castello Sforzesco in Milan, seen across the fountain in front. | La torre d’ingresso in mattoni del Castello Sforzesco a Milano, vista oltre la fontana antistante. |
+| `milan-teatro-alla-scala` | The neoclassical façade of the Teatro alla Scala opera house in Milan. | La facciata neoclassica del Teatro alla Scala a Milano. |
+| `milan-hotel-four-seasons` | The cloistered courtyard of the Four Seasons Hotel Milano in the fashion district. | Il chiostro del Four Seasons Hotel Milano, nel quartiere della moda. |
+| `milan-hotel-park-hyatt` | The entrance of Park Hyatt Milano, a few steps from the Galleria. | L’ingresso del Park Hyatt Milano, a pochi passi dalla Galleria. |
+| `milan-hotel-armani` | The stone façade of the Armani Hotel Milano on Via Manzoni. | La facciata in pietra dell’Armani Hotel Milano in via Manzoni. |
+| `milan-hotel-mandarin-oriental` | The entrance of the Mandarin Oriental, Milan, on a quiet street near Brera. | L’ingresso del Mandarin Oriental, Milan, in una via tranquilla vicino a Brera. |
+| `milan-hotel-bulgari` | The garden terrace of the Bulgari Hotel Milano in Brera. | La terrazza sul giardino del Bulgari Hotel Milano, a Brera. |
+| `milan-hotel-palazzo-parigi` | The grand entrance hall of Palazzo Parigi hotel in Milan. | La grande hall d’ingresso dell’hotel Palazzo Parigi a Milano. |
+| `milan-hotel-principe-di-savoia` | The white façade of the Hotel Principe di Savoia on Piazza della Repubblica in Milan. | La facciata bianca dell’Hotel Principe di Savoia in piazza della Repubblica a Milano. |
+| `milan-hotel-excelsior-gallia` | The Belle Époque façade of the Excelsior Hotel Gallia beside Milano Centrale station. | La facciata Belle Époque dell’Excelsior Hotel Gallia accanto alla stazione di Milano Centrale. |
+
+## Pending photos (Milan blog posts)
+
+One lead image per post, 16:9, at least 1600×900. File name = key, in
+`src/assets/blog/`; then set `photo: true` on the post's `image` in
+`src/data/blog-milan.ts`.
+
+| Key | English | Italiano |
+|---|---|---|
+| `milan-taxi-rank-centrale-station` | White taxis waiting in line at the rank outside Milano Centrale station. | Taxi bianchi in fila al posteggio davanti alla stazione di Milano Centrale. |
+| `milan-malpensa-arrivals-chauffeur` | A chauffeur holding a name board for arriving passengers in the arrivals hall at Milan Malpensa. | Un autista con un cartello con il nome dei passeggeri nella sala arrivi di Milano Malpensa. |
+| `milan-taxi-or-uber-street` | A traveller with a phone and a suitcase on the kerb of a busy street in central Milan as a white taxi pulls up. | Una viaggiatrice con telefono e valigia sul marciapiede di una via trafficata del centro di Milano, mentre arriva un taxi bianco. |
+| `milan-taxi-fares-meter` | The lit taxi meter on the dashboard of a Milan taxi at night, with city lights blurred beyond the windscreen. | Il tassametro acceso sul cruscotto di un taxi milanese di notte, con le luci della città sfocate oltre il parabrezza. |
+| `milan-day-trip-lake-como-bellagio` | A black saloon on the lakeside road near Bellagio on Lake Como, with villas and mountains across the water. | Una berlina nera sulla strada del lago vicino a Bellagio, sul Lago di Como, con ville e montagne sull’altra sponda. |
 
 
 Images with no alt text on purpose (decorative, `alt=""` or `aria-hidden`):

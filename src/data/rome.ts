@@ -21,67 +21,8 @@ type L = Record<Lang, string>;
 export const ROME_ID = 'loc-rome';
 
 // ---------------------------------------------------------------------------
-// Vehicle classes. Also the "Vehicle type" options of the Rome booking form
-// (stored as `formValue`, the English name, so alerts read the same in both
-// languages). Bags are not confirmed yet: PLACEHOLDER(VEHICLE:loc-rome-*-bags).
-// Prices: PLACEHOLDER(PRICE:loc-rome-*-from). Wi-Fi is shown where the owner
-// listed it; confirm per vehicle: PLACEHOLDER(VERIFY:loc-rome-fleet-wifi).
-
-export interface VehicleClass {
-  id: string;
-  formValue: string;
-  name: L;
-  pax: L;
-  wifi: boolean;
-  comfort: L;
-  bestFor: Record<Lang, string[]>;
-  /** Photo file name in src/assets/rome/ once it exists; also the alt-text key. */
-  altKey: string;
-  photo?: boolean;
-}
-
-export const romeVehicles: VehicleClass[] = [
-  {
-    id: 'sedan',
-    formValue: 'Sedan',
-    name: { en: 'Sedan', it: 'Berlina' },
-    pax: { en: 'Up to 3 passengers', it: 'Fino a 3 passeggeri' },
-    wifi: false,
-    comfort: { en: 'Standard comfort', it: 'Comfort standard' },
-    bestFor: { en: ['Airport', 'City'], it: ['Aeroporto', 'Città'] },
-    altKey: 'rome-sedan-private-transfer',
-  },
-  {
-    id: 'executive',
-    formValue: 'Executive / Business',
-    name: { en: 'Executive / Business', it: 'Executive / Business' },
-    pax: { en: 'Up to 3 passengers', it: 'Fino a 3 passeggeri' },
-    wifi: true,
-    comfort: { en: 'Business class', it: 'Classe business' },
-    bestFor: { en: ['Airport', 'Business'], it: ['Aeroporto', 'Lavoro'] },
-    altKey: 'rome-executive-car-chauffeur',
-  },
-  {
-    id: 'minivan',
-    formValue: 'Minivan (7-8)',
-    name: { en: 'Minivan', it: 'Monovolume' },
-    pax: { en: '7–8 passengers', it: '7–8 passeggeri' },
-    wifi: true,
-    comfort: { en: 'Spacious', it: 'Spaziosa' },
-    bestFor: { en: ['Families', 'Groups', 'Airport'], it: ['Famiglie', 'Gruppi', 'Aeroporto'] },
-    altKey: 'rome-minivan-family-transfer',
-  },
-  {
-    id: 'van',
-    formValue: 'Van (up to 16)',
-    name: { en: 'Van', it: 'Minibus' },
-    pax: { en: 'Up to 16 passengers', it: 'Fino a 16 passeggeri' },
-    wifi: true,
-    comfort: { en: 'Group comfort', it: 'Comfort per gruppi' },
-    bestFor: { en: ['Groups', 'Events', 'Cruise port'], it: ['Gruppi', 'Eventi', 'Porto crociere'] },
-    altKey: 'rome-van-group-transfer',
-  },
-];
+// Vehicles: the shared premium fleet in src/data/fleet.ts (also the booking
+// form's "Vehicle type" options). Its placeholders are tracked there.
 
 // ---------------------------------------------------------------------------
 // Airports, port and station. Fares: PLACEHOLDER(PRICE:loc-rome-{id}-from).
@@ -342,15 +283,16 @@ const en = {
   },
   fleet: {
     eyebrow: 'Fleet',
-    heading: 'Vehicles for every Rome transfer',
-    lead: 'Four classes, sized to your group and your luggage. Prices are per vehicle, not per person.',
+    heading: 'Premium chauffeur cars in Rome',
+    lead: 'Luxury saloons and a luxury van, each with a professional chauffeur, sized to your group and your luggage. Prices are per vehicle, not per person.',
+    passengers: 'Passengers',
     bags: 'Bags',
     ac: 'Air conditioning',
-    wifi: 'Wi-Fi',
     childSeat: 'Child seat on request',
     bestFor: 'Best for',
     from: 'From',
     book: 'Book this vehicle',
+    similar: 'Each car is the model shown or a similar premium model of the same class.',
   },
   airports: {
     eyebrow: 'Airports, port & station',
@@ -377,9 +319,7 @@ const en = {
   },
   why: {
     eyebrow: 'Why us',
-    headingBefore: 'Why ',
-    headingMark: 'riders choose',
-    headingAfter: ' Ciao Italian Taxi Service',
+    heading: 'Why riders choose Ciao Italian Taxi Service',
     lead: 'Your driver watches your flight, knows the city and quotes one price that does not move.',
     cards: [
       { icon: 'timer' as IconName, title: 'Punctual', body: 'Pickups timed to your real landing time.' },
@@ -394,7 +334,7 @@ const en = {
   },
   destinations: {
     eyebrow: 'Sights',
-    heading: 'Top destinations in Rome',
+    heading: 'Top ==destinations== in Rome',
     lead: 'Where most of our Rome rides end up. We drop you as close as the traffic rules allow.',
     prev: 'Previous destinations',
     next: 'Next destinations',
@@ -402,14 +342,14 @@ const en = {
   },
   hotels: {
     eyebrow: 'Hotels',
-    heading: 'Popular hotels in Rome',
+    heading: 'Top ==hotels== in Rome',
     lead: 'Staying at one of these? Tell us and the address is filled in for you. Listed for convenience only, with no partnership implied.',
     type: 'Hotel',
     starsLabel: '{n}-star hotel',
     book: 'Book taxi to this hotel',
     prev: 'Previous hotels',
     next: 'Next hotels',
-    label: 'Popular hotels in Rome',
+    label: 'Top hotels in Rome',
   },
   visit: {
     eyebrow: 'Rome',
@@ -508,15 +448,16 @@ const it: RomeCopy = {
   },
   fleet: {
     eyebrow: 'Flotta',
-    heading: 'Veicoli per ogni transfer a Roma',
-    lead: 'Quattro categorie, scelte in base al gruppo e ai bagagli. I prezzi sono per veicolo, non a persona.',
+    heading: 'Auto di lusso con autista a Roma',
+    lead: 'Berline di lusso e un van premium, sempre con autista professionista, scelti in base al gruppo e ai bagagli. I prezzi sono per veicolo, non a persona.',
+    passengers: 'Passeggeri',
     bags: 'Bagagli',
     ac: 'Aria condizionata',
-    wifi: 'Wi-Fi',
     childSeat: 'Seggiolino su richiesta',
     bestFor: 'Ideale per',
     from: 'Da',
     book: 'Prenota questo veicolo',
+    similar: 'Ogni auto è il modello indicato o un modello premium equivalente della stessa categoria.',
   },
   airports: {
     eyebrow: 'Aeroporti, porto e stazione',
@@ -543,9 +484,7 @@ const it: RomeCopy = {
   },
   why: {
     eyebrow: 'Perché noi',
-    headingBefore: 'Perché ',
-    headingMark: 'i viaggiatori scelgono',
-    headingAfter: ' Ciao Italian Taxi Service',
+    heading: 'Perché i viaggiatori scelgono Ciao Italian Taxi Service',
     lead: 'L’autista segue il vostro volo, conosce la città e vi dà un prezzo che non cambia.',
     cards: [
       { icon: 'timer' as IconName, title: 'Puntuali', body: 'Ritiro calibrato sull’atterraggio reale.' },
@@ -560,7 +499,7 @@ const it: RomeCopy = {
   },
   destinations: {
     eyebrow: 'Da vedere',
-    heading: 'Le mete più amate di Roma',
+    heading: 'Le ==mete più amate== di Roma',
     lead: 'Dove finiscono quasi tutte le nostre corse a Roma. Vi lasciamo il più vicino possibile, nei limiti del traffico.',
     prev: 'Mete precedenti',
     next: 'Mete successive',
@@ -568,14 +507,14 @@ const it: RomeCopy = {
   },
   hotels: {
     eyebrow: 'Hotel',
-    heading: 'Hotel più richiesti a Roma',
+    heading: 'I ==migliori hotel== di Roma',
     lead: 'Alloggiate in uno di questi? Ditecelo e l’indirizzo viene inserito per voi. Elenco a puro titolo di comodità, senza alcuna partnership.',
     type: 'Hotel',
     starsLabel: 'Hotel {n} stelle',
     book: 'Prenota il taxi per questo hotel',
     prev: 'Hotel precedenti',
     next: 'Hotel successivi',
-    label: 'Hotel più richiesti a Roma',
+    label: 'I migliori hotel di Roma',
   },
   visit: {
     eyebrow: 'Roma',
@@ -640,9 +579,15 @@ const it: RomeCopy = {
 
 export const romeCopy: Record<Lang, RomeCopy> = { en, it };
 
-/** Text for FAQPage JSON-LD: the visible answer without its [[PLACEHOLDER]] markers. */
+/**
+ * Text for FAQPage JSON-LD: the visible answer without its [[PLACEHOLDER]]
+ * markers, and with in-text links ([anchor](target)) reduced to their anchor.
+ */
 export function withoutMarkers(text: string): string {
-  return text.replace(/\s*\[\[[^\]]+\]\]/g, '').trim();
+  return text
+    .replace(/\s*\[\[[^\]]+\]\]/g, '')
+    .replace(/\[([^\]]+)\]\([^)\s]+\)/g, '$1')
+    .trim();
 }
 
 /** "275 km" / "275 km": the same in both languages, but kept in one place. */

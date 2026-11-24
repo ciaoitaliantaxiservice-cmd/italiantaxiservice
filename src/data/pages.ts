@@ -7,9 +7,10 @@
 import { routes, ui, LANGS, type Lang, type RouteKey } from './i18n';
 import { meta, alternatesFor, alternatesForRoute, type Alternate } from './seo';
 import { cities, cityPath, type City } from './cities';
-import { faqSchema, romeServiceSchema, blogPostingSchema, type Crumb } from './schema';
+import { faqSchema, romeServiceSchema, milanServiceSchema, blogPostingSchema, type Crumb } from './schema';
 import { t } from './content';
 import { romeCopy, withoutMarkers } from './rome';
+import { milanCopy } from './milan';
 import { posts, postPath, type BlogPost } from './blog';
 
 export type PageKind =
@@ -21,6 +22,7 @@ export type PageKind =
   | 'notFound'
   | 'city'
   | 'rome'
+  | 'milan'
   | 'post';
 
 export interface PageDef {
@@ -49,7 +51,7 @@ export interface PageDef {
   book?: { href: string; label: string };
 }
 
-function routePage(kind: Exclude<PageKind, 'city' | 'rome' | 'post'>, lang: Lang): PageDef {
+function routePage(kind: Exclude<PageKind, 'city' | 'rome' | 'milan' | 'post'>, lang: Lang): PageDef {
   const m = meta[kind][lang];
   const l = ui[lang];
   const crumbs =
@@ -105,6 +107,36 @@ function romePage(city: City, lang: Lang): PageDef {
   };
 }
 
+/** The full Milan location page (src/data/milan.ts). Indexable. */
+function milanPage(city: City, lang: Lang): PageDef {
+  const path = cityPath(city, lang);
+  const paths = { en: cityPath(city, 'en'), it: cityPath(city, 'it') };
+  const c = milanCopy[lang];
+  return {
+    kind: 'milan',
+    lang,
+    title: c.meta.title,
+    description: c.meta.description,
+    path,
+    alternates: alternatesFor(paths),
+    altPaths: paths,
+    current: 'locations',
+    noindex: false,
+    crumbs: [
+      { name: ui[lang].home, path: routes.home[lang] },
+      { name: ui[lang].locations, path: routes.locations[lang] },
+      { name: city.name[lang], path },
+    ],
+    extraSchema: [
+      milanServiceSchema(lang, path),
+      // Exactly the visible questions and answers, minus markers and link syntax.
+      faqSchema(c.faq.items.map((f) => ({ q: f.q, a: withoutMarkers(f.a) }))),
+    ],
+    city,
+    book: { href: '#quote-form', label: c.bookNow },
+  };
+}
+
 function postPage(post: BlogPost, lang: Lang): PageDef {
   const path = postPath(post, lang);
   const paths = { en: postPath(post, 'en'), it: postPath(post, 'it') };
@@ -138,6 +170,7 @@ function postPage(post: BlogPost, lang: Lang): PageDef {
 
 function cityPage(city: City, lang: Lang): PageDef {
   if (city.id === 'rome') return romePage(city, lang);
+  if (city.id === 'milan') return milanPage(city, lang);
   const path = cityPath(city, lang);
   const name = city.name[lang];
   const paths = { en: cityPath(city, 'en'), it: cityPath(city, 'it') };

@@ -264,6 +264,15 @@ export default function QuoteForm({ lang, heading, headingLevel = 2, note }: Pro
           </p>
         </div>
 
+        {/* Sent as return_trip = true (QuoteFormScript), shown in the alert. */}
+        <div className="field field--check">
+          <input type="checkbox" id="qf-return" name="return_trip" value="yes" aria-describedby="qf-return-hint" />
+          <label htmlFor="qf-return">
+            <strong>{f.returnTrip}</strong>
+            <span className="field__hint" id="qf-return-hint">{` (${f.returnHint})`}</span>
+          </label>
+        </div>
+
         <div className="field field--check">
           <input
             type="checkbox"

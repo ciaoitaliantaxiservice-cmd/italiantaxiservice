@@ -273,6 +273,8 @@ export const en = {
     flightHelp: 'Optional, but it lets us track delays and hold the car.',
     notes: 'Anything else we should know',
     notesHelp: 'Child seats, mobility needs, extra stops, oversized luggage.',
+    returnTrip: 'Return trip',
+    returnHint: 'add the return date and time in the notes',
     optional: 'optional',
     required: 'required',
     submit: 'Send my request',

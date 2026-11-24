@@ -52,6 +52,47 @@ Today these cards only have a "Book" button that fills in the form.
 | Rome → Tivoli | `/en/routes/rome-to-tivoli/` | `/it/tratte/roma-tivoli/` |
 | Rome → Civitavecchia | `/en/routes/rome-to-civitavecchia/` | `/it/tratte/roma-civitavecchia/` |
 
+## Milan page: "Cities near Milan" (`src/components/sections/MilanBody.tsx`, data in `src/data/milan.ts` → `milanNearby`)
+
+| City | EN page to create | IT page to create | Status |
+|---|---|---|---|
+| Monza | `/en/locations/monza/` | `/it/localita/monza/` | `href="#"` |
+| Pavia | `/en/locations/pavia/` | `/it/localita/pavia/` | `href="#"` |
+| Como | `/en/locations/como/` (or the planned `/en/locations/lake-como/`) | `/it/localita/como/` (or `/it/localita/lago-di-como/`) | `href="#"` |
+| Bergamo | `/en/locations/bergamo/` | `/it/localita/bergamo/` | `href="#"` |
+| Lugano | `/en/cross-border-transfers/milan-to-lugano/` (playbook §2.2) | `/it/transfer-internazionali/milano-lugano/` | `href="#"` |
+| Brescia | `/en/locations/brescia/` | `/it/localita/brescia/` | `href="#"` |
+| Turin | `/en/locations/turin/` | `/it/localita/torino/` | `href="#"` |
+| Verona | `/en/locations/verona/` | `/it/localita/verona/` | `href="#"` |
+
+## Milan page: "Top destinations in Milan" (`milanDestinations`)
+
+Same open question as Rome: no URL pattern for sight pages yet.
+
+| Destination | Status |
+|---|---|
+| Duomo di Milano | `href="#"` |
+| Galleria Vittorio Emanuele II | `href="#"` |
+| The Last Supper / Il Cenacolo | `href="#"` |
+| Navigli | `href="#"` |
+| Brera | `href="#"` |
+| Porta Nuova | `href="#"` |
+| Castello Sforzesco | `href="#"` |
+| Teatro alla Scala | `href="#"` |
+
+## Milan page: cards that should link to their own page once built
+
+Today these only fill in the booking form.
+
+| Card | EN page to create | IT page to create |
+|---|---|---|
+| Malpensa (MXP) | `/en/airport-transfers/milan-malpensa/` | `/it/transfer-aeroporto/milano-malpensa/` |
+| Linate (LIN) | `/en/airport-transfers/milan-linate/` | `/it/transfer-aeroporto/milano-linate/` |
+| Bergamo (BGY) | `/en/airport-transfers/milan-bergamo/` | `/it/transfer-aeroporto/bergamo-orio-al-serio/` |
+| Milan → Como, Bellagio, Stresa, Turin, Verona, Venice | `/en/routes/milan-to-{city}/` | `/it/tratte/milano-{citta}/` |
+| Milan → Serravalle, Fidenza Village, Franciacorta Village | decide: route pages or day-trip pages | |
+| Milan → Lugano | `/en/cross-border-transfers/milan-to-lugano/` | `/it/transfer-internazionali/milano-lugano/` |
+
 The route and airport hubs (`/en/routes/`, `/en/airport-transfers/` and
 their IT versions) must go live first (playbook §2.2: children never exist
 without their hub). The homepage "Where We Serve" links to Lake Como, Pisa,

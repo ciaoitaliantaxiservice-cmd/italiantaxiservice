@@ -171,7 +171,7 @@ city page will compete.
 | Area | EN primary | IT primary |
 |---|---|---|
 | Rome | rome airport transfer / fiumicino to rome private transfer | transfer fiumicino roma centro |
-| Milan | malpensa airport transfer private / milan chauffeur service | transfer malpensa milano centro |
+| Milan (**built 24 Nov 2026**, indexable; see below) | milan taxi service | taxi Milano / transfer privato Milano |
 | Florence | florence airport transfer / private driver tuscany wine tour | transfer aeroporto firenze / autista privato chianti |
 | Venice | venice airport transfer piazzale roma | transfer aeroporto venezia piazzale roma |
 | Naples | naples airport transfer / naples to pompeii private driver | transfer aeroporto napoli / napoli pompei con autista |
@@ -187,6 +187,19 @@ Per city page, when written:
   already have;
 - at least 400 words of text that exists nowhere else on the site, in either
   language, before the flag is flipped.
+
+### Milan page and Milan guides (owner keyword brief, 24 Nov 2026)
+
+One primary per URL, so the page and the five guides do not compete:
+
+| URL (EN / IT) | EN primary | Also covers (EN) | IT primary |
+|---|---|---|---|
+| `/en/locations/milan/` · `/it/localita/milano/` | milan taxi service | milan taxi, milan airport taxi service, taxi transfer from milan airport, milan bergamo airport taxi service, milan taxi booking online, book a taxi in milan, best taxi service in milan, milan taxi service number | taxi Milano, transfer privato Milano |
+| `how-to-get-a-taxi-in-milan` · `come-prendere-un-taxi-a-milano` | getting a taxi in milan | how to order a taxi in milan, which taxi service works in milan | come prendere un taxi a Milano |
+| `milan-airport-taxi-malpensa-linate-bergamo` · `taxi-aeroporti-milano-malpensa-linate-bergamo` | taxi from milan airport | taxi milan airport, malpensa / linate / bergamo transfer | taxi aeroporti Milano |
+| `taxi-or-uber-in-milan` · `taxi-o-uber-a-milano` | taxi or uber in milan | does uber operate in milan | taxi o Uber Milano |
+| `milan-taxi-fares-prices` · `tariffe-taxi-milano-prezzi` | are taxis expensive in milan | milan taxi fares, malpensa flat fare | tariffe taxi Milano |
+| `best-day-trips-from-milan-by-car` · `gite-da-milano-con-autista` | day trips from milan by car | lake como, outlets, lugano by chauffeur | gite da Milano con autista |
 
 ---
 

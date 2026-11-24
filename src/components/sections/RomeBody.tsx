@@ -18,12 +18,13 @@ import Picture from '../Picture';
 import BookingForm from '../BookingForm';
 import CarouselScript from '../CarouselScript';
 import RichText from '../RichText';
+import Marked, { unmarked } from '../Marked';
 import { ImagePlaceholder, Marker, PricePlaceholder } from '../Placeholders';
+import { fleet, vehiclePlaceholderIds } from '../../data/fleet';
 import { altFor } from '../../data/image-alt';
 import { routes, type Lang } from '../../data/i18n';
 import {
   romeCopy,
-  romeVehicles,
   romeGateways,
   romeRoutes,
   romeNearby,
@@ -65,11 +66,11 @@ export default function RomeBody({ lang }: { lang: Lang }) {
           </ul>
         </div>
         <div className="wrap rome-hero__form">
-          <BookingForm lang={lang} />
+          <BookingForm lang={lang} copy={c.form} />
         </div>
       </section>
 
-      {/* 2. Fleet */}
+      {/* 2. Fleet: the shared premium fleet (src/data/fleet.ts). */}
       <section className="section" id="fleet" aria-labelledby="rome-fleet-heading">
         <div className="wrap">
           <div className="section__head">
@@ -82,64 +83,59 @@ export default function RomeBody({ lang }: { lang: Lang }) {
             <p>{c.fleet.lead}</p>
           </div>
 
-          <ul className="rgrid rgrid--4">
-            {romeVehicles.map((v) => {
+          <ul className="rgrid rgrid--3">
+            {fleet.map((v) => {
               // Called for pending photos too, so the alt row must exist first.
               const alt = altFor(v.altKey, lang);
+              const ph = vehiclePlaceholderIds(v);
               return (
                 <li className="rcard" key={v.id}>
                   <div className="rcard__media">
-                    {/* PLACEHOLDER(IMG:loc-rome-{id}) until the photo is in src/assets/rome/ */}
+                    {/* PLACEHOLDER(IMG:vehicle-{id}) until the photo is in src/assets/ */}
                     {v.photo ? (
                       <Picture
-                        name={v.altKey}
+                        name={v.photo}
                         alt={alt}
-                        sizes="(min-width: 64rem) 300px, (min-width: 40rem) 45vw, 90vw"
+                        sizes="(min-width: 64rem) 400px, (min-width: 40rem) 45vw, 90vw"
                         loading="lazy"
                       />
                     ) : (
-                      <ImagePlaceholder id={`${ROME_ID}-${v.id}`} note={v.name.en} />
+                      <ImagePlaceholder id={ph.img} note={v.name.en} />
                     )}
                   </div>
                   <div className="rcard__body">
+                    <p className="rcard__tier">{v.tier[lang]}</p>
                     <h3 className="rcard__title">{v.name[lang]}</h3>
                     <ul className="chips">
                       <li>
                         <Icon name="users" />
-                        <span>{v.pax[lang]}</span>
+                        <span>
+                          {`${c.fleet.passengers}: `}
+                          {/* PLACEHOLDER(VEHICLE:{id}-pax) */}
+                          {v.passengers ?? <Marker type="VEHICLE" id={ph.pax} />}
+                        </span>
                       </li>
                       <li>
                         <Icon name="luggage" />
                         <span>
                           {`${c.fleet.bags}: `}
-                          {/* PLACEHOLDER(VEHICLE:loc-rome-{id}-bags) */}
-                          <Marker type="VEHICLE" id={`${ROME_ID}-${v.id}-bags`} />
+                          {/* PLACEHOLDER(VEHICLE:{id}-bags) */}
+                          {v.suitcases ?? <Marker type="VEHICLE" id={ph.bags} />}
                         </span>
                       </li>
                       <li>
                         <Icon name="air-vent" />
                         <span>{c.fleet.ac}</span>
                       </li>
-                      {v.wifi && (
-                        // PLACEHOLDER(VERIFY:loc-rome-fleet-wifi)
-                        <li data-placeholder={`VERIFY:${ROME_ID}-fleet-wifi`}>
-                          <Icon name="wifi" />
-                          <span>{c.fleet.wifi}</span>
-                        </li>
-                      )}
                       <li>
                         <Icon name="baby" />
                         <span>{c.fleet.childSeat}</span>
-                      </li>
-                      <li>
-                        <Icon name="armchair" />
-                        <span>{v.comfort[lang]}</span>
                       </li>
                     </ul>
                     <div className="rcard__best">
                       <span className="label">{c.fleet.bestFor}</span>
                       <ul className="chips chips--soft">
-                        {v.bestFor[lang].map((b) => (
+                        {v.bestTags[lang].map((b) => (
                           <li key={b}>{b}</li>
                         ))}
                       </ul>
@@ -147,8 +143,12 @@ export default function RomeBody({ lang }: { lang: Lang }) {
                     <div className="rcard__foot">
                       <p className="price">
                         <span>{c.fleet.from}</span>{' '}
-                        {/* PLACEHOLDER(PRICE:loc-rome-{id}-from) */}
-                        <PricePlaceholder id={`${ROME_ID}-${v.id}-from`} note={`${v.name.en}, one way`} />
+                        {/* PLACEHOLDER(PRICE:{id}-from) */}
+                        {v.priceFrom !== null ? (
+                          `€${v.priceFrom}`
+                        ) : (
+                          <PricePlaceholder id={ph.price} note={`${v.name.en}, one way`} />
+                        )}
                       </p>
                       <a
                         className="btn btn--outline"
@@ -164,6 +164,7 @@ export default function RomeBody({ lang }: { lang: Lang }) {
               );
             })}
           </ul>
+          <p className="note rgrid__note">{c.fleet.similar}</p>
         </div>
       </section>
 
@@ -320,10 +321,8 @@ export default function RomeBody({ lang }: { lang: Lang }) {
               <p className="eyebrow">
                 <span className="label">{c.why.eyebrow}</span>
               </p>
-              <h2 id="rome-why-heading">
-                {c.why.headingBefore}
-                <mark className="hl">{c.why.headingMark}</mark>
-                {c.why.headingAfter}
+              <h2 className="accent-title" id="rome-why-heading">
+                {c.why.heading}
               </h2>
               <p>{c.why.lead}</p>
             </div>
@@ -366,7 +365,7 @@ export default function RomeBody({ lang }: { lang: Lang }) {
                 <span className="label">{c.destinations.eyebrow}</span>
               </p>
               <h2 className="accent-title" id="rome-dest-heading">
-                {c.destinations.heading}
+                <Marked text={c.destinations.heading} />
               </h2>
               <p>{c.destinations.lead}</p>
             </div>
@@ -419,7 +418,7 @@ export default function RomeBody({ lang }: { lang: Lang }) {
                 <span className="label">{c.hotels.eyebrow}</span>
               </p>
               <h2 className="accent-title" id="rome-hotels-heading">
-                {c.hotels.heading}
+                <Marked text={c.hotels.heading} />
               </h2>
               <p>{c.hotels.lead}</p>
             </div>
@@ -518,7 +517,7 @@ export default function RomeBody({ lang }: { lang: Lang }) {
             <p>{c.blog.lead}</p>
           </div>
           <ul className="rgrid rgrid--3">
-            {latestPosts(3).map((post) => (
+            {latestPosts(3, 'rome').map((post) => (
               <li className="post-card" key={post.id}>
                 <p className="post-card__meta">
                   <Icon name="book-open" />
