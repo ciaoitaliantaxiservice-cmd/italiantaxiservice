@@ -189,6 +189,27 @@ export function faqSchema(faqs: { q: string; a: string }[]) {
   };
 }
 
+/**
+ * The contact page. Its subject is the Organization (site-wide node), which
+ * carries the two email addresses and, once it is real, the postal address.
+ * Placeholders never reach JSON-LD, so the address appears here only after
+ * src/data/site.mjs holds real values.
+ */
+export function contactPageSchema(lang: Lang, path: string, name: string, description: string) {
+  const url = absolute(path);
+  return {
+    '@type': 'ContactPage',
+    '@id': `${url}#webpage`,
+    url,
+    name,
+    description,
+    inLanguage: lang,
+    isPartOf: { '@id': SITE_ID },
+    about: { '@id': ORG_ID },
+    mainEntity: { '@id': ORG_ID },
+  };
+}
+
 /** Wraps the page's nodes in a single @graph so one script tag covers the page. */
 export function graph(nodes: unknown[]) {
   return { '@context': 'https://schema.org', '@graph': nodes };

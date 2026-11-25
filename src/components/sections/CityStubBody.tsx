@@ -51,7 +51,7 @@ export default function CityStubBody({ lang, city }: { lang: Lang; city: City })
             <h2 className="title-sm">{copy.stubHeading}</h2>
             <p style={{ marginTop: 'var(--s-2)' }}>{copy.stubBody}</p>
             <div className="btn-row" style={{ marginTop: 'var(--s-6)' }}>
-              <a className="btn btn--primary" href={`${routes.contact[lang]}#quote-form`}>
+              <a className="btn btn--primary" href={`${routes.quote[lang]}#quote-form`}>
                 <Icon name="tag" />
                 {l.getQuote}
               </a>

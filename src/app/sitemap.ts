@@ -19,7 +19,7 @@ interface Entry {
   priority: number;
 }
 
-const indexableRoutes: RouteKey[] = ['home', 'locations', 'blog', 'about', 'contact'];
+const indexableRoutes: RouteKey[] = ['home', 'locations', 'blog', 'about', 'contact', 'quote'];
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const entries: Entry[] = indexableRoutes.map((key) => ({

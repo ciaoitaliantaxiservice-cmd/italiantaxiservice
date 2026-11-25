@@ -25,7 +25,7 @@ export default function MobileBar({
       </a>
       <a
         className="mobile-bar__item mobile-bar__item--cta"
-        href={book?.href ?? `${routes.contact[lang]}#quote-form`}
+        href={book?.href ?? `${routes.quote[lang]}#quote-form`}
       >
         {book?.label ?? l.getQuote}
       </a>

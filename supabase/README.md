@@ -78,7 +78,43 @@ refuses anything but 465.
 | `functions/notify-quote/emails.ts` | Validation and the content of both emails (no I/O). |
 | `functions/notify-quote/deno.json` | Pinned `nodemailer@7.0.13` and `@supabase/supabase-js@2.118.0`. |
 | `migrations/20261123000000_keep_alive.sql` | `keep_alive()`: returns the server time, for the keep-alive ping. Applied 23 Nov 2026. |
-| `config.toml` | Turns off Supabase's JWT check for this function. |
+| `migrations/20261125000000_contact_messages.sql` | `contact_messages`: the contact form's messages (service role only). |
+| `functions/contact-message/index.ts` | The contact form's function: origin, honeypot, 3-second minimum, Turnstile, rate limit, store, email. |
+| `functions/contact-message/message.ts` | Cleaning, validation and the contact alert email (no I/O). |
+| `config.toml` | Turns off Supabase's JWT check for both functions (each does its own checks). |
+
+## Contact form (`contact-message`, added 25 Nov 2026)
+
+The contact page's message form does **not** use `quote_requests`. The
+browser posts it to the Edge Function `contact-message`, which, before
+anything is stored or emailed:
+
+1. accepts only the site's origins (plus localhost; add more with the
+   optional `CONTACT_ALLOWED_ORIGINS` secret);
+2. drops it silently if the hidden `website` field is filled or the form was
+   sent less than 3 seconds after the page loaded (bots get "ok");
+3. cleans and re-validates every field (message at most 1,500 characters);
+4. verifies the **Cloudflare Turnstile** token with
+   `https://challenges.cloudflare.com/turnstile/v0/siteverify` using
+   `TURNSTILE_SECRET_KEY`, and refuses every message if that secret is
+   missing;
+5. allows at most 5 messages per IP per hour (on a hash of the IP).
+
+Then it stores the message in `public.contact_messages` (only the service
+role can read or write it) and emails it with the same Gmail SMTP secrets as
+`notify-quote`: From and To info@, Reply-To the visitor, delivered to
+`ALERT_INBOX`, subject **"Website contact: {First} {Last}"**. `email_status`
+shows `sent` or `failed` (reason in `email_error`).
+
+Turnstile keys (Cloudflare dashboard → Turnstile → Add widget; hostnames
+`www.ciaoitaliantaxiservice.com`, `ciaoitaliantaxiservice.com`, `localhost`):
+
+| Key | Where it goes |
+|---|---|
+| `TURNSTILE_SITE_KEY` (public) | Cloudflare → Workers & Pages → italiantaxiservice → Settings → Build → Variables and secrets. Read at build time; needs a new build to take effect. Locally: `.env.local` (see `.env.example`). |
+| `TURNSTILE_SECRET_KEY` (private) | Supabase secret: `npx -y supabase@3.1.0 secrets set --project-ref $R TURNSTILE_SECRET_KEY=…` |
+
+Without the site key the form validates, then points visitors at email.
 
 ## Keep-alive (free plan pausing)
 
@@ -106,6 +142,7 @@ npx supabase@3.1.0 db query --remote=$R --yes -f supabase/migrations/20261112000
 npx supabase@3.1.0 db query --remote=$R --yes -f supabase/migrations/20261113000000_email_alerts.sql
 npx supabase@3.1.0 db query --remote=$R --yes -f supabase/migrations/20261113010000_notify_webhook.sql
 npx supabase@3.1.0 db query --remote=$R --yes -f supabase/migrations/20261123000000_keep_alive.sql
+npx supabase@3.1.0 db query --remote=$R --yes -f supabase/migrations/20261125000000_contact_messages.sql
 
 # 2. Secrets. WEBHOOK_SECRET must also be stored in Vault as
 #    notify_quote_webhook_secret (see the comment in the webhook migration).
@@ -119,6 +156,7 @@ npx supabase@3.1.0 secrets set --project-ref $R \
 
 # 3. The function
 npx supabase@3.1.0 functions deploy notify-quote --project-ref $R --no-verify-jwt --use-api
+npx supabase@3.1.0 functions deploy contact-message --project-ref $R --no-verify-jwt --use-api
 ```
 
 ## Checking and resending

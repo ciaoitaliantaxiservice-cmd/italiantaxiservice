@@ -222,6 +222,80 @@ export const it = {
   },
 
   contact: {
+    eyebrow: 'Contatti',
+    lead: 'Una domanda su un viaggio, una prenotazione già fatta o qualsiasi altra cosa: scriveteci e una persona vera vi risponde per iscritto, di giorno e di notte.',
+    form: {
+      heading: 'Scriveteci un messaggio',
+      note: 'I campi con * sono obbligatori.',
+      firstName: 'Nome',
+      lastName: 'Cognome',
+      email: 'Email',
+      phone: 'Numero di telefono',
+      phoneHint: 'Facoltativo. Indicate il prefisso internazionale, per esempio +39 o +44.',
+      message: 'Messaggio',
+      counter: '{n} / 1500',
+      consent: 'Acconsento all’uso di questi dati da parte di Ciao Italian Taxi Service per rispondermi.',
+      submit: 'Invia il messaggio',
+      optional: 'facoltativo',
+      errors: {
+        firstName: 'Inserite il vostro nome.',
+        lastName: 'Inserite il vostro cognome.',
+        email: 'Inserite un indirizzo email valido, per esempio nome@esempio.it.',
+        phone: 'Inserite un numero valido: cifre, spazi e un eventuale + con il prefisso internazionale.',
+        message: 'Scrivete il vostro messaggio, fino a 1.500 caratteri.',
+        consent: 'Senza il vostro consenso non possiamo rispondervi.',
+        summary: 'Correggete quanto segue prima di inviare:',
+      },
+      successTitle: 'Messaggio inviato',
+      success: 'Grazie, vi risponderemo entro [[TEXT:contact-response-time]].',
+      failed: 'Ci dispiace, il messaggio non è stato inviato. Riprovate tra poco oppure scriveteci a',
+      tooMany: 'Avete inviato diversi messaggi nell’ultima ora. Riprovate più tardi oppure scriveteci a',
+      verify: 'Il controllo di sicurezza non è stato completato. Attendete un istante e premete di nuovo “Invia il messaggio”.',
+      unconfigured: 'Il modulo non è ancora collegato. Scriveteci a',
+    },
+    cards: {
+      emailHeading: 'Scriveteci',
+      emailNote: 'Entrambi gli indirizzi arrivano allo stesso team.',
+      hoursHeading: 'Attivi 24 ore su 24',
+      hoursBody: 'Rispondiamo a messaggi e prenotazioni 24 ore su 24, 7 giorni su 7, festivi compresi.',
+      addressHeading: 'Indirizzo',
+      quoteHeading: 'Vi serve un preventivo?',
+      quoteBody: 'Per un prezzo fisso su un transfer, inviateci tratta e data con il modulo di preventivo.',
+      quoteCta: 'Richiedi un preventivo',
+    },
+    why: {
+      eyebrow: 'Perché scriverci',
+      heading: 'Un solo team, una risposta scritta',
+      items: [
+        { icon: 'timer' as IconName, title: 'Risposta rapida', body: 'Una persona vera risponde a ogni messaggio, entro [[TEXT:contact-response-time]].' },
+        { icon: 'tag' as IconName, title: 'Prezzi fissi', body: 'Ogni preventivo è un unico prezzo per veicolo, concordato per iscritto prima del viaggio.' },
+        { icon: 'clock' as IconName, title: 'Attivi 24/7', body: 'Scriveteci a qualsiasi ora: rispondiamo giorno e notte, tutto l’anno.' },
+      ],
+    },
+    faq: {
+      eyebrow: 'Domande',
+      heading: 'Prima di scriverci',
+      items: [
+        {
+          q: 'Quanto ci mettete a rispondere?',
+          a: 'Rispondiamo a ogni messaggio entro [[TEXT:contact-response-time]], di giorno e di notte. Se il viaggio è nelle prossime 24 ore, scrivetelo nella prima riga del messaggio.',
+        },
+        {
+          q: 'Posso modificare o cancellare una prenotazione?',
+          a: 'Sì. Scriveteci con il nome della prenotazione e la data del viaggio, e diteci cosa volete cambiare. Ogni modifica è confermata per iscritto, e le condizioni di cancellazione sono indicate nel preventivo scritto.',
+        },
+        {
+          q: 'Come si paga?',
+          a: 'Metodi di pagamento ed eventuale acconto vengono confermati per iscritto con il preventivo, prima di qualsiasi impegno. [[TEXT:contact-faq-payment]]',
+        },
+        {
+          q: 'Ho dimenticato qualcosa in auto. Cosa faccio?',
+          a: 'Scriveteci appena potete con la data, la tratta e una descrizione dell’oggetto. Verifichiamo con l’autista e vi rispondiamo con le indicazioni per riaverlo.',
+        },
+      ],
+    },
+  },
+  quote: {
     lead:
       'Vi serve un transfer privato in Italia? Evitate la coda del taxi all’aeroporto di Fiumicino o Ciampino, prenotate un servizio con autista tra una città e l’altra o il transfer da Napoli alla Costiera Amalfitana. Compilate il modulo per una tariffa fissa: rispondiamo 24 ore su 24, 7 giorni su 7.',
     formHeading: 'Richiedete un preventivo per il transfer privato',

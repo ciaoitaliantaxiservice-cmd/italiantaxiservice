@@ -22,7 +22,7 @@ const NOSCRIPT_CSS =
   '<style>.coverage__map { display: none; } .coverage__lists { position: static; width: auto; height: auto; clip-path: none; white-space: normal; display: grid; gap: 1.5rem; margin-top: 2rem; color: #F4F5F0; } .coverage__lists h3 { color: #FFFFFF; }</style>';
 
 export default function CoverageMap({ lang }: { lang: Lang }) {
-  const c = t(lang).contact.coverage;
+  const c = t(lang).quote.coverage;
 
   const config = {
     center: MAP_CENTER,

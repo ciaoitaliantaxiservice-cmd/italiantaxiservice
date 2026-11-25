@@ -75,13 +75,28 @@ export const meta: Record<RouteKey, MetaByLang> = {
   },
   contact: {
     en: {
-      title: 'Private Transfer Italy 24/7: Contact & Quote | Ciao Italian Taxi Service',
+      title: 'Contact Us: Email & 24/7 Support | Ciao Italian Taxi Service',
+      description:
+        'Contact Ciao Italian Taxi Service: send us a message, or email info@ or booking@, and our team replies in writing. We answer 24 hours a day, 7 days a week.',
+      h1: 'Contact us',
+    },
+    it: {
+      title: 'Contattaci: email e assistenza 24/7 | Ciao Italian Taxi Service',
+      description:
+        'Contatta Ciao Italian Taxi Service: scriveteci con il modulo o all’indirizzo info@ o booking@, e vi rispondiamo per iscritto, 24 ore su 24, tutti i giorni.',
+      h1: 'Contattaci',
+    },
+  },
+  /** The quote form's page: the wording the contact page carried until 25 Nov 2026. */
+  quote: {
+    en: {
+      title: 'Private Transfer Italy 24/7: Get a Quote | Ciao Italian Taxi Service',
       description:
         'Book a private transfer in Italy 24 hours a day: Rome Fiumicino airport pickups, chauffeur service between cities and Naples to Amalfi Coast transfers.',
       h1: 'Private transfer in Italy: get a quote 24/7',
     },
     it: {
-      title: 'Transfer privato Italia 24 ore: contatti | Ciao Italian Taxi Service',
+      title: 'Transfer privato Italia 24 ore: preventivo | Ciao Italian Taxi Service',
       description:
         'Transfer privato in Italia 24 ore su 24: ritiri all’aeroporto di Fiumicino e Ciampino, servizio con autista e transfer da Napoli alla Costiera Amalfitana.',
       h1: 'Transfer privato in Italia: preventivo 24 ore su 24',

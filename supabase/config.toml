@@ -5,3 +5,9 @@ project_id = "zuutmiilqhtqgfvowlns"
 # Called by the Database Webhook, not by browsers. It checks its own
 # secret (x-webhook-secret), so Supabase's JWT check is switched off.
 verify_jwt = false
+
+[functions.contact-message]
+# Called by browsers from the contact page. It does its own checks (allowed
+# origin, Cloudflare Turnstile, honeypot, rate limit), so Supabase's JWT
+# check is switched off.
+verify_jwt = false

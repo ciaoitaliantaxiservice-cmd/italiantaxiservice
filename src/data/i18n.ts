@@ -13,6 +13,8 @@ export const routes = {
   blog: { en: '/en/blog/', it: '/it/blog/' },
   about: { en: '/en/about/', it: '/it/chi-siamo/' },
   contact: { en: '/en/contact/', it: '/it/contatti/' },
+  /** The quote form's own page (moved off the contact page, 25 Nov 2026). */
+  quote: { en: '/en/get-a-quote/', it: '/it/preventivo/' },
   notFound: { en: '/en/404/', it: '/it/404/' },
 } as const;
 
@@ -44,7 +46,7 @@ export const ui = {
     emailUs: 'Email us',
     menu: 'Menu',
     closeMenu: 'Close',
-    quote: 'Quote',
+    quote: 'Get a quote',
     switchLanguage: 'Switch language',
     viewInItalian: 'Leggi in italiano',
     footerLegal: 'All rights reserved.',

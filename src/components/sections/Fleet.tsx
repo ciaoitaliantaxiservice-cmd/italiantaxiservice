@@ -131,7 +131,7 @@ export default function Fleet({ lang }: { lang: Lang }) {
                   <div>
                     <a
                       className="btn btn--primary"
-                      href={`${routes.contact[lang]}?vehicle=${v.id}#quote-form`}
+                      href={`${routes.quote[lang]}?vehicle=${v.id}#quote-form`}
                     >
                       <Icon name="car" />
                       {v.cta[lang]}

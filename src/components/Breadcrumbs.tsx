@@ -5,15 +5,17 @@ interface Props {
   lang: Lang;
   /** Includes the current page as the final item. */
   crumbs: Crumb[];
+  /** Extra class, e.g. breadcrumbs--on-dark inside a dark hero. */
+  className?: string;
 }
 
 /**
  * Visible breadcrumbs. The matching BreadcrumbList JSON-LD is emitted by the
  * page shell from the same array, so the two can never drift apart.
  */
-export default function Breadcrumbs({ lang, crumbs }: Props) {
+export default function Breadcrumbs({ lang, crumbs, className }: Props) {
   return (
-    <nav className="breadcrumbs" aria-label={ui[lang].breadcrumb}>
+    <nav className={['breadcrumbs', className].filter(Boolean).join(' ')} aria-label={ui[lang].breadcrumb}>
       <div className="wrap">
         <ol>
           {crumbs.map((crumb, i) => (

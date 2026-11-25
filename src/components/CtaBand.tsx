@@ -8,7 +8,7 @@ interface Props {
   /** Override the default heading/body when a page needs its own wording. */
   heading?: string;
   body?: string;
-  /** The red action: defaults to the contact page's quote form. */
+  /** The red action: defaults to the Get a quote page's form. */
   quote?: { href: string; label: string };
 }
 
@@ -24,7 +24,7 @@ export default function CtaBand({ lang, heading, body, quote }: Props) {
           <p className="note">{c.note}</p>
         </div>
         <div className="cta-band__actions">
-          <a className="btn btn--primary btn--lg" href={quote?.href ?? `${routes.contact[lang]}#quote-form`}>
+          <a className="btn btn--primary btn--lg" href={quote?.href ?? `${routes.quote[lang]}#quote-form`}>
             <Icon name="tag" />
             {quote?.label ?? l.getQuote}
           </a>

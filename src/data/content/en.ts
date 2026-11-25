@@ -216,7 +216,82 @@ export const en = {
     ],
   },
 
+  /** The contact page (message form). The quote form's page copy is `quote` below. */
   contact: {
+    eyebrow: 'Contact',
+    lead: 'A question about a trip, a booking you already have, or anything else: write to us and a real person replies in writing, day or night.',
+    form: {
+      heading: 'Send us a message',
+      note: 'Fields marked * are required.',
+      firstName: 'First name',
+      lastName: 'Last name',
+      email: 'Email',
+      phone: 'Contact number',
+      phoneHint: 'Optional. Include your country code, for example +44 or +39.',
+      message: 'Message',
+      counter: '{n} / 1500',
+      consent: 'I agree to Ciao Italian Taxi Service using these details to reply to me.',
+      submit: 'Send message',
+      optional: 'optional',
+      errors: {
+        firstName: 'Please enter your first name.',
+        lastName: 'Please enter your last name.',
+        email: 'Please enter a valid email address, for example name@example.com.',
+        phone: 'Please enter a valid number: digits, spaces and an optional + with the country code.',
+        message: 'Please write your message, up to 1,500 characters.',
+        consent: 'We need your agreement before we can reply to you.',
+        summary: 'Please fix the following before sending:',
+      },
+      successTitle: 'Message sent',
+      success: 'Thanks, we’ll reply within [[TEXT:contact-response-time]].',
+      failed: 'Sorry, your message could not be sent. Please try again in a moment, or email us at',
+      tooMany: 'You have sent several messages in the last hour. Please try again later, or email us at',
+      verify: 'The security check did not complete. Please wait a moment and press “Send message” again.',
+      unconfigured: 'This form is not connected yet. Please email us at',
+    },
+    cards: {
+      emailHeading: 'Email us',
+      emailNote: 'Both addresses reach the same team.',
+      hoursHeading: 'Open 24/7',
+      hoursBody: 'We answer messages and bookings 24 hours a day, 7 days a week, holidays included.',
+      addressHeading: 'Address',
+      quoteHeading: 'Need a quote instead?',
+      quoteBody: 'For a fixed price on a transfer, send your route and date with our quote form.',
+      quoteCta: 'Get a quote',
+    },
+    why: {
+      eyebrow: 'Why write to us',
+      heading: 'One team, one written answer',
+      items: [
+        { icon: 'timer' as IconName, title: 'Fast reply', body: 'A real person answers every message, within [[TEXT:contact-response-time]].' },
+        { icon: 'tag' as IconName, title: 'Fixed prices', body: 'Every quote is one price per vehicle, agreed in writing before you travel.' },
+        { icon: 'clock' as IconName, title: 'Open 24/7', body: 'Write at any hour: we answer day and night, every day of the year.' },
+      ],
+    },
+    faq: {
+      eyebrow: 'FAQ',
+      heading: 'Before you write',
+      items: [
+        {
+          q: 'How quickly will you reply?',
+          a: 'We reply to every message within [[TEXT:contact-response-time]], day or night. If your trip is in the next 24 hours, say so in the first line of your message.',
+        },
+        {
+          q: 'Can I change or cancel a booking?',
+          a: 'Yes. Write to us with the name on the booking and the travel date, and tell us what you would like to change. Every change is confirmed in writing, and the cancellation terms are on your written quote.',
+        },
+        {
+          q: 'How do I pay?',
+          a: 'Payment methods and any deposit are confirmed in writing with your quote, before you commit to anything. [[TEXT:contact-faq-payment]]',
+        },
+        {
+          q: 'I left something in the car. What should I do?',
+          a: 'Write to us as soon as you can with the date, the route and a description of the item. We check with the driver and reply with how to get it back to you.',
+        },
+      ],
+    },
+  },
+  quote: {
     lead:
       'Need a private transfer in Italy? Skip the airport taxi queue at Rome Fiumicino or Ciampino, book a chauffeur service between cities, or arrange your transfer from Naples to the Amalfi Coast. Send the form for one fixed price: we take requests 24 hours a day, 7 days a week.',
     formHeading: 'Request a private transfer quote',

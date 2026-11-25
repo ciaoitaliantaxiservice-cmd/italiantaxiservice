@@ -14,7 +14,7 @@ interface Props {
 
 export default function Header({ lang, current, altPaths }: Props) {
   const l = ui[lang];
-  const quoteHref = `${routes.contact[lang]}#quote-form`;
+  const quoteHref = `${routes.quote[lang]}#quote-form`;
 
   return (
     <>

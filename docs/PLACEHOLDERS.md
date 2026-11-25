@@ -79,6 +79,16 @@ Facts and copy live in `src/data/rome.ts`; each slot there has a
 Alt text for every pending photo is already in `content/image-alt-text.md`
 (section "Pending photos (Rome page…)"); the file name is the row key.
 
+## Contact page: `/en/contact/` and `/it/contatti/`
+
+Copy lives in `contact` in `src/data/content/en.ts` and `it.ts`.
+
+| ID | Type | What's needed | Status |
+|---|---|---|---|
+| contact-response-time | TEXT | How soon you reply to messages (e.g. "2 hours"); shown in the success message, the "Fast reply" card and the first FAQ | open |
+| contact-faq-payment | TEXT | Accepted payment methods and deposit policy (FAQ "How do I pay?") | open |
+| contact-address | DATA | The address card: fill `site.address` in `src/data/site.mjs` (`[[STREET ADDRESS]]`, `[[POSTCODE]]`, `[[CITY]]`, `[[REGION]]`). Once real, it also appears in the Organization schema automatically | open |
+
 ## Milan page (`loc-milan`): `/en/locations/milan/` and `/it/localita/milano/`
 
 Facts and copy live in `src/data/milan.ts`; each slot there has a

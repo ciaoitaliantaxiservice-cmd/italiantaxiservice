@@ -7,7 +7,14 @@
 import { routes, ui, LANGS, type Lang, type RouteKey } from './i18n';
 import { meta, alternatesFor, alternatesForRoute, type Alternate } from './seo';
 import { cities, cityPath, type City } from './cities';
-import { faqSchema, romeServiceSchema, milanServiceSchema, blogPostingSchema, type Crumb } from './schema';
+import {
+  faqSchema,
+  contactPageSchema,
+  romeServiceSchema,
+  milanServiceSchema,
+  blogPostingSchema,
+  type Crumb,
+} from './schema';
 import { t } from './content';
 import { romeCopy, withoutMarkers } from './rome';
 import { milanCopy } from './milan';
@@ -19,6 +26,7 @@ export type PageKind =
   | 'blog'
   | 'about'
   | 'contact'
+  | 'quote'
   | 'notFound'
   | 'city'
   | 'rome'
@@ -46,9 +54,11 @@ export interface PageDef {
   post?: BlogPost;
   /**
    * Where the phone sticky bar's main action goes, and its label, when the
-   * page has its own booking form (default: the contact page's form).
+   * page has its own booking form (default: the Get a quote page's form).
    */
   book?: { href: string; label: string };
+  /** The page draws the breadcrumbs inside its own hero (the contact page). */
+  crumbsInHero?: boolean;
 }
 
 function routePage(kind: Exclude<PageKind, 'city' | 'rome' | 'milan' | 'post'>, lang: Lang): PageDef {
@@ -72,8 +82,17 @@ function routePage(kind: Exclude<PageKind, 'city' | 'rome' | 'milan' | 'post'>, 
     current: kind === 'notFound' ? undefined : kind,
     noindex: kind === 'notFound',
     crumbs,
-    // FAQPage only on the homepage, the one page with a real FAQ.
-    extraSchema: kind === 'home' ? [faqSchema(t(lang).home.faq)] : [],
+    // FAQPage on the pages with a visible FAQ; ContactPage on the contact page.
+    extraSchema:
+      kind === 'home'
+        ? [faqSchema(t(lang).home.faq)]
+        : kind === 'contact'
+          ? [
+              contactPageSchema(lang, routes.contact[lang], m.title, m.description),
+              faqSchema(t(lang).contact.faq.items.map((f) => ({ q: f.q, a: withoutMarkers(f.a) }))),
+            ]
+          : [],
+    crumbsInHero: kind === 'contact',
   };
 }
 
@@ -208,6 +227,7 @@ export const pages: PageDef[] = LANGS.flatMap((lang) => [
   routePage('blog', lang),
   routePage('about', lang),
   routePage('contact', lang),
+  routePage('quote', lang),
   routePage('notFound', lang),
   ...cities.map((city) => cityPage(city, lang)),
   ...posts.map((post) => postPage(post, lang)),

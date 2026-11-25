@@ -58,7 +58,7 @@ export default function HomeBody({ lang }: { lang: Lang }) {
             <p className="lead">{c.heroLead}</p>
 
             <div className="btn-row">
-              <a className="btn btn--primary" href={`${routes.contact[lang]}#quote-form`}>
+              <a className="btn btn--primary" href={`${routes.quote[lang]}#quote-form`}>
                 <Icon name="tag" />
                 {l.getQuote}
               </a>

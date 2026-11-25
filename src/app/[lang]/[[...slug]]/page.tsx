@@ -5,6 +5,7 @@ import HomeBody from '../../../components/sections/HomeBody';
 import LocationsBody from '../../../components/sections/LocationsBody';
 import AboutBody from '../../../components/sections/AboutBody';
 import ContactBody from '../../../components/sections/ContactBody';
+import QuoteBody from '../../../components/sections/QuoteBody';
 import CityStubBody from '../../../components/sections/CityStubBody';
 import RomeBody from '../../../components/sections/RomeBody';
 import MilanBody from '../../../components/sections/MilanBody';
@@ -43,7 +44,9 @@ function Body({ page }: { page: PageDef }) {
     case 'about':
       return <AboutBody lang={lang} />;
     case 'contact':
-      return <ContactBody lang={lang} />;
+      return <ContactBody lang={lang} crumbs={page.crumbs!} />;
+    case 'quote':
+      return <QuoteBody lang={lang} />;
     case 'city':
       return <CityStubBody lang={lang} city={page.city!} />;
     case 'rome':
